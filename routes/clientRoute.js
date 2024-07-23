@@ -1,0 +1,11 @@
+const express = require('express')
+const router = express.Router()
+const Addclient = require('../controler/clients/Addclient')
+const Getallclient = require("../controler/clients/Getallclient")
+const SpasficClient = require('../controler/clients/Spascicclient')
+const updateClient = require('../controler/clients/updateClient')
+const Deleteclient = require('../controler/clients/Deleteclient')
+router.post("/add-client" , Addclient)
+router.get("/" , Getallclient)
+router.route('/:id').get(SpasficClient).put(updateClient).delete(Deleteclient)
+module.exports = router

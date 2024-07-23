@@ -1,0 +1,12 @@
+const express = require('express')
+const router = express.Router()
+const Addmeeting = require('../controler/meeting/Addmeeting')
+const Getallmeeting = require('../controler/meeting/Getallmeeting')
+const updateMeeting = require('../controler/meeting/updateMeeting')
+const spasficmeeting = require('../controler/meeting/spasficmeeting')
+const Deletemeeting = require('../controler/meeting/Deletemeeting')
+const autentcatuserLogin = require('../miidelware/authentcateuser')
+router.post("/add-meeting" ,autentcatuserLogin, Addmeeting)
+router.get('/' ,  Getallmeeting)
+router.route('/:id').put(updateMeeting).get(spasficmeeting).delete(Deletemeeting)
+module.exports = router
