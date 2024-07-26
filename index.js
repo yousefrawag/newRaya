@@ -1,15 +1,6 @@
 const express = require("express");
 const app = express();
 const port = 3500;
-const http = require("http").Server(app);
-const io = require("socket.io")(http , {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
-});
 require("dotenv").config();
 const mongoose = require("mongoose");
 const connectDB = require('./config/db');
@@ -31,9 +22,7 @@ app.use("/api/invoicse" , require('./routes/AddinvoicsRoute'))
 app.use("/api/projects" , require('./routes/ProjectRoute'))
 app.use('/api/missions' ,require('./routes/missionRoutes'))
 app.use('/api/auth', require('./routes/userRouter'));
-app.get("/io", (req, res) => {
-  res.send("hello world");
-});
+
 app.all("*", (req, res) => {
   res.status(404).send("404 Not Found");
 });
