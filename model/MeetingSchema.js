@@ -15,7 +15,7 @@ const Meeting = mongoose.Schema({
     },
     addingBy:{
            type:mongoose.Schema.Types.ObjectId,
-            ref:"crm"
+            ref:"user"
     }
 } , {
     timestamps:true

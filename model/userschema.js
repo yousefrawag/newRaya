@@ -1,27 +1,5 @@
 
 const mongoose = require('mongoose');
-
-// const actionSchema = mongoose.Schema({
-//     add: {
-//       type: Boolean,
-//       default: false
-//     },
-//     watch: {
-//       type: Boolean,
-//       default: false
-//     },
-//     update: {
-//       type: Boolean,
-//       default: false
-//     },
-//     delete: {
-//       type: Boolean,
-//       default: false
-//     }
-//   });
-  
-
-
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -55,4 +33,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('crm', userSchema);
+module.exports = mongoose.model('user', userSchema);

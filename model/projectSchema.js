@@ -52,7 +52,7 @@ const project = mongoose.Schema({
     docs:[{type:String}],
     addingBy:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"crm"
+            ref:"user"
     }
 } , {
     timestamps: true

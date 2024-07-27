@@ -6,7 +6,7 @@ const mission = mongoose.Schema({
     },
     assignedTo:{
            type:mongoose.Schema.Types.ObjectId,
-            ref:"crm"
+            ref:"user"
     },
     project:{
            type:mongoose.Schema.Types.ObjectId,
