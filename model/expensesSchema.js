@@ -1,25 +1,29 @@
-const mongoose = require('mongoose')
-const expenses = mongoose.Schema({
-    expensesName:{
-        type:String,
-        required:true,
+const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-sequence")(mongoose);
+const expensesSchema = mongoose.Schema(
+  {
+    _id: Number,
+    expenseName: {
+      type: String,
     },
-    projectName:{
-        type:String,
-        required:true,
+    projectName: {
+      type: String,
     },
-    EstateType:{
-        type:String,
-        required:true
+    EstateType: {
+      type: String,
     },
-    expensesTotal :{
-        type:String
+    expenseTotal: {
+      type: String,
     },
-    details:{
-        type:String
-    }
-} , {
-    timestamps: true
-})
-const expensesSchema = mongoose.model('expenses' , expenses)
-module.exports = expensesSchema
+    details: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+expensesSchema.plugin(autoIncrement, { id: "expenseID" });
+
+module.exports = mongoose.model("expenses", expensesSchema);

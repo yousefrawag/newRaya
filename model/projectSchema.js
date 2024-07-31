@@ -1,61 +1,37 @@
-const mongoose = require('mongoose')
-const project = mongoose.Schema({
-    estateType:{
-        type:String,
-        required: [true, "Please add a name."]
-    },
-    governorate:{
-        type:String,
-        required: [true, "Please add a governote name."] 
-    },
-    city:{
-        type:String,
-        required: [true, "Please add a city name."] 
-    },
-    esateNumber:{
-        type:String,
-        required: [true, "Please add a esateNumber "] 
-    },
-    specificEstate:{
-        type:String,
-        required: [true, "Please add a specificEstate "] 
-    },
-    clientType:{
-        type:String,
-        required: [true, "Please add a clientType "] 
-    },
-    esatePrice:{
-        type:Number,
-        required: [true, "Please add a clientType "] 
-    },
-    opertaionType:{
-        type:String,
-        required: [true, "Please add a opertaionType "] 
-    },
-    installments:{
-        type:String,
-        required: [true, "Please add a installments "] 
-    },
-    installmentsForYear:{
-        type:Number,
-        required: [true, "Please add a installmentsForYear "] 
-    },
-    areeMater:{
-        type:String,
-        required: [true, "Please add a areeMater "] 
-    },
-    FinishingQuality:{
-        type:String,
-        required: [true, "Please add a FinishingQuality "] 
-    },
-    imagesVideos:[{type:String}],
-    docs:[{type:String}],
-    addingBy:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"user"
-    }
-} , {
-    timestamps: true
-})
-const Projectschema = mongoose.model("Project" , project)
-module.exports = Projectschema
+const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-sequence")(mongoose);
+
+const projectSchema = mongoose.Schema(
+  {
+    _id: Number,
+    estateType: { type: String },
+    governorate: { type: String },
+    city: { type: String },
+    estateNumber: { type: String },
+    specificEstate: { type: String },
+    clientType: { type: String },
+    estatePrice: { type: Number },
+    operationType: { type: String },
+    installments: { type: String },
+    installmentsPerYear: { type: Number },
+    areaMatter: { type: String },
+    finishingQuality: { type: String },
+    // imagesVideos: [
+    //   {
+    //     type: String,
+    //   },
+    // ],
+    // docs: [
+    //   {
+    //     type: String,
+    //   },
+    // ],
+    addedBy: { type: Number, ref: "users" },
+  },
+  {
+    timestamps: true,
+  }
+);
+projectSchema.plugin(autoIncrement, { id: "projectID" });
+
+module.exports = mongoose.model("projects", projectSchema);

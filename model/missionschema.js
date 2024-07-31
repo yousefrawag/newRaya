@@ -1,38 +1,40 @@
-const mongoose = require('mongoose')
-const mission = mongoose.Schema({
-    title:{
-        type:String,
-        required:true
+const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-sequence")(mongoose);
+const missionSchema = mongoose.Schema(
+  {
+    _id: Number,
+    title: {
+      type: String,
     },
-    assignedTo:{
-           type:mongoose.Schema.Types.ObjectId,
-            ref:"user"
+    missionType: {
+      type: String,
     },
-    project:{
-           type:mongoose.Schema.Types.ObjectId,
-            ref:"Project"
+    description: {
+      type: String,
     },
-    missionType:{
-        type:String,
+    deadline: Date,
+    status: {
+      type: String,
+      enum: ["inprogress", "not completed", "completed"],
+      default: "inprogress",
     },
-    description:{
-        type:String,
-        required:true
+    assignedTo: {
+      type: Number,
+      ref: "users",
     },
-    missionComplate:{
-        type:Boolean,
-        default:false
+    project: {
+      type: Number,
+      ref: "projects",
     },
-    inprosess:{
-        type:Boolean,
-        default:false
+    assignedBy: {
+      type: Number,
+      ref: "users",
     },
-    addingBy:{
-             type:mongoose.Schema.Types.ObjectId,
-            ref:"crm"
-    }
-} , {
-    timestamps: true
-})
-const missionSchema = mongoose.model('mission' , mission)
-module.exports = missionSchema
+  },
+  {
+    timestamps: true,
+  }
+);
+missionSchema.plugin(autoIncrement, { id: "missionID" });
+
+module.exports = mongoose.model("mission", missionSchema);

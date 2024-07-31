@@ -1,10 +1,9 @@
 const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
-// const connectDB = require("./config/db");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const authMW = require("./middleware/authenticationMW");
 // setting up server
 const server = express();
 const port = process.env.Port || process.env.LOCALPORT;
@@ -20,7 +19,7 @@ mongoose
 
 //logging middelware
 server.use((req, res, next) => {
-  console.log(request.url, request.method);
+  console.log(req.url, req.method);
   next();
 });
 
@@ -30,16 +29,16 @@ server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
-server.use("/api/employer", require("./routes/employerRoute"));
-server.use("/api/permission", require("./routes/permission"));
+server.use("/api", require("./routes/authRoute"));
+server.use(authMW);
 server.use("/api/expenses", require("./routes/expensesRoute"));
-server.use("/api/mediator", require("./routes/mediatorRoutes"));
-server.use("/api/client", require("./routes/clientRoute"));
-server.use("/api/meeting", require("./routes/meetingRoutes"));
-server.use("/api/invoicse", require("./routes/AddinvoicsRoute"));
+server.use("/api/customers", require("./routes/customerRoute"));
+server.use("/api/meetings", require("./routes/meetingRoutes"));
+server.use("/api/users", require("./routes/userRoute"));
+server.use("/api/roles", require("./routes/roleRoute"));
+server.use("/api/invoices", require("./routes/invoiceRoute"));
 server.use("/api/projects", require("./routes/ProjectRoute"));
 server.use("/api/missions", require("./routes/missionRoutes"));
-server.use("/api/auth", require("./routes/userRouter"));
 
 // Not Found MiddleWare
 
@@ -51,18 +50,3 @@ server.use((req, res, next) => {
 server.use((error, req, res, next) => {
   res.status(500).json({ data: `From Error MW : ${error}` });
 });
-
-// server.all("*", (req, res) => {
-//   res.status(404).send("404 Not Found");
-// });
-
-// mongoose.connection.once('open', () => {
-//   console.log("connected to db");
-//   http.listen(port, () => {
-//     console.log("server listening on port 3500");
-//   });
-// });
-
-// mongoose.connection.on("error", (error) => {
-//   console.log(error);
-// });
