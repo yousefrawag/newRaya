@@ -81,12 +81,12 @@ exports.update = [
     .withMessage("Each phone number should be a string")
     .matches(/^\d{11}$/)
     .withMessage("Each phone number should be exactly 11 digits long"),
-  body("title")
+  body("detailedAddress")
     .notEmpty()
-    .withMessage("Title is required")
+    .withMessage("detailedAddress is required")
     .optional()
     .isString()
-    .withMessage("Title should be a string"),
+    .withMessage("detailedAddress should be a string"),
   body("cardNumber")
     .optional()
     .isString()

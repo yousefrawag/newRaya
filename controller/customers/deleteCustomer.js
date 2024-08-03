@@ -1,8 +1,10 @@
+const cloudinary = require("../../middleware/cloudinary");
 const customerSchema = require("../../model/customerSchema");
 const deleteCustomer = async (req, res) => {
   try {
     const { id } = req.params;
-    await customerSchema.findByIdAndDelete(id);
+    let customer = await customerSchema.findByIdAndDelete(id);
+    await cloudinary.delete(customer.imageID);
     res.status(200).json({ message: "Customer deleted successfully" });
   } catch (error) {
     next(error);

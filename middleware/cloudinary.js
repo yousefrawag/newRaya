@@ -1,0 +1,46 @@
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
+
+exports.upload = (file, folder) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      file,
+      {
+        resource_type: "auto",
+        folder,
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+
+          resolve({
+            imageURL: result.secure_url,
+            imageID: result.public_id,
+          });
+        }
+      }
+    );
+  });
+};
+
+exports.delete = (publicId) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(
+      publicId,
+
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+
+          resolve(result);
+        }
+      }
+    );
+  });
+};

@@ -4,6 +4,7 @@ const getAllInvoices = require("../controller/invoices/getAllInvoices");
 const updateInvoice = require("../controller/invoices/updateInvoice");
 const deleteInvoice = require("../controller/invoices/deleteInvoice");
 const getInvoiceByID = require("../controller/invoices/getInvoiceByID");
+const getInvoiceAndMissionDates = require("../controller/invoices/getInvoiceAndMissionDates");
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -12,7 +13,12 @@ const {
 const authorizationMW = require("../middleware/authorizationMW");
 
 const router = express.Router();
-
+router
+  .route("/getInvoiceAndMissionDates")
+  .get(
+    authorizationMW("canViewInvoiceAndMissionDates"),
+    getInvoiceAndMissionDates
+  );
 router
   .route("/")
   .get(authorizationMW("canViewAllInvoices"), getAllInvoices)

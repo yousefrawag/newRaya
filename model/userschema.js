@@ -18,11 +18,12 @@ const userSchema = mongoose.Schema(
       type: Number,
       ref: "roles",
     },
-    // image: {
-    //   type: String,
-    //   default:
-    //     "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
-    // },
+    imageURL: {
+      type: String,
+      default:
+        "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
+    },
+    imageID: String,
     type: {
       type: String,
       enum: ["admin", "employee"],

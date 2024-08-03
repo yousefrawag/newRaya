@@ -3,11 +3,6 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 
 const customerSchema = mongoose.Schema(
   {
-    // image: {
-    //   type: String,
-    //   default:
-    //     "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
-    // },
     _id: Number,
     fullName: {
       type: String,
@@ -20,7 +15,7 @@ const customerSchema = mongoose.Schema(
       type: String,
     },
     phoneNumber: [{ type: Number }],
-    title: {
+    detailedAddress: {
       type: String,
     },
     cardNumber: {
@@ -29,8 +24,14 @@ const customerSchema = mongoose.Schema(
     type: {
       type: String,
       enum: ["client", "mediator"],
-      default: "employee",
+      default: "client",
     },
+    imageURL: {
+      type: String,
+      default:
+        "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
+    },
+    imageID: String,
   },
   {
     timestamps: true,

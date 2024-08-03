@@ -1,37 +1,51 @@
 const projectSchema = require("../../model/projectSchema");
+const cloudinary = require("../../middleware/cloudinary");
+
 const addProject = async (req, res, next) => {
   try {
-    const {
-      estateType,
-      governorate,
-      city,
-      estateNumber,
-      specificEstate,
-      clientType,
-      estatePrice,
-      operationType,
-      installments,
-      installmentsPerYear,
-      areaMatter,
-      finishingQuality,
-    } = req.body;
+    let project = new projectSchema(req.body);
+    project.addedBy = req.token.id;
+    const imagesURLs = [];
+    const videosURLs = [];
+    const docsURLs = [];
+    if (req.files) {
+      for (const index in req.files) {
 
-    const newProject = await projectSchema.create({
-      estateType,
-      governorate,
-      city,
-      estateNumber,
-      specificEstate,
-      clientType,
-      estatePrice,
-      operationType,
-      installments,
-      installmentsPerYear,
-      areaMatter,
-      finishingQuality,
-      addedBy: req.token.id,
-    });
-    res.status(200).json({ newProject });
+        if (
+          req.files[index].mimetype === "image/png" ||
+          req.files[index].mimetype === "image/jpeg"
+        ) {
+          console.log("image");
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(
+              req.files[index].path,
+              "projectFiles/images"
+            );
+          imagesURLs.push({ fileURL, fileID });
+        } else if (req.files[index].mimetype === "video/mp4") {
+          console.log("video");
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(
+              req.files[index].path,
+              "projectFiles/videos"
+            );
+          videosURLs.push({ fileURL, fileID });
+        } else if (req.files[index].mimetype === "application/pdf") {
+          console.log("doc");
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(req.files[index].path, "projectFiles/docs");
+          docsURLs.push({ fileURL, fileID });
+        }
+      }
+    }
+    project.imagesURLs = imagesURLs;
+    project.videosURLs = videosURLs;
+    project.docsURLs = docsURLs;
+    await project.save();
+    res.status(200).json({ project });
   } catch (error) {
     next(error);
   }

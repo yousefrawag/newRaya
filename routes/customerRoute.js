@@ -10,6 +10,8 @@ const {
   insert,
   update,
 } = require("../middleware/validations/customerValidator");
+const multerUpload = require("../middleware/multer");
+
 const authorizationMW = require("../middleware/authorizationMW");
 
 router
@@ -17,12 +19,14 @@ router
   .get(authorizationMW("canViewAllCustomers"), getCustomers)
   .post(
     authorizationMW("canAddCustomer"),
+    multerUpload.single("image"),
     insert,
     validationResult,
     addCustomer
   )
   .put(
     authorizationMW("canUpdateCustomer"),
+    multerUpload.single("image"),
     update,
     validationResult,
     updateCustomer

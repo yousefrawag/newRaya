@@ -1,4 +1,5 @@
 const roleSchema = require("../model/roleSchema");
+const userSchema = require("../model/userSchema");
 
 exports.getAllRoles = (req, res, next) => {
   roleSchema
@@ -59,4 +60,42 @@ exports.deleteRole = (req, res, next) => {
       res.status(200).json({ message: "Role deleted successfully" });
     })
     .catch((err) => next(err));
+};
+
+exports.getRolesWithUserCounts = async (req, res, next) => {
+  try {
+    const rolesWithUserCounts = await roleSchema.aggregate([
+      {
+        $lookup: {
+          from: "users", // collection name in MongoDB
+          localField: "_id",
+          foreignField: "role",
+          as: "users",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          permissions: 1,
+          userCount: { $size: "$users" },
+        },
+      },
+    ]);
+
+    res.status(200).json({ rolesWithUserCounts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUsersWithCertainRole = async (req, res, next) => {
+  try {
+    const users = await userSchema
+      .find({ role: req.params.id })
+      .populate("role");
+    res.status(200).json({ users });
+  } catch (error) {
+    next(error);
+  }
 };

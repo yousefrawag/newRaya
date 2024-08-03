@@ -15,7 +15,7 @@ const missionSchema = mongoose.Schema(
     deadline: Date,
     status: {
       type: String,
-      enum: ["inprogress", "not completed", "completed"],
+      enum: ["inprogress", "completed"],
       default: "inprogress",
     },
     assignedTo: {

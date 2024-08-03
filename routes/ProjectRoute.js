@@ -11,6 +11,7 @@ const {
   update,
 } = require("../middleware/validations/projectValidator");
 const authorizationMW = require("../middleware/authorizationMW");
+const multerUpload = require("../middleware/multer");
 
 const router = express.Router();
 
@@ -20,9 +21,16 @@ router
 router
   .route("/")
   .get(authorizationMW("canViewAllProjects"), getProjects)
-  .post(authorizationMW("canAddProject"), insert, validationResult, addProject)
+  .post(
+    authorizationMW("canAddProject"),
+    multerUpload.array("files"),
+    insert,
+    validationResult,
+    addProject
+  )
   .put(
     authorizationMW("canUpdateProject"),
+    multerUpload.array("files"),
     update,
     validationResult,
     updateProject

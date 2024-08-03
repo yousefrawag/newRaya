@@ -26,17 +26,19 @@ exports.insert = [
     .notEmpty()
     .withMessage("Estate number  is required"),
 
-  body("specificEstate")
+  body("floor")
+    .isIn(["upstairs", "ground floor"])
+    .withMessage("floor should be  upstairs or ground floor"),
+  body("detailedAddress")
     .isString()
-    .withMessage("Specific estate should be a string")
+    .withMessage("detailedAddress should be a string")
     .notEmpty()
-    .withMessage("Specific estate  is required"),
-
+    .withMessage("detailedAddress  is required"),
   body("clientType")
     .isString()
     .withMessage("Client type should be a string")
     .notEmpty()
-    .withMessage("Estate number  is required"),
+    .withMessage("Client type  is required"),
 
   body("estatePrice")
     .isNumeric()
@@ -51,8 +53,8 @@ exports.insert = [
     .withMessage("Operation is required"),
 
   body("installments")
-    .isString()
-    .withMessage("Installments should be a string")
+    .isBoolean()
+    .withMessage("Installments should be a boolean")
     .notEmpty()
     .withMessage("Installments is required"),
 
@@ -69,30 +71,11 @@ exports.insert = [
     .withMessage("Area matter  is required"),
 
   body("finishingQuality")
-    .isString()
-    .withMessage("Finishing quality should be a string")
-    .notEmpty()
-    .withMessage("Finishing quality is required"),
-
-  body("addedBy")
-    .isInt()
-    .withMessage("AddedBy should be a number")
-    .custom((value) => {
-      return userSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) {
-            throw new Error("this user doesn't exist");
-          }
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
+    .isIn(["high", "medium", "normal"])
+    .withMessage("finishingQuality  should be an high, medium or normal"),
 ];
 
 exports.update = [
-  body("id").isInt(),
   body("estateType")
     .optional()
     .isString()
@@ -105,54 +88,57 @@ exports.update = [
     .isString()
     .withMessage("Governorate should be a string")
     .notEmpty()
-    .withMessage("Governorate is required"),
+    .withMessage("Governorate  is required"),
 
   body("city")
     .optional()
     .isString()
     .withMessage("City should be a string")
     .notEmpty()
-    .withMessage("City is required"),
+    .withMessage("City  is required"),
 
   body("estateNumber")
     .optional()
     .isString()
     .withMessage("Estate number should be a string")
     .notEmpty()
-    .withMessage("Estate number is required"),
+    .withMessage("Estate number  is required"),
 
-  body("specificEstate")
+  body("floor")
+    .optional()
+    .isIn(["upstairs", "ground floor"])
+    .withMessage("user type should be an upstairs, ground floor"),
+  body("detailedAddress")
     .optional()
     .isString()
-    .withMessage("Specific estate should be a string")
+    .withMessage("detailedAddress should be a string")
     .notEmpty()
-    .withMessage("Specific estate is required"),
-
+    .withMessage("detailedAddress  is required"),
   body("clientType")
     .optional()
     .isString()
     .withMessage("Client type should be a string")
     .notEmpty()
-    .withMessage("Client type is required"),
+    .withMessage("Client type  is required"),
 
   body("estatePrice")
     .optional()
     .isNumeric()
     .withMessage("Estate price should be a number")
     .notEmpty()
-    .withMessage("Estate price is required"),
+    .withMessage("Estate price  is required"),
 
   body("operationType")
     .optional()
     .isString()
     .withMessage("Operation type should be a string")
     .notEmpty()
-    .withMessage("Operation type is required"),
+    .withMessage("Operation is required"),
 
   body("installments")
     .optional()
-    .isString()
-    .withMessage("Installments should be a string")
+    .isBoolean()
+    .withMessage("Installments should be a boolean")
     .notEmpty()
     .withMessage("Installments is required"),
 
@@ -168,29 +154,10 @@ exports.update = [
     .isString()
     .withMessage("Area matter should be a string")
     .notEmpty()
-    .withMessage("Area matter is required"),
+    .withMessage("Area matter  is required"),
 
   body("finishingQuality")
     .optional()
-    .isString()
-    .withMessage("Finishing quality should be a string")
-    .notEmpty()
-    .withMessage("Finishing quality is required"),
-
-  body("addedBy")
-    .optional()
-    .isInt()
-    .withMessage("AddedBy should be a number")
-    .custom((value) => {
-      return userSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) {
-            throw new Error("this user doesn't exist");
-          }
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
+    .isIn(["high", "medium", "normal"])
+    .withMessage("finishingQuality  should be an high, medium or normal"),
 ];

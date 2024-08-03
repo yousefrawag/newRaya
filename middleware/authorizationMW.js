@@ -1,7 +1,6 @@
 module.exports = (permission) => {
   return async (req, res, next) => {
     let userPremissions = [];
-    console.log("form authorization", req.token.role);
     if (req.token.role) {
       userPremissions = req.token.role.permissions;
     }
