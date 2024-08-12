@@ -24,7 +24,6 @@ server.use((req, res, next) => {
 });
 
 //endpoint middelware
-// connectDB();
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
