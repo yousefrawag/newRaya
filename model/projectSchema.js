@@ -23,7 +23,7 @@ const projectSchema = mongoose.Schema(
     installments: { type: Boolean },
     installmentsPerYear: { type: Number },
     areaMatter: { type: String },
-    finishingQuality: { type: String, enum: ["high ", "medium", "normal"] },
+    finishingQuality: { type: String, enum: ["high", "medium", "normal"] },
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],

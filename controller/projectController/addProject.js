@@ -15,7 +15,6 @@ const addProject = async (req, res, next) => {
           req.files[index].mimetype === "image/png" ||
           req.files[index].mimetype === "image/jpeg"
         ) {
-          console.log("image");
 
           const { imageURL: fileURL, imageID: fileID } =
             await cloudinary.upload(
@@ -24,7 +23,6 @@ const addProject = async (req, res, next) => {
             );
           imagesURLs.push({ fileURL, fileID });
         } else if (req.files[index].mimetype === "video/mp4") {
-          console.log("video");
 
           const { imageURL: fileURL, imageID: fileID } =
             await cloudinary.upload(
@@ -33,7 +31,6 @@ const addProject = async (req, res, next) => {
             );
           videosURLs.push({ fileURL, fileID });
         } else if (req.files[index].mimetype === "application/pdf") {
-          console.log("doc");
 
           const { imageURL: fileURL, imageID: fileID } =
             await cloudinary.upload(req.files[index].path, "projectFiles/docs");

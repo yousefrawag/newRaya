@@ -22,7 +22,7 @@ exports.insert = [
     .withMessage("Description length must be more that 4 character"),
   body("deadline")
     .isISO8601()
-    .withMessage("Meeting date must be a valid ISO 8601 date")
+    .withMessage("mission deadline must be a valid ISO 8601 date")
     .notEmpty()
     .withMessage("deadline type is required"),
   body("status")
@@ -59,19 +59,7 @@ exports.insert = [
           throw new Error(err);
         });
     }),
-  body("assignedBy")
-    .isInt()
-    .withMessage("AssignedBy must be an integer")
-    .custom((value) => {
-      return userSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) throw new Error("this admin doesn't exist");
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
+
 ];
 
 exports.update = [
@@ -133,20 +121,6 @@ exports.update = [
         .findOne({ _id: value })
         .then((object) => {
           if (!object) throw new Error("this project doesn't exist");
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
-  body("assignedBy")
-    .optional()
-    .isInt()
-    .withMessage("AssignedBy must be an integer")
-    .custom((value) => {
-      return userSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) throw new Error("this admin doesn't exist");
         })
         .catch((err) => {
           throw new Error(err);
