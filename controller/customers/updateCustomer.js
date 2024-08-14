@@ -2,7 +2,7 @@ const cloudinary = require("../../middleware/cloudinary");
 const customerSchema = require("../../model/customerSchema");
 const updateCustomer = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const updateData = { ...req.body };
     let customer = await customerSchema.findById(id);
     if (!customer) {

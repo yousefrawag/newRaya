@@ -11,19 +11,19 @@ const {
   update,
 } = require("../middleware/validations/missionValidator");
 const authorizationMW = require("../middleware/authorizationMW");
+const missionsAddedToday = require("../controller/missions/missionsAddedToday");
 
 const router = express.Router();
 
-router
-  .route("/users/:id")
-  .get(authorizationMW("canViewUserMissions"), userMissions);
+router.route("/users/:id").get(userMissions);
+router.route("/missionsToday").get(missionsAddedToday);
 
 router
   .route("/")
-  .get(authorizationMW("canViewAllMissions"), getAllMissions)
-  .post(authorizationMW("canAddMission"), insert, validationResult, addMission)
+  .get(authorizationMW("canViewMissions"), getAllMissions)
+  .post(authorizationMW("canAddMissions"), insert, validationResult, addMission)
   .put(
-    authorizationMW("canUpdateMission"),
+    authorizationMW("canEditMissions"),
     update,
     validationResult,
     updateMission
@@ -31,7 +31,7 @@ router
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewMissionByID"), getMissionByID)
-  .delete(authorizationMW("canDeleteMission"), deleteMission);
+  .get(getMissionByID)
+  .delete(authorizationMW("canDeleteMissions"), deleteMission);
 
 module.exports = router;

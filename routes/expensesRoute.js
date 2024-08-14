@@ -15,18 +15,23 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authorizationMW("canViewAllExpenses"), getAllExpenses)
-  .post(authorizationMW("canAddExpense"), insert, validationResult, addExpense)
-  .put(
-    authorizationMW("canUpdateExpense"),
-    update,
+  .get(authorizationMW("canViewExpenses"), getAllExpenses)
+  .post(
+    authorizationMW("canAddExpenses"),
+    insert,
     validationResult,
-    updateExpense
+    addExpense
   );
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewExpenseByID"), getExpenseByID)
-  .delete(authorizationMW("canDeleteExpense"), deleteExpense);
+  .put(
+    authorizationMW("canEditExpenses"),
+    update,
+    validationResult,
+    updateExpense
+  )
+  .get(getExpenseByID)
+  .delete(authorizationMW("canDeleteExpenses"), deleteExpense);
 
 module.exports = router;

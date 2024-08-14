@@ -1,6 +1,6 @@
 const expensesSchema = require("../../model/expensesSchema");
 const updateExpense = async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const { expenseName, projectName, EstateType, expenseTotal, details } =
     req.body;
   try {

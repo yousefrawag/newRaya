@@ -9,11 +9,10 @@ exports.insert = [
     .notEmpty()
     .withMessage("Title is required"),
 
-  body("missionType")
-    .isString()
-    .withMessage("Mission type must be a string")
-    .notEmpty()
-    .withMessage("Mission type is required"),
+  body("update")
+    .optional()
+    .isBoolean()
+    .withMessage("update is can take a value of true or false"),
 
   body("description")
     .isString()
@@ -59,7 +58,6 @@ exports.insert = [
           throw new Error(err);
         });
     }),
-
 ];
 
 exports.update = [
@@ -71,12 +69,10 @@ exports.update = [
     .notEmpty()
     .withMessage("Title is required"),
 
-  body("missionType")
+  body("update")
     .optional()
-    .isString()
-    .withMessage("Mission type must be a string")
-    .notEmpty()
-    .withMessage("Mission type is required"),
+    .isBoolean()
+    .withMessage("update is can take a value of true or false"),
 
   body("description")
     .optional()

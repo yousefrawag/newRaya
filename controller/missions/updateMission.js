@@ -1,7 +1,7 @@
 const missionSchema = require("../../model/missionSchema");
 
 const updateMission = async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const {
     title,
     status,

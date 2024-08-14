@@ -6,30 +6,29 @@ const authorizationMW = require("../middleware/authorizationMW");
 const multerUpload = require("../middleware/multer");
 
 const router = express.Router();
-router
-  .route("/changePassword")
-  .post(authorizationMW("canChangePassword"), userController.changePassword);
+router.route("/getCurrentLoggedUser").get(userController.getCurrentLoggedUser);
+router.route("/changePassword").post(userController.changePassword);
 
 router
   .route("/")
-  .get(authorizationMW("canViewALLUsers"), userController.getUsers)
+  .get(authorizationMW("canViewEmployees"), userController.getUsers)
   .post(
-    authorizationMW("canAddUser"),
+    authorizationMW("canAddEmployees"),
     multerUpload.single("image"),
     insert,
     validationResult,
     userController.addUser
-  )
-  .put(
-    authorizationMW("canUpdateUser"),
-    multerUpload.single("image"),
-    update,
-    validationResult,
-    userController.updateUser
   );
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewUserByID"), userController.getUserById)
-  .delete(authorizationMW("canDeleteUser"), userController.deleteUser);
+  .put(
+    authorizationMW("canEditEmployees"),
+    multerUpload.single("image"),
+    update,
+    validationResult,
+    userController.updateUser
+  )
+  .get(userController.getUserById)
+  .delete(authorizationMW("canDeleteEmployees"), userController.deleteUser);
 module.exports = router;

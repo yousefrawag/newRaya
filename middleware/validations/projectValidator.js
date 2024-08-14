@@ -7,6 +7,11 @@ exports.insert = [
     .withMessage("Estate type should be a string")
     .notEmpty()
     .withMessage("Estate type is required"),
+  body("projectName")
+    .isString()
+    .withMessage("projectName should be a string")
+    .notEmpty()
+    .withMessage("projectName is required"),
 
   body("governorate")
     .isString()
@@ -82,7 +87,12 @@ exports.update = [
     .withMessage("Estate type should be a string")
     .notEmpty()
     .withMessage("Estate type is required"),
-
+  body("projectName")
+    .optional()
+    .isString()
+    .withMessage("projectName should be a string")
+    .notEmpty()
+    .withMessage("projectName is required"),
   body("governorate")
     .optional()
     .isString()

@@ -2,7 +2,7 @@ const cloudinary = require("../../middleware/cloudinary");
 const projectSchema = require("../../model/projectSchema");
 const updateProject = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const updateData = { ...req.body };
     let project = await projectSchema.findById(id);
     if (!project) {

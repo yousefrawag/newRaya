@@ -13,26 +13,26 @@ const {
 const authorizationMW = require("../middleware/authorizationMW");
 
 const router = express.Router();
-router
-  .route("/getInvoiceAndMissionDates")
-  .get(
-    authorizationMW("canViewInvoiceAndMissionDates"),
-    getInvoiceAndMissionDates
-  );
+router.route("/getInvoiceAndMissionDates").get(getInvoiceAndMissionDates);
 router
   .route("/")
-  .get(authorizationMW("canViewAllInvoices"), getAllInvoices)
-  .post(authorizationMW("canAddInvoice"), insert, validationResult, addInvoice)
-  .put(
-    authorizationMW("canUpdateInvoice"),
-    update,
+  .get(authorizationMW("canViewInvoices"), getAllInvoices)
+  .post(
+    authorizationMW("canAddInvoices"),
+    insert,
     validationResult,
-    updateInvoice
+    addInvoice
   );
 
 router
   .route("/:id")
+  .put(
+    authorizationMW("canEditInvoices"),
+    update,
+    validationResult,
+    updateInvoice
+  )
   .get(authorizationMW("canViewInvoiceByID"), getInvoiceByID)
-  .delete(authorizationMW("canDeleteInvoice"), deleteInvoice);
+  .delete(authorizationMW("canDeleteInvoices"), deleteInvoice);
 
 module.exports = router;

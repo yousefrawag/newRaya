@@ -18,13 +18,23 @@ router.route("/getRolesWithUserCounts").get(getRolesWithUserCounts);
 router.route("/getUsersWithCertainRole/:id").get(getUsersWithCertainRole);
 router
   .route("/")
-  .get(authorizationMW("canViewAllRoles"), getAllRoles)
-  .post(authorizationMW("canAddRole"), insert, validationResult, addRole)
-  .put(authorizationMW("canUpdateRole"), update, validationResult, updateRole);
+  .get(authorizationMW("canViewAdministration"), getAllRoles)
+  .post(
+    authorizationMW("canAddAdministration"),
+    insert,
+    validationResult,
+    addRole
+  );
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewRoleByID"), getRoleById)
-  .delete(authorizationMW("canDeleteRole"), deleteRole);
+  .put(
+    authorizationMW("canEditAdministration"),
+    update,
+    validationResult,
+    updateRole
+  )
+  .get(getRoleById)
+  .delete(authorizationMW("canDeleteAdministration"), deleteRole);
 
 module.exports = router;

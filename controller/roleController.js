@@ -34,7 +34,7 @@ exports.getRoleById = (req, res, next) => {
     .catch((err) => next(err));
 };
 exports.updateRole = (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const updateData = req.body;
 
   roleSchema

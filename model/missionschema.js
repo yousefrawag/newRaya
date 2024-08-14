@@ -6,9 +6,7 @@ const missionSchema = mongoose.Schema(
     title: {
       type: String,
     },
-    missionType: {
-      type: String,
-    },
+
     description: {
       type: String,
     },
@@ -29,6 +27,10 @@ const missionSchema = mongoose.Schema(
     assignedBy: {
       type: Number,
       ref: "users",
+    },
+    update: {
+      type: Boolean,
+      default: false,
     },
   },
   {

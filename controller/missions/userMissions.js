@@ -7,7 +7,7 @@ const userMissions = async (req, res, next) => {
       .populate("project");
     res.json({ missions });
   } catch (error) {
-    res.send(error.message);
+    next(error);
   }
 };
 module.exports = userMissions;

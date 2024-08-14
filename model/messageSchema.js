@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-sequence")(mongoose);
+const file = mongoose.Schema(
+  {
+    fileURL: String,
+    fileID: String,
+  },
+  { _id: false }
+);
 const messageSchema = mongoose.Schema(
   {
     _id: Number,
@@ -12,6 +19,7 @@ const messageSchema = mongoose.Schema(
       ref: "users",
     },
     content: { type: String },
+    filesURLs: [file],
   },
   {
     timestamps: true,

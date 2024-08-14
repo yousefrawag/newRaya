@@ -15,13 +15,11 @@ exports.login = (req, res, next) => {
           let token = jwt.sign(
             {
               id: user._id,
-              type: user.type,
-              role: user.role,
             },
             process.env.SECRET_KEY,
             { expiresIn: "14d" }
           );
-          res.status(200).json({ action: "Authenticated", token });
+          res.status(200).json({ action: "Authenticated", token, user });
         })
         .catch((err) => next(err));
     })
@@ -79,7 +77,9 @@ exports.resetPassword = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    await userSchema.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+    await userSchema.findByIdAndUpdate(decoded.id, {
+      password: hashedPassword,
+    });
 
     res.status(200).json({ message: "Password reset successful" });
   } catch (error) {

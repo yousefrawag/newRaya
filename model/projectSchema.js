@@ -11,6 +11,7 @@ const file = mongoose.Schema(
 const projectSchema = mongoose.Schema(
   {
     _id: Number,
+    projectName: String,
     estateType: { type: String },
     governorate: { type: String },
     city: { type: String },

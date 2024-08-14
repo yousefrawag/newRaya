@@ -15,13 +15,18 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authorizationMW("canViewAllMeetings"), getAllMeetings)
-  .post(authorizationMW("canAddMeeting"), insert, validationResult, addMeeting)
-  .put(authorizationMW("canUpdateMeeting"), update, validationResult, updateMeeting);
+  .get(getAllMeetings)
+  .post(authorizationMW("canAddMeeting"), insert, validationResult, addMeeting);
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewMeetingByID"), getMeetingByID)
+  .put(
+    authorizationMW("canUpdateMeeting"),
+    update,
+    validationResult,
+    updateMeeting
+  )
+  .get(getMeetingByID)
   .delete(authorizationMW("canDeleteMeeting"), deleteMeeting);
 
 module.exports = router;

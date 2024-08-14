@@ -1,6 +1,6 @@
 const invoiceSchema = require("../../model/invoiceSchema");
 const updateInvoices = async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const { client, project, estateType, dueDate, status, total, notes } =
     req.body;
   try {

@@ -1,6 +1,7 @@
 const userSchema = require("../model/userSchema");
 const cloudinary = require("../middleware/cloudinary");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 exports.getUsers = (req, res, next) => {
   userSchema
     .find({})
@@ -27,6 +28,28 @@ exports.addUser = async (req, res, next) => {
       user.imageID = imageID;
     }
     await user.save();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_EMAIL,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.GMAIL_EMAIL,
+      to: user.email,
+      subject: "User Credantials",
+      text: `
+      Dear ${req.body.fullName},
+          Your account created and you can use it now 
+          Email: ${user.email}
+          password: ${req.body.password}
+      
+      Make sure to change the default password to more secure one `,
+    };
+    await transporter.sendMail(mailOptions);
+
     res.status(200).json({ action: "user added successfully" });
   } catch (error) {
     next(error);
@@ -35,7 +58,7 @@ exports.addUser = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const updateData = { ...req.body };
     let user = await userSchema.findById(id);
     if (!user) {
@@ -113,4 +136,18 @@ exports.changePassword = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+exports.getCurrentLoggedUser = (req, res, next) => {
+  userSchema
+    .findById(req.token.id)
+    .populate("role")
+    .select("-password")
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({ message: "User doesn't exist" });
+      }
+      res.status(200).json({ user });
+    })
+    .catch((err) => next(err));
 };

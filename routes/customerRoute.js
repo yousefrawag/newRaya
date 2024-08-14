@@ -16,25 +16,25 @@ const authorizationMW = require("../middleware/authorizationMW");
 
 router
   .route("/")
-  .get(authorizationMW("canViewAllCustomers"), getCustomers)
+  .get(authorizationMW("canViewClients"), getCustomers)
   .post(
-    authorizationMW("canAddCustomer"),
+    authorizationMW("canAddClients"),
     multerUpload.single("image"),
     insert,
     validationResult,
     addCustomer
-  )
-  .put(
-    authorizationMW("canUpdateCustomer"),
-    multerUpload.single("image"),
-    update,
-    validationResult,
-    updateCustomer
   );
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewCustomerByID"), getCustomerByID)
-  .delete(authorizationMW("canDeleteCustomer"), deleteCustomer);
+  .put(
+    authorizationMW("canEditClients"),
+    multerUpload.single("image"),
+    update,
+    validationResult,
+    updateCustomer
+  )
+  .get(getCustomerByID)
+  .delete(authorizationMW("canDeleteClients"), deleteCustomer);
 
 module.exports = router;

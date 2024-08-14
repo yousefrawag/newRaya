@@ -2,6 +2,7 @@ const chatSchema = require("../model/chatSchema");
 const messageSchema = require("../model/messageSchema");
 const notificationSchema = require("../model/notificationSchema");
 const userSchema = require("../model/userSchema");
+const cloudinary = require("../middleware/cloudinary");
 
 exports.sendMessage = async (req, res, next) => {
   try {
@@ -9,9 +10,19 @@ exports.sendMessage = async (req, res, next) => {
 
     const user = await userSchema.findOne({ _id: senderID });
     const chat = await chatSchema.findOne({ _id: chatID });
-
+    const filesURLs = [];
+    if (req.files) {
+      for (const index in req.files) {
+        const { imageURL: fileURL, imageID: fileID } = await cloudinary.upload(
+          req.files[index].path,
+          "chatsFiles"
+        );
+        filesURLs.push({ fileURL, fileID });
+      }
+    }
     if (user.type === "admin") {
       const message = new messageSchema({ chatID, senderID, content });
+      message.filesURLs = filesURLs;
       await message.save();
       await handelNotifications(
         [chat.employeeID],
@@ -34,6 +45,7 @@ exports.sendMessage = async (req, res, next) => {
       }
 
       const message = new messageSchema({ chatID, senderID, content });
+      message.filesURLs = filesURLs;
       await message.save();
       const users = await userSchema.find({ type: "admin" });
 

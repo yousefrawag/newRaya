@@ -1,7 +1,7 @@
 const meetingSchema = require("../../model/MeetingSchema");
 const updateMeeting = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const { title, meetingDate, meetingDetails, meetingResult } = req.body;
     const update = await meetingSchema.findByIdAndUpdate(
       id,
