@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 
 exports.insert = [
   body("expenseName")
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
     .notEmpty()
     .withMessage("Expenses name is required"),
@@ -31,11 +31,9 @@ exports.insert = [
 ];
 
 exports.update = [
-  body("id").isInt().withMessage("ID must be an integer"),
-
   body("expenseName")
     .optional()
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
     .notEmpty()
     .withMessage("Expenses name is required"),

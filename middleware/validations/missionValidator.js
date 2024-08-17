@@ -27,10 +27,8 @@ exports.insert = [
   body("status")
     .isString()
     .withMessage("Status must be a string")
-    .isIn(["inprogress", "not completed", "completed"])
-    .withMessage(
-      'Status must be one of "inprogress", "not completed", or "completed"'
-    ),
+    .isIn(["inprogress", "completed"])
+    .withMessage('Status must be one of "inprogress" or "completed"'),
 
   body("assignedTo")
     .isInt()
@@ -61,7 +59,6 @@ exports.insert = [
 ];
 
 exports.update = [
-  body("id").isInt(),
   body("title")
     .optional()
     .isString()
@@ -81,6 +78,7 @@ exports.update = [
     .isLength({ min: 4 })
     .withMessage("Description length must be more that 4 character"),
   body("deadline")
+    .optional()
     .isISO8601()
     .withMessage("Meeting date must be a valid ISO 8601 date")
     .notEmpty()
@@ -89,10 +87,8 @@ exports.update = [
     .optional()
     .isString()
     .withMessage("Status must be a string")
-    .isIn(["inprogress", "not completed", "completed"])
-    .withMessage(
-      'Status must be one of "inprogress", "not completed", or "completed"'
-    ),
+    .isIn(["inprogress", "completed"])
+    .withMessage('Status must be one of "inprogress"  or "completed"'),
 
   body("assignedTo")
     .optional()

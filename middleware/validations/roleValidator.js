@@ -11,7 +11,6 @@ exports.insert = [
 ];
 
 exports.update = [
-  body("id").isInt().withMessage("ID value is integer"),
   body("name")
     .optional()
     .isString()

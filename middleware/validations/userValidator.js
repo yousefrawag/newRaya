@@ -4,10 +4,16 @@ const userSchema = require("../../model/userSchema");
 const roleSchema = require("../../model/roleSchema");
 exports.insert = [
   body("fullName")
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
-    .isLength({ min: 4 })
-    .withMessage("user name length should be more that 4 "),
+    .isLength({ min: 3 })
+    .withMessage("user name length should be more that 3 "),
+  body("job").isString().withMessage("Job is a string value"),
+  body("phoneNumber")
+    .isString()
+    .withMessage("phone Number is a string value")
+    .matches(/^\d{11}$/)
+    .withMessage("Each phone number should be exactly 11 digits long"),
   body("password")
     .isString()
     .withMessage("password should be String")
@@ -46,13 +52,19 @@ exports.insert = [
     }),
 ];
 exports.update = [
-  body("id").isInt().withMessage("child ID is a number"),
   body("fullName")
     .optional()
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
-    .isLength({ min: 4 })
-    .withMessage("user name length should be more that 4 "),
+    .isLength({ min: 3 })
+    .withMessage("user name length should be more that 3 "),
+  body("job").optional().isString().withMessage("Job is a string value"),
+  body("phoneNumber")
+    .optional()
+    .isString()
+    .withMessage("phone Number is a string value")
+    .matches(/^\d{11}$/)
+    .withMessage("Each phone number should be exactly 11 digits long"),
   body("password")
     .optional()
     .isString()

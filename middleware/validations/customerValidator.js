@@ -3,10 +3,10 @@ const userSchema = require("../../model/userSchema");
 const customerSchema = require("../../model/customerSchema");
 exports.insert = [
   body("fullName")
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
-    .isLength({ min: 4 })
-    .withMessage("user name length should be more that 4 "),
+    .isLength({ min: 3 })
+    .withMessage("user name length should be more that 3 "),
   body("email")
     .isEmail()
     .withMessage("Invalid email address")
@@ -43,13 +43,12 @@ exports.insert = [
     .withMessage('Type should be either "client" or "mediator"'),
 ];
 exports.update = [
-  body("id").isInt(),
   body("fullName")
     .optional()
-    .isAlpha("en-US", { ignore: " " })
+    .isString()
     .withMessage("user full name should be String")
-    .isLength({ min: 4 })
-    .withMessage("user name length should be more that 4 "),
+    .isLength({ min: 3 })
+    .withMessage("user name length should be more that 3 "),
   body("email")
     .optional()
     .isEmail()

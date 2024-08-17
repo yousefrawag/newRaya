@@ -23,12 +23,9 @@ exports.insert = [
     .isString()
     .withMessage("Meeting result must be a string")
     .optional(),
-
-  
 ];
 
 exports.update = [
-  body("id").isInt(),
   body("title")
     .optional()
     .isString()

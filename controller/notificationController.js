@@ -4,15 +4,16 @@ exports.getUserNotifications = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const notifications = await notificationSchema.find({
-      usersID: { $in: [id] },
-    });
-
-    if (!notifications.length) {
-      return res
-        .status(404)
-        .json({ message: "No notifications found for this user" });
-    }
+    const notifications = await notificationSchema
+      .find({
+        usersID: { $in: [id] },
+      })
+      .populate({
+        path: "chatID",
+        populate: {
+          path: "missionID",
+        },
+      });
 
     return res.status(200).json({ notifications });
   } catch (error) {

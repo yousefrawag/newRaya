@@ -38,6 +38,6 @@ router
     validationResult,
     updateProject
   )
-  .get(authorizationMW("canViewSingleProjects"), getProjectByID)
+  .get(authorizationMW("canViewProjects"), getProjectByID)
   .delete(authorizationMW("canDeleteProjects"), deleteProject);
 module.exports = router;

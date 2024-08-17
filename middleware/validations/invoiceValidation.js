@@ -66,7 +66,6 @@ exports.insert = [
 ];
 
 exports.update = [
-  body("id").isInt().withMessage("ID must be an integer"),
   body("client")
     .optional()
     .isInt()

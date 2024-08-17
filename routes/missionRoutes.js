@@ -21,17 +21,22 @@ router.route("/missionsToday").get(missionsAddedToday);
 router
   .route("/")
   .get(authorizationMW("canViewMissions"), getAllMissions)
-  .post(authorizationMW("canAddMissions"), insert, validationResult, addMission)
+  .post(
+    authorizationMW("canAddMissions"),
+    insert,
+    validationResult,
+    addMission
+  );
+
+router
+  .route("/:id")
+  .get(getMissionByID)
+  .delete(authorizationMW("canDeleteMissions"), deleteMission)
   .put(
     authorizationMW("canEditMissions"),
     update,
     validationResult,
     updateMission
   );
-
-router
-  .route("/:id")
-  .get(getMissionByID)
-  .delete(authorizationMW("canDeleteMissions"), deleteMission);
 
 module.exports = router;

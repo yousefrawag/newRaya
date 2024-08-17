@@ -31,9 +31,7 @@ exports.insert = [
     .notEmpty()
     .withMessage("Estate number  is required"),
 
-  body("floor")
-    .isIn(["upstairs", "ground floor"])
-    .withMessage("floor should be  upstairs or ground floor"),
+  body("floor").isString().withMessage("floor should be a string"),
   body("detailedAddress")
     .isString()
     .withMessage("detailedAddress should be a string")
@@ -76,8 +74,8 @@ exports.insert = [
     .withMessage("Area matter  is required"),
 
   body("finishingQuality")
-    .isIn(["high", "medium", "normal"])
-    .withMessage("finishingQuality  should be an high, medium or normal"),
+    .isString()
+    .withMessage("finishingQuality should be a string"),
 ];
 
 exports.update = [
@@ -114,10 +112,7 @@ exports.update = [
     .notEmpty()
     .withMessage("Estate number  is required"),
 
-  body("floor")
-    .optional()
-    .isIn(["upstairs", "ground floor"])
-    .withMessage("user type should be an upstairs, ground floor"),
+  body("floor").optional().isString().withMessage("floor should be a string"),
   body("detailedAddress")
     .optional()
     .isString()
@@ -168,6 +163,6 @@ exports.update = [
 
   body("finishingQuality")
     .optional()
-    .isIn(["high", "medium", "normal"])
-    .withMessage("finishingQuality  should be an high, medium or normal"),
+    .isString()
+    .withMessage("finishingQuality should be a string"),
 ];

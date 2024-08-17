@@ -19,7 +19,5 @@ exports.send = [
         if (!user) throw new Error("User doesn't exist");
       });
     }),
-  body("content")
-    .isAlpha("en-US", { ignore: " " })
-    .withMessage("Message Content is a String"),
+  body("content").isString().withMessage("Message Content is a String"),
 ];
