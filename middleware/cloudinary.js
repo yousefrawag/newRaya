@@ -12,12 +12,12 @@ exports.upload = (file, folder) => {
       {
         resource_type: "auto",
         folder,
+        type: "upload",
       },
       (error, result) => {
         if (error) {
           reject(error);
         } else {
-
           resolve({
             imageURL: result.secure_url,
             imageID: result.public_id,
@@ -37,7 +37,6 @@ exports.delete = (publicId) => {
         if (error) {
           reject(error);
         } else {
-
           resolve(result);
         }
       }
