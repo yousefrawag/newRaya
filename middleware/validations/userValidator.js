@@ -71,21 +71,7 @@ exports.update = [
     .withMessage("password should be String")
     .isLength({ min: 4 })
     .withMessage("password length should be more that 4 "),
-  body("email")
-    .optional()
-    .isEmail()
-    .withMessage("invalid email")
-    .custom(async (value) => {
-      try {
-        const existingUser = await userSchema.findOne({ email: value });
-        const existingCustomer = await customerSchema.findOne({ email: value });
-        if (existingUser || existingCustomer) {
-          return Promise.reject("This email is already in use");
-        }
-      } catch (err) {
-        return Promise.reject("An error occurred while checking the email");
-      }
-    }),
+  body("email").optional().isEmail().withMessage("invalid email"),
   body("type")
     .optional()
     .isIn(["admin", "employee"])

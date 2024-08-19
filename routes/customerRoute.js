@@ -34,7 +34,7 @@ router
     validationResult,
     updateCustomer
   )
-  .get(getCustomerByID)
+  .get(authorizationMW("canViewClients"), getCustomerByID)
   .delete(authorizationMW("canDeleteClients"), deleteCustomer);
 
 module.exports = router;

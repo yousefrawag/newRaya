@@ -82,6 +82,32 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 
+exports.updateUserOwnInfo = async (req, res, next) => {
+  try {
+    const { id } = req.token.id;
+    const updateData = { ...req.body };
+    let user = await userSchema.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "This user desn't exist" });
+    }
+    if (req.file) {
+      await cloudinary.delete(user.imageID);
+      const { imageURL, imageID } = await cloudinary.upload(
+        req.file.path,
+        "userImages"
+      );
+      updateData.imageURL = imageURL;
+      updateData.imageID = imageID;
+    }
+    const updatedUesr = await userSchema.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    res.status(200).json({ message: "User updated successfully", updatedUesr });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.deleteUser = (req, res, next) => {
   const { id } = req.params;
 

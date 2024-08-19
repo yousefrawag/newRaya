@@ -30,7 +30,7 @@ router
 
 router
   .route("/:id")
-  .get(getMissionByID)
+  .get(authorizationMW("canViewMissions"), getMissionByID)
   .delete(authorizationMW("canDeleteMissions"), deleteMission)
   .put(
     authorizationMW("canEditMissions"),

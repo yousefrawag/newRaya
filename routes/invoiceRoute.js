@@ -32,7 +32,7 @@ router
     validationResult,
     updateInvoice
   )
-  .get(authorizationMW("canViewInvoiceByID"), getInvoiceByID)
+  .get(authorizationMW("canViewInvoices"), getInvoiceByID)
   .delete(authorizationMW("canDeleteInvoices"), deleteInvoice);
 
 module.exports = router;

@@ -39,4 +39,4 @@ const missionSchema = mongoose.Schema(
 );
 missionSchema.plugin(autoIncrement, { id: "missionID" });
 
-module.exports = mongoose.model("mission", missionSchema);
+module.exports = mongoose.model("missions", missionSchema);

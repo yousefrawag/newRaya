@@ -38,7 +38,7 @@ exports.sendMessage = async (req, res, next) => {
     }
 
     if (user.type === "employee") {
-      if (chat.employeeID !== senderID) {
+      if (chat.employeeID != senderID) {
         return res
           .status(403)
           .json({ message: "This user is unauthorized to send a message" });
@@ -104,7 +104,7 @@ exports.getChatMessages = async (req, res, next) => {
   try {
     const { chatID } = req.params;
     const messages = await messageSchema
-      .find({ chat: chatID })
+      .find({ chatID })
       .sort({ createdAt: 1 });
     return res.status(200).json({ messages });
   } catch (error) {

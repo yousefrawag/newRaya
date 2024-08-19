@@ -31,7 +31,7 @@ router
     validationResult,
     updateExpense
   )
-  .get(getExpenseByID)
+  .get(authorizationMW("canViewExpenses"), getExpenseByID)
   .delete(authorizationMW("canDeleteExpenses"), deleteExpense);
 
 module.exports = router;

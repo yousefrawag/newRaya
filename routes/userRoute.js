@@ -8,7 +8,9 @@ const multerUpload = require("../middleware/multer");
 const router = express.Router();
 router.route("/getCurrentLoggedUser").get(userController.getCurrentLoggedUser);
 router.route("/changePassword").post(userController.changePassword);
-
+router
+  .route("/update")
+  .put(update, validationResult, userController.updateUserOwnInfo);
 router
   .route("/")
   .get(authorizationMW("canViewEmployees"), userController.getUsers)

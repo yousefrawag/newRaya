@@ -34,7 +34,7 @@ router
     validationResult,
     updateRole
   )
-  .get(getRoleById)
+  .get(authorizationMW("canViewAdministration"), getRoleById)
   .delete(authorizationMW("canDeleteAdministration"), deleteRole);
 
 module.exports = router;

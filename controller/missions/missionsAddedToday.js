@@ -8,12 +8,14 @@ const missionsAddedToday = async (req, res, next) => {
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
-    const missions = await missionSchema.find({
-      createdAt: {
-        $gte: startOfToday,
-        $lte: endOfToday,
-      },
-    });
+    const missions = await missionSchema
+      .find({
+        createdAt: {
+          $gte: startOfToday,
+          $lte: endOfToday,
+        },
+      })
+      .populate(["project", "assignedTo"]);
     return res.status(200).json({ missions });
   } catch (error) {
     next(error);

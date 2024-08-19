@@ -21,7 +21,7 @@ const projectSchema = mongoose.Schema(
     clientType: { type: String },
     estatePrice: { type: Number },
     operationType: { type: String },
-    installments: { type: Boolean },
+    installments: { type: String },
     installmentsPerYear: { type: Number },
     areaMatter: { type: String },
     finishingQuality: { type: String},

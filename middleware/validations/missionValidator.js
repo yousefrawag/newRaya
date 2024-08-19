@@ -25,6 +25,7 @@ exports.insert = [
     .notEmpty()
     .withMessage("deadline type is required"),
   body("status")
+    .optional()
     .isString()
     .withMessage("Status must be a string")
     .isIn(["inprogress", "completed"])

@@ -32,11 +32,6 @@ exports.insert = [
     .withMessage("Each phone number should be a string")
     .matches(/^\d{11}$/)
     .withMessage("Each phone number should be exactly 11 digits long"),
-  body("title")
-    .notEmpty()
-    .withMessage("Title is required")
-    .isString()
-    .withMessage("Title should be a string"),
   body("cardNumber").isString().withMessage("Card number should be a string"),
   body("type")
     .isIn(["client", "mediator"])

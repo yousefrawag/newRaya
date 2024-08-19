@@ -8,12 +8,14 @@ const projectsAddedToday = async (req, res, next) => {
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
-    const projects = await projectSchema.find({
-      createdAt: {
-        $gte: startOfToday,
-        $lte: endOfToday,
-      },
-    });
+    const projects = await projectSchema
+      .find({
+        createdAt: {
+          $gte: startOfToday,
+          $lte: endOfToday,
+        },
+      })
+      .populate("addedBy");
     return res.status(200).json({ projects });
   } catch (error) {
     next(error);

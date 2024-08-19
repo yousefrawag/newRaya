@@ -56,8 +56,8 @@ exports.insert = [
     .withMessage("Operation is required"),
 
   body("installments")
-    .isBoolean()
-    .withMessage("Installments should be a boolean")
+    .isString()
+    .withMessage("Installments should be a string")
     .notEmpty()
     .withMessage("Installments is required"),
 
@@ -142,8 +142,8 @@ exports.update = [
 
   body("installments")
     .optional()
-    .isBoolean()
-    .withMessage("Installments should be a boolean")
+    .isString()
+    .withMessage("Installments should be a string")
     .notEmpty()
     .withMessage("Installments is required"),
 

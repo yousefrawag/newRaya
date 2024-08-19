@@ -26,7 +26,7 @@ router
     validationResult,
     updateMeeting
   )
-  .get(getMeetingByID)
+  .get(authorizationMW("canAddMeeting"), getMeetingByID)
   .delete(authorizationMW("canDeleteMeeting"), deleteMeeting);
 
 module.exports = router;
