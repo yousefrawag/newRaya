@@ -24,7 +24,6 @@ const projectSchema = mongoose.Schema(
     installments: { type: String },
     installmentsPerYear: { type: Number },
     areaMatter: { type: String },
-    finishingQuality: { type: String},
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],

@@ -4,7 +4,8 @@ const userMissions = async (req, res, next) => {
     const missions = await missionSchema
       .find({ assignedTo: req.params.id })
       .populate("assignedBy")
-      .populate("project");
+      .populate("project")
+      .populate("assignedTo")
     res.json({ missions });
   } catch (error) {
     next(error);
