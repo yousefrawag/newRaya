@@ -10,7 +10,12 @@ router.route("/getCurrentLoggedUser").get(userController.getCurrentLoggedUser);
 router.route("/changePassword").post(userController.changePassword);
 router
   .route("/update")
-  .put(update, validationResult, userController.updateUserOwnInfo);
+  .put(
+    multerUpload.single("image"),
+    update,
+    validationResult,
+    userController.updateUserOwnInfo
+  );
 router
   .route("/")
   .get(authorizationMW("canViewEmployees"), userController.getUsers)
