@@ -20,7 +20,7 @@ router
   .route("/")
   .get(authorizationMW("canViewAdministration"), getAllRoles)
   .post(
-    authorizationMW("canAddAdministration"),
+    // authorizationMW("canAddAdministration"),
     insert,
     validationResult,
     addRole

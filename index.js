@@ -22,9 +22,15 @@ server.use((req, res, next) => {
   console.log(req.url, req.method);
   next();
 });
+const corsOptions = {
+  origin: 'http://localhost:5173', // specify the origin that you want to allow
+  methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
+  allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
+  credentials: true // Allow credentials to be included in the request
 
+};
 //endpoint middelware
-server.use(cors());
+server.use(cors(corsOptions));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());

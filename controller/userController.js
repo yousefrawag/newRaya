@@ -85,8 +85,10 @@ exports.updateUser = async (req, res, next) => {
 exports.updateUserOwnInfo = async (req, res, next) => {
   try {
     const { id } = req.token.id;
+    console.log(req.body)
+ 
     const updateData = { ...req.body };
-    let user = await userSchema.findById(id);
+    let user = await userSchema.findOne({_id:id});
     if (!user) {
       return res.status(404).json({ message: "This user desn't exist" });
     }
@@ -101,7 +103,7 @@ exports.updateUserOwnInfo = async (req, res, next) => {
     }
     const updatedUesr = await userSchema.findByIdAndUpdate(id, updateData, {
       new: true,
-    });
+    }).populate("role");
     res.status(200).json({ message: "User updated successfully", updatedUesr });
   } catch (error) {
     next(error);

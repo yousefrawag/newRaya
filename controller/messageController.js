@@ -21,7 +21,7 @@ exports.sendMessage = async (req, res, next) => {
       }
     }
     if (user.type === "admin") {
-      const message = new messageSchema({ chatID, senderID, content });
+      const message = new messageSchema({ chatID, senderID, content })
       message.filesURLs = filesURLs;
       await message.save();
       await handelNotifications(
@@ -44,7 +44,7 @@ exports.sendMessage = async (req, res, next) => {
           .json({ message: "This user is unauthorized to send a message" });
       }
 
-      const message = new messageSchema({ chatID, senderID, content });
+      const message = new messageSchema({ chatID, senderID, content })
       message.filesURLs = filesURLs;
       await message.save();
       const users = await userSchema.find({ type: "admin" });
@@ -105,7 +105,7 @@ exports.getChatMessages = async (req, res, next) => {
     const { chatID } = req.params;
     const messages = await messageSchema
       .find({ chatID })
-      .sort({ createdAt: 1 });
+      .sort({ createdAt: 1 }).populate("chatID").populate("senderID");
     return res.status(200).json({ messages });
   } catch (error) {
     next(error);
