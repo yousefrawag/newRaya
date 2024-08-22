@@ -16,6 +16,8 @@ exports.upload = (file, folder) => {
       },
       (error, result) => {
         if (error) {
+          console.log(error);
+          
           reject(error);
         } else {
           resolve({
@@ -35,6 +37,8 @@ exports.delete = (publicId) => {
 
       (error, result) => {
         if (error) {
+          console.log(error);
+
           reject(error);
         } else {
           resolve(result);
