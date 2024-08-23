@@ -57,9 +57,8 @@ exports.insert = [
 
   body("installments")
     .isString()
-    .withMessage("Installments should be a string")
-    .notEmpty()
-    .withMessage("Installments is required"),
+    .optional()
+    .withMessage("Installments should be a string"),
 
   body("installmentsPerYear")
     .isNumeric()
@@ -73,9 +72,7 @@ exports.insert = [
     .notEmpty()
     .withMessage("Area matter  is required"),
 
-  body("finishingQuality")
-    .isString()
-    .withMessage("finishingQuality should be a string"),
+
 ];
 
 exports.update = [
@@ -161,8 +158,5 @@ exports.update = [
     .notEmpty()
     .withMessage("Area matter  is required"),
 
-  body("finishingQuality")
-    .optional()
-    .isString()
-    .withMessage("finishingQuality should be a string"),
+  
 ];

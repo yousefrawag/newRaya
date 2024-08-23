@@ -1,4 +1,4 @@
-const meetingSchema = require("../../model/meetingSchema");
+const meetingSchema = require("../../model/MeetingSchema");
 const getMeetingById = async (req, res, next) => {
   try {
     const { id } = req.params;
