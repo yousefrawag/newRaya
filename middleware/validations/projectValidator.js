@@ -18,20 +18,6 @@ exports.insert = [
     .withMessage("Governorate should be a string")
     .notEmpty()
     .withMessage("Governorate  is required"),
-
-  body("city")
-    .isString()
-    .withMessage("City should be a string")
-    .notEmpty()
-    .withMessage("City  is required"),
-
-  body("estateNumber")
-    .isString()
-    .withMessage("Estate number should be a string")
-    .notEmpty()
-    .withMessage("Estate number  is required"),
-
-  body("floor").isString().withMessage("floor should be a string"),
   body("detailedAddress")
     .isString()
     .withMessage("detailedAddress should be a string")
@@ -101,15 +87,6 @@ exports.update = [
     .withMessage("City should be a string")
     .notEmpty()
     .withMessage("City  is required"),
-
-  body("estateNumber")
-    .optional()
-    .isString()
-    .withMessage("Estate number should be a string")
-    .notEmpty()
-    .withMessage("Estate number  is required"),
-
-  body("floor").optional().isString().withMessage("floor should be a string"),
   body("detailedAddress")
     .optional()
     .isString()

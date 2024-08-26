@@ -1,5 +1,5 @@
 const customerSchema = require("../../model/customerSchema");
-const getCustomerByID = async (req, res) => {
+const getCustomerByID = async (req, res , next) => {
   try {
     const { id } = req.params;
     const customer = await customerSchema.findById(id);

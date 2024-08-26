@@ -14,11 +14,12 @@ const authorizationMW = require("../middleware/authorizationMW");
 
 const router = express.Router();
 
-router.route("/getRolesWithUserCounts").get(getRolesWithUserCounts);
-router.route("/getUsersWithCertainRole/:id").get(getUsersWithCertainRole);
+router.route("/getRolesWithUserCounts").get(  authorizationMW("canViewAdministration") , getRolesWithUserCounts);
+router.route("/getUsersWithCertainRole/:id").get( authorizationMW("canViewAdministration"), getUsersWithCertainRole);
 router
   .route("/")
-  .get(authorizationMW("canViewAdministration"), getAllRoles)
+  .get(
+    getAllRoles)
   .post(
     // authorizationMW("canAddAdministration"),
     insert,
