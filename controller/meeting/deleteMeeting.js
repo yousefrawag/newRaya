@@ -1,4 +1,4 @@
-const meetingSchema = require("../../model/meetingSchema");
+const meetingSchema = require("../../model/MeetingSchema");
 const deleteMeeting = async (req, res, next) => {
   try {
     const { id } = req.params;

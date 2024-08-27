@@ -1,4 +1,4 @@
-const meetingSchema = require("../../model/meetingSchema");
+const meetingSchema = require("../../model/MeetingSchema");
 const addMeeting = async (req, res, next) => {
   const { title, meetingDate, meetingDetails } = req.body;
 

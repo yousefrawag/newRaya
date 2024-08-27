@@ -65,7 +65,7 @@ exports.updateUser = async (req, res, next) => {
       return res.status(404).json({ message: "This user desn't exist" });
     }
     if (req.file) {
-      await cloudinary.delete(user.imageID);
+      if (user.imageID) await cloudinary.delete(user.imageID);
       const { imageURL, imageID } = await cloudinary.upload(
         req.file.path,
         "userImages"
@@ -84,8 +84,8 @@ exports.updateUser = async (req, res, next) => {
 
 exports.updateUserOwnInfo = async (req, res, next) => {
   console.log(req.file);
-  console.log(req.body)
-  
+  console.log(req.body);
+
   try {
     const id = req.token.id;
     const updateData = { ...req.body };
@@ -94,7 +94,7 @@ exports.updateUserOwnInfo = async (req, res, next) => {
       return res.status(404).json({ message: "This user desn't exist" });
     }
     if (req.file) {
-      await cloudinary.delete(user.imageID).then((iteam) => console.log(iteam));
+      if (customer.imageID) await cloudinary.delete(customer.imageID);
       const { imageURL, imageID } = await cloudinary.upload(
         req.file.path,
         "userImages"
