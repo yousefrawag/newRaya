@@ -91,10 +91,11 @@ exports.getRolesWithUserCounts = async (req, res, next) => {
 
 exports.getUsersWithCertainRole = async (req, res, next) => {
   try {
+    const name = await roleSchema.findById(req.params.id)
     const users = await userSchema
       .find({ role: req.params.id })
       .populate("role");
-    res.status(200).json({ users });
+    res.status(200).json({ users , name : name.name});
   } catch (error) {
     next(error);
   }

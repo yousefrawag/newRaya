@@ -6,37 +6,58 @@ const customerSchema = mongoose.Schema(
     _id: Number,
     fullName: {
       type: String,
+      required: true,
     },
-    email: {
+    region: {
       type: String,
-      unique: true,
+      required: true,
     },
-    governorate: {
+    phoneNumber: {
       type: String,
+      required: true,
     },
-    phoneNumber: [{ type: Number }],
-    detailedAddress: {
-      type: String,
-    },
-    cardNumber: {
+    secondaryPhoneNumber: {
       type: String,
     },
-    type: {
-      type: String,
-      enum: ["client", "mediator"],
-      default: "client",
+   
+    currency: {
+      type: String,  // Add more options as necessary
+      required: true,
     },
-    imageURL: {
+    firstPayment: {
       type: String,
-      default:
-        "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
+      required: true,
     },
-    imageID: String,
+    clientStatus: {
+      type: String,
+      enum: ["VIP", "New" , "Regular"],  // Modify the statuses as necessary
+      required: true,
+    },
+    project: {
+      type: Number,
+       ref:"projects"
+    },
+
+    notes: {
+      type: String,
+    },
+    clientRequire:{
+      type:String,
+    },
+    clientendRequr:{
+      type:String
+    },
+    addBy:{
+      type: Number,
+      ref:"users"
+    }
   },
   {
     timestamps: true,
   }
 );
-customerSchema.plugin(autoIncrement, { id: "customerID" });
 
-module.exports = mongoose.model("customers", customerSchema);
+customerSchema.plugin(autoIncrement, { id: "clientID" });
+
+module.exports = mongoose.model("clients", customerSchema);
+

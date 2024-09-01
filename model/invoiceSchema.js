@@ -5,7 +5,7 @@ const invoiceSchema = mongoose.Schema(
     _id: Number,
     client: {
       type: Number,
-      ref: "customers",
+      ref: "clients",
     },
     project: {
       type: Number,

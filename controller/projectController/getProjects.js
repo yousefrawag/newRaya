@@ -1,7 +1,6 @@
 const projectSchema = require("../../model/projectSchema");
 const getallProjects = async (req, res, next) => {
-  const {name} = req.query
-  console.log(name);
+  console.log(req.query);
   
   try {
   

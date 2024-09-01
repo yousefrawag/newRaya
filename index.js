@@ -23,7 +23,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: 'https://crm.rayapalcrm.com', // specify the origin that you want to allow
+  origin: 'http://localhost:3001', // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
   allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
   credentials: true // Allow credentials to be included in the request
@@ -37,6 +37,9 @@ server.use(cookieParser());
 server.use("/api", require("./routes/authRoute"));
 server.use(authMW);
 server.use("/api/expenses", require("./routes/expensesRoute"));
+server.use("/api/clientmeeting", require("./routes/clientMeeting"));
+server.use("/api/currency", require("./routes/currencyRoute"));
+server.use("/api/country", require("./routes/CuontryRoutes"));
 server.use("/api/chats", require("./routes/chatRoute"));
 server.use("/api/notifications", require("./routes/notificationRoute"));
 server.use("/api/messages", require("./routes/messageRoute"));

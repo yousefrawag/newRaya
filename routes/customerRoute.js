@@ -19,9 +19,7 @@ router
   .get(authorizationMW("canViewClients"), getCustomers)
   .post(
     authorizationMW("canAddClients"),
-    multerUpload.single("image"),
-    insert,
-    validationResult,
+    multerUpload.single("file"),
     addCustomer
   );
 

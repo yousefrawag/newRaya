@@ -21,7 +21,7 @@ router
   .get(
     getAllRoles)
   .post(
-    // authorizationMW("canAddAdministration"),
+    authorizationMW("canAddAdministration"),
     insert,
     validationResult,
     addRole
