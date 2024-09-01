@@ -1,9 +1,9 @@
 const express = require("express");
 const addMeeting = require("../controller/clientMeeting/Addmeeting");
 const getAllMeetings = require("../controller/clientMeeting/GetallmeetingfroClients");
-const updateMeeting = require("../controller/meeting/updateMeeting");
-const getMeetingByID = require("../controller/meeting/getMeetingByID");
-const deleteMeeting = require("../controller/meeting/deleteMeeting");
+const updateMeeting = require("../controller/clientMeeting/Updatemeeting");
+const getMeetingByID = require("../controller/clientMeeting/getSapsficMeeting");
+const deleteMeeting = require("../controller/clientMeeting/DeeletClientMeeting");
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -22,8 +22,6 @@ router
   .route("/:id")
   .put(
     authorizationMW("canUpdateMeeting"),
-    update,
-    validationResult,
     updateMeeting
   )
   .get(authorizationMW("canAddMeeting"), getMeetingByID)

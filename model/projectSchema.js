@@ -16,6 +16,14 @@ const projectSchema = mongoose.Schema(
     governorate: { type: String },
     detailedAddress: { type: String },
     clientType: { type: String },
+    locations:{
+      type:Number,
+      ref:"country"
+    },
+    governoate:{
+      type:String,
+
+    },
     pymentType: { type: String },
     estatePrice: { type: Number },
     projectDetails:{type:String},
@@ -30,6 +38,12 @@ const projectSchema = mongoose.Schema(
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],
+    projectads:{
+      type:String
+    },
+    RefereeStatus:{
+      type:String
+    } ,
     addedBy: { type: Number, ref: "users" },
   },
   {

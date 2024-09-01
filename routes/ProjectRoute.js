@@ -24,8 +24,6 @@ router
   .post(
     authorizationMW("canAddProjects"),
     multerUpload.array("files"),
-    insert,
-    validationResult,
     addProject
   );
 

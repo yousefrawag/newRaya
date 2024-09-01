@@ -13,12 +13,6 @@ exports.insert = [
     .notEmpty()
     .withMessage("Project name is required"),
 
-  body("EstateType")
-    .isString()
-    .withMessage("Estate type must be a string")
-    .notEmpty()
-    .withMessage("Estate type is required"),
-
   body("expenseTotal")
     .isString()
     .withMessage("Expenses total must be a string")
@@ -45,12 +39,7 @@ exports.update = [
     .notEmpty()
     .withMessage("Project name is required"),
 
-  body("EstateType")
-    .optional()
-    .isString()
-    .withMessage("Estate type must be a string")
-    .notEmpty()
-    .withMessage("Estate type is required"),
+
 
   body("expenseTotal")
     .optional()

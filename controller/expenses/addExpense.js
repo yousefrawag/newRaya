@@ -1,14 +1,15 @@
 const expensesSchema = require("../../model/expensesSchema");
 const addExpense = async (req, res, next) => {
-  const { expenseName, projectName, EstateType, expenseTotal, details } =
+  const { expenseName, projectName, user ,  expenseTotal, details } =
     req.body;
   try {
     const expense = await expensesSchema.create({
       expenseName,
       projectName,
-      EstateType,
+      user,
       expenseTotal,
       details,
+      adedBy:req.token.id
     });
     res.status(201).json({ message: "expense created successfully", expense });
   } catch (error) {

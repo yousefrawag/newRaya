@@ -9,15 +9,20 @@ const expensesSchema = mongoose.Schema(
     projectName: {
       type: String,
     },
-    EstateType: {
-      type: String,
-    },
     expenseTotal: {
       type: String,
     },
     details: {
       type: String,
     },
+    user:{
+      type:Number,
+      ref :"users"
+    },
+    adedBy:{
+       type:Number,
+      ref :"users"
+    }
   },
   {
     timestamps: true,

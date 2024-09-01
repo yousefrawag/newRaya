@@ -1,7 +1,7 @@
 const expensesSchema = require("../../model/expensesSchema");
 const updateExpense = async (req, res, next) => {
   const { id } = req.params;
-  const { expenseName, projectName, EstateType, expenseTotal, details } =
+  const { expenseName, projectName,  expenseTotal, details , user } =
     req.body;
   try {
     const new_update = await expensesSchema.findByIdAndUpdate(
@@ -9,9 +9,10 @@ const updateExpense = async (req, res, next) => {
       {
         expenseName,
         projectName,
-        EstateType,
+        user,
         expenseTotal,
         details,
+        adedBy:req.token.id
       },
       { new: true }
     );

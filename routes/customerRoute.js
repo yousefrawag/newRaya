@@ -5,6 +5,7 @@ const getCustomers = require("../controller/customers/getCustomers");
 const getCustomerByID = require("../controller/customers/getCustomerByID");
 const updateCustomer = require("../controller/customers/updateCustomer");
 const deleteCustomer = require("../controller/customers/deleteCustomer");
+const insertMany = require("../controller/customers/insertMany")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -21,7 +22,8 @@ router
     authorizationMW("canAddClients"),
     multerUpload.single("file"),
     addCustomer
-  );
+  )
+  router.post("/many" , authorizationMW("canAddClients"), insertMany);
 
 router
   .route("/:id")

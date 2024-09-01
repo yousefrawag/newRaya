@@ -64,12 +64,19 @@ exports.deleteRole = (req, res, next) => {
 
 exports.getRolesWithUserCounts = async (req, res, next) => {
   try {
-    const rolesWithUserCounts = await roleSchema.aggregate([
+    let rolesWithUserCounts = await roleSchema.aggregate([
       {
         $lookup: {
           from: "users", // collection name in MongoDB
-          localField: "_id",
-          foreignField: "role",
+          let: { roleId: "$_id" },
+          pipeline: [
+            { 
+              $match: {
+                $expr: { $eq: ["$role", "$$roleId"] },
+                type: { $ne: "admin" } // Exclude users with type "admin"
+              }
+            },
+          ],
           as: "users",
         },
       },
@@ -83,11 +90,12 @@ exports.getRolesWithUserCounts = async (req, res, next) => {
       },
     ]);
 
-    res.status(200).json({ rolesWithUserCounts });
+    res.status(200).json({ roles: rolesWithUserCounts });
   } catch (error) {
     next(error);
   }
 };
+
 
 exports.getUsersWithCertainRole = async (req, res, next) => {
   try {

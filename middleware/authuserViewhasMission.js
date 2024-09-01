@@ -12,11 +12,10 @@ module.exports = (permission) => {
       }
 
       let userPermissions = user.role?.permissions || [];
-      
-
+      const userHasmission = missionSchema.findOne({assignedTo:user._id})
       const hasPermission = userPermissions.some((p) => p === permission);
 
-      if (user.type === "admin" || hasPermission) {
+      if (user.type === "admin" || hasPermission || userHasmission) {
         return next();
       }
 

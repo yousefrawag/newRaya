@@ -4,6 +4,7 @@ const getAllExpenses = require("../controller/expenses/getAllExpenses");
 const updateExpense = require("../controller/expenses/updateExpense");
 const deleteExpense = require("../controller/expenses/deleteExpense");
 const getExpenseByID = require("../controller/expenses/getExpenseByID");
+const getuserExpenseByID = require("../controller/expenses/userExpenses")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -33,5 +34,6 @@ router
   )
   .get(authorizationMW("canViewExpenses"), getExpenseByID)
   .delete(authorizationMW("canDeleteExpenses"), deleteExpense);
+  router.get("/user/:id" , getuserExpenseByID)
 
 module.exports = router;

@@ -11,6 +11,7 @@ const {
   update,
 } = require("../middleware/validations/missionValidator");
 const authorizationMW = require("../middleware/authorizationMW");
+const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 const missionsAddedToday = require("../controller/missions/missionsAddedToday");
 
 const router = express.Router();
@@ -30,7 +31,7 @@ router
 
 router
   .route("/:id")
-  .get(authorizationMW("canViewMissions"), getMissionByID)
+  .get(authuserViewhasMission("canViewMissions"), getMissionByID)
   .delete(authorizationMW("canDeleteMissions"), deleteMission)
   .put(
     authorizationMW("canEditMissions"),
