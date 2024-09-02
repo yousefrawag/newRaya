@@ -5,6 +5,7 @@ const getProjectByID = require("../controller/projectController/getProjectByID")
 const deleteProject = require("../controller/projectController/deleteProject");
 const updateProject = require("../controller/projectController/updateProject");
 const userProjects = require("../controller/projectController/userProjects");
+const selectProject = require("../controller/projectController/selectProject")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -20,13 +21,13 @@ router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router
   .route("/")
-  .get(getProjects)
+  .get(authorizationMW("canViewProjects") , getProjects)
   .post(
     authorizationMW("canAddProjects"),
     multerUpload.array("files"),
     addProject
   );
-
+router.get("/selectproject" ,selectProject)
 router
   .route("/:id")
   .put(

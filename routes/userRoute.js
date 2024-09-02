@@ -26,7 +26,7 @@ router
     validationResult,
     userController.addUser
   );
-
+router.get("/selectusers" ,userController.Selectusers)
 router
   .route("/:id")
   .put(

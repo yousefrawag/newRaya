@@ -1,5 +1,4 @@
 const userSchema = require("../model/userSchema");
-const missionSchema = require("../model/missionSchema")
 module.exports = (permission) => {
   return async (req, res, next) => {
     try {
@@ -10,7 +9,8 @@ module.exports = (permission) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-
+      
+        
       let userPermissions = user.role?.permissions || [];
       
 
@@ -22,6 +22,7 @@ module.exports = (permission) => {
 
       res.status(403).json({ message: "Forbidden" });
     } catch (error) {
+      throw new Error(error)
       next(error);
     }
   };

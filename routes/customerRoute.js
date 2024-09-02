@@ -5,6 +5,7 @@ const getCustomers = require("../controller/customers/getCustomers");
 const getCustomerByID = require("../controller/customers/getCustomerByID");
 const updateCustomer = require("../controller/customers/updateCustomer");
 const deleteCustomer = require("../controller/customers/deleteCustomer");
+const SelectCustomer = require("../controller/customers/SelectCustomer")
 const insertMany = require("../controller/customers/insertMany")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
@@ -24,7 +25,7 @@ router
     addCustomer
   )
   router.post("/many" , authorizationMW("canAddClients"), insertMany);
-
+router.get("/selectCustomer" ,SelectCustomer )
 router
   .route("/:id")
   .put(

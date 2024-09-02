@@ -1,15 +1,30 @@
 const projectSchema = require("../../model/projectSchema");
 const getallProjects = async (req, res, next) => {
-  console.log(req.query);
+const {opertaionType , addedBy ,estateType } = req.query
   
   try {
+    let filterion = {};
+    if (opertaionType) {
+      filterion.opertaionType = decodeURIComponent(opertaionType);
+    }
+    if (addedBy) {
+      filterion.addedBy = decodeURIComponent(addedBy);
+    }
+    if (estateType) {
+      filterion.estateType = decodeURIComponent(estateType);
+    }
+
+    console.log(filterion);
+    
+    const allproject = await projectSchema.find(filterion).populate("addedBy");
   
   
-      const allproject = await projectSchema.find({}).populate("addedBy");
+    
       res.status(200).json({ allproject });
  
   
   } catch (error) {
+    throw new Error(errro)
     next(error);
   }
 };

@@ -15,7 +15,13 @@ exports.getUsers = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
-
+exports.Selectusers = async (req , res , next) => {
+  const users  = await  userSchema
+  .find({})
+  .populate("role")
+  .select("-password")
+  res.status(200).json({users})
+}
 exports.addUser = async (req, res, next) => {
   try {
     let user = new userSchema(req.body);
