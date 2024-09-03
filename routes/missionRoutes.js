@@ -5,6 +5,7 @@ const updateMission = require("../controller/missions/updateMission");
 const deleteMission = require("../controller/missions/deleteMission");
 const getMissionByID = require("../controller/missions/getMissionByID");
 const userMissions = require("../controller/missions/userMissions");
+const getProjectandusersmission = require("../controller/missions/getProjectandusersmission")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -27,7 +28,8 @@ router
     insert,
     validationResult,
     addMission
-  );
+  )
+  router.get("/usersProjects" ,getProjectandusersmission)
 
 router
   .route("/:id")

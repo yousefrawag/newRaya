@@ -5,6 +5,7 @@ const getProjectByID = require("../controller/projectController/getProjectByID")
 const deleteProject = require("../controller/projectController/deleteProject");
 const updateProject = require("../controller/projectController/updateProject");
 const userProjects = require("../controller/projectController/userProjects");
+const UinqDataProject = require("../controller/projectController/UinqDataProject")
 const selectProject = require("../controller/projectController/selectProject")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
@@ -28,6 +29,7 @@ router
     addProject
   );
 router.get("/selectproject" ,selectProject)
+router.get("/uinqData" , UinqDataProject)
 router
   .route("/:id")
   .put(

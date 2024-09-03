@@ -22,7 +22,7 @@ module.exports = (permission) => {
 
       res.status(403).json({ message: "Forbidden" });
     } catch (error) {
-      throw new Error(error)
+   
       next(error);
     }
   };

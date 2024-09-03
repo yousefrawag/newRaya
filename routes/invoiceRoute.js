@@ -4,6 +4,7 @@ const getAllInvoices = require("../controller/invoices/getAllInvoices");
 const updateInvoice = require("../controller/invoices/updateInvoice");
 const deleteInvoice = require("../controller/invoices/deleteInvoice");
 const getInvoiceByID = require("../controller/invoices/getInvoiceByID");
+const getUnquedata = require("../controller/invoices/getUnquedata")
 const getInvoiceAndMissionDates = require("../controller/invoices/getInvoiceAndMissionDates");
 const validationResult = require("../middleware/validations/validatorResult");
 const {
@@ -23,7 +24,7 @@ router
     validationResult,
     addInvoice
   );
-
+router.get("/uinqData" , getUnquedata)
 router
   .route("/:id")
   .put(

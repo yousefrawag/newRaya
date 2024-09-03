@@ -5,6 +5,7 @@ const updateExpense = require("../controller/expenses/updateExpense");
 const deleteExpense = require("../controller/expenses/deleteExpense");
 const getExpenseByID = require("../controller/expenses/getExpenseByID");
 const getuserExpenseByID = require("../controller/expenses/userExpenses")
+const uinqDataexp = require("../controller/expenses/uinqDataexp")
 const validationResult = require("../middleware/validations/validatorResult");
 const {
   insert,
@@ -23,7 +24,7 @@ router
     validationResult,
     addExpense
   );
-
+router.get("/uinqData"  , uinqDataexp)
 router
   .route("/:id")
   .put(

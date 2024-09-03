@@ -1,7 +1,15 @@
 const expensesSchema = require("../../model/expensesSchema");
 const getAllExpenses = async (req, res, next) => {
   try {
-    const expenses = await expensesSchema.find({}).populate("user").populate("adedBy");
+    const {user , adedBy } = req.query
+    let fillters = {}
+    if(user){
+      fillters = {...fillters, user}
+    }
+    if(adedBy) {
+      fillters = {...fillters,adedBy}
+    }
+    const expenses = await expensesSchema.find(fillters).populate("user").populate("adedBy");
     res.status(200).json({ expenses });
   } catch (error) {
     next(error);

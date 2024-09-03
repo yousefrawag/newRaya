@@ -1,17 +1,17 @@
 const projectSchema = require("../../model/projectSchema");
 const getallProjects = async (req, res, next) => {
-const {opertaionType , addedBy ,estateType } = req.query
+const {opertaionType , addedBy ,_id } = req.query
   
   try {
     let filterion = {};
-    if (opertaionType) {
-      filterion.opertaionType = decodeURIComponent(opertaionType);
+    if (_id) {
+      filterion._id = decodeURIComponent(_id);
     }
     if (addedBy) {
       filterion.addedBy = decodeURIComponent(addedBy);
     }
-    if (estateType) {
-      filterion.estateType = decodeURIComponent(estateType);
+    if (opertaionType) {
+      filterion.opertaionType = decodeURIComponent(opertaionType);
     }
 
     console.log(filterion);
@@ -24,7 +24,7 @@ const {opertaionType , addedBy ,estateType } = req.query
  
   
   } catch (error) {
-    throw new Error(errro)
+    
     next(error);
   }
 };

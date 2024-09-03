@@ -3,8 +3,13 @@ const cloudinary = require("../middleware/cloudinary");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 exports.getUsers = (req, res, next) => {
+  const {_id} = req.query
+  let fillter = {}
+  if(_id) {
+    fillter = {_id}
+  }
   userSchema
-    .find({})
+    .find(fillter)
     .populate("role")
     .select("-password")
     .then((users) => {
