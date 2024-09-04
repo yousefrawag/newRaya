@@ -1,29 +1,52 @@
+
 const cloudinary = require("../../middleware/cloudinary");
 const projectSchema = require("../../model/projectSchema");
 const updateProject = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const {DeletImages} = req.body
     const updateData = { ...req.body };
+ const deleted = JSON.parse(DeletImages)
+    console.log(deleted);
+    
     let project = await projectSchema.findById(id);
     if (!project) {
       return res.status(404).json({ message: "This project desn't exist" });
     }
+    if (Array.isArray(deleted)) {
+      for (const image of deleted) {
+        const { fileID } = image;
+        if (fileID) {
+          const publicId = fileID.split('/').pop().split('.')[0];
+          console.log(`Attempting to delete image with fileID: ${fileID}`);
+          try {
+        
+            await cloudinary.delete(publicId);
+            console.log(`Successfully deleted image with fileID: ${publicId}`);
+            project.imagesURLs = project.imagesURLs.filter(
+              (img) => img.fileID !== fileID
+            );
+            project.videosURLs = project.videosURLs.filter(
+              (vid) => vid.fileID !== fileID
+            );
+            project.docsURLs = project.docsURLs.filter(
+              (doc) => doc.fileID !== fileID
+            );
+          } catch (err) {
+            console.error(`Error deleting image with fileID ${publicId}:`, err);
+            return res.status(500).json({ message: `Error deleting image with fileID ${publicId}` });
+          }
+        }
+      }
+    }
+    const imagesURLs = project.imagesURLs;
+    const videosURLs = project.videosURLs
+    const docsURLs = project.docsURLs
+    
     if (req.files) {
-      for (const index in project.imagesURLs) {
-        let { fileID } = project.imagesURLs[index];
-        await cloudinary.delete(fileID);
-      }
-      for (const index in project.videosURLs) {
-        let { fileID } = project.videosURLs[index];
-        await cloudinary.delete(fileID);
-      }
-      for (const index in project.docsURLs) {
-        let { fileID } = project.docsURLs[index];
-        await cloudinary.delete(fileID);
-      }
-      const imagesURLs = [];
-      const videosURLs = [];
-      const docsURLs = [];
+
+    
+ 
       for (const index in req.files) {
         if (
           req.files[index].mimetype === "image/png" ||
@@ -48,11 +71,10 @@ const updateProject = async (req, res, next) => {
           docsURLs.push({ fileURL, fileID });
         }
       }
-      project.imagesURLs = imagesURLs;
-      project.videosURLs = videosURLs;
-      project.docsURLs = docsURLs;
+      updateData.imagesURLs = imagesURLs;
+      updateData.videosURLs = videosURLs;
+      updateData.docsURLs = docsURLs;
     }
-    updateData.addedBy = req.token.id;
     const updatedproject = await projectSchema.findByIdAndUpdate(
       id,
       updateData,

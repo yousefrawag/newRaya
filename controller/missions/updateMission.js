@@ -19,7 +19,6 @@ const updateMission = async (req, res, next) => {
         status,
         assignedTo,
         project,
-        assignedBy: req.token.id,
         deadline,
         missionType,
         description,

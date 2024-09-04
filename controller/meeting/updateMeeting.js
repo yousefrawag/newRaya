@@ -10,7 +10,7 @@ const updateMeeting = async (req, res, next) => {
         meetingDate,
         meetingDetails,
         meetingResult,
-        addedBy: req.token.id,
+       
       },
       { new: true }
     );

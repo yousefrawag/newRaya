@@ -32,18 +32,14 @@ exports.upload = (file, folder) => {
 
 exports.delete = (publicId) => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy(
-      publicId,
-
-      (error, result) => {
-        if (error) {
-          console.log(error);
-
-          reject(error);
-        } else {
-          resolve(result);
-        }
+    cloudinary.uploader.destroy(publicId, (error, result) => {
+      if (error) {
+        console.error(`Error deleting image with publicId ${publicId}:`, error);
+        reject(error);
+      } else {
+        console.log(`Successfully deleted image with publicId: ${publicId}`);
+        resolve(result);
       }
-    );
+    });
   });
 };

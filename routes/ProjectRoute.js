@@ -35,8 +35,6 @@ router
   .put(
     authorizationMW("canEditProjects"),
     multerUpload.array("files"),
-    update,
-    validationResult,
     updateProject
   )
   .get(authorizationMW("canViewProjects"), getProjectByID)

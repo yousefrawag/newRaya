@@ -12,7 +12,7 @@ const updateExpense = async (req, res, next) => {
         user,
         expenseTotal,
         details,
-        adedBy:req.token.id
+      
       },
       { new: true }
     );
