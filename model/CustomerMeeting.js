@@ -1,18 +1,17 @@
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-sequence")(mongoose);
+
 
 const clientMeetingSchema = mongoose.Schema(
   {
-    _id: Number,
     title: {
       type: String,
     },
     project: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "projects"
     },
     client: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "clients"
     },
     meetingDate: {
@@ -38,6 +37,6 @@ const clientMeetingSchema = mongoose.Schema(
   }
 );
 
-clientMeetingSchema.plugin(autoIncrement, { id: "clientMeetingID" });
+
 
 module.exports = mongoose.models.clientmeeting || mongoose.model("clientmeeting", clientMeetingSchema);

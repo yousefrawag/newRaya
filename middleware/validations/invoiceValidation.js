@@ -4,8 +4,6 @@ const projectSchema = require("../../model/projectSchema");
 
 exports.insert = [
   body("client")
-    .isInt()
-    .withMessage("Client ID must be an integer")
     .notEmpty()
     .withMessage("Client ID is required")
     .custom((value) => {
@@ -19,8 +17,6 @@ exports.insert = [
         });
     }),
   body("project")
-    .isInt()
-    .withMessage("Project ID must be an integer")
     .notEmpty()
     .withMessage("Project ID is required")
     .custom((value) => {
@@ -68,8 +64,7 @@ exports.insert = [
 exports.update = [
   body("client")
     .optional()
-    .isInt()
-    .withMessage("Client ID must be an integer")
+  
     .notEmpty()
     .withMessage("Client ID is required")
     .custom((value) => {
@@ -84,8 +79,6 @@ exports.update = [
     }),
   body("project")
     .optional()
-    .isInt()
-    .withMessage("Project ID must be an integer")
     .notEmpty()
     .withMessage("Project ID is required")
     .custom((value) => {

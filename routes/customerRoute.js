@@ -23,7 +23,6 @@ router
   .get(authorizationMW("canViewClients"), getCustomers)
   .post(
     authorizationMW("canAddClients"),
-    multerUpload.single("file"),
     addCustomer
   )
   router.post("/many" , authorizationMW("canAddClients"), insertMany);

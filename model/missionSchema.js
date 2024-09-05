@@ -21,7 +21,7 @@ const missionSchema = mongoose.Schema(
       ref: "users",
     },
     project: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "projects",
     },
     assignedBy: {

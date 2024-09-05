@@ -45,8 +45,7 @@ exports.insert = [
         });
     }),
   body("project")
-    .isInt()
-    .withMessage("Project must be an integer")
+   
     .custom((value) => {
       return projectSchema
         .findOne({ _id: value })
@@ -107,8 +106,6 @@ exports.update = [
     }),
   body("project")
     .optional()
-    .isInt()
-    .withMessage("Project must be an integer")
     .custom((value) => {
       return projectSchema
         .findOne({ _id: value })

@@ -9,11 +9,6 @@ exports.insert = [
     .isLength({ min: 3 })
     .withMessage("user name length should be more that 3 "),
   body("job").isString().withMessage("Job is a string value"),
-  body("phoneNumber")
-    .isString()
-    .withMessage("phone Number is a string value")
-    .matches(/^\d{11}$/)
-    .withMessage("Each phone number should be exactly 11 digits long"),
   body("password")
     .isString()
     .withMessage("password should be String")
@@ -59,12 +54,6 @@ exports.update = [
     .isLength({ min: 3 })
     .withMessage("user name length should be more that 3 "),
   body("job").optional().isString().withMessage("Job is a string value"),
-  body("phoneNumber")
-    .optional()
-    .isString()
-    .withMessage("phone Number is a string value")
-    .matches(/^\d{11}$/)
-    .withMessage("Each phone number should be exactly 11 digits long"),
   body("password")
     .optional()
     .isString()

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-sequence")(mongoose);
+
 
 const file = mongoose.Schema(
   {
@@ -10,7 +10,7 @@ const file = mongoose.Schema(
 );
 const projectSchema = mongoose.Schema(
   {
-    _id: Number,
+   
     projectName: String,
     estateType: { type: String },
     governorate: { type: String },
@@ -50,6 +50,6 @@ const projectSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-projectSchema.plugin(autoIncrement, { id: "projectID" });
+
 
 module.exports = mongoose.model("projects", projectSchema);

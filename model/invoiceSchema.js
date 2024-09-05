@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-sequence")(mongoose);
+
 const invoiceSchema = mongoose.Schema(
   {
-    _id: Number,
+ 
     client: {
-      type: Number,
+      type:mongoose.Schema.Types.ObjectId,
       ref: "clients",
     },
     project: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "projects",
     },
     estateType: {
@@ -31,5 +31,5 @@ const invoiceSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-invoiceSchema.plugin(autoIncrement, { id: "invoiceID" });
+
 module.exports = mongoose.model("invoices", invoiceSchema);

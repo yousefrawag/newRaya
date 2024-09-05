@@ -3,7 +3,7 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 
 const customerSchema = mongoose.Schema(
   {
-    _id: Number,
+
     fullName: {
       type: String,
       required: true,
@@ -19,9 +19,8 @@ const customerSchema = mongoose.Schema(
     secondaryPhoneNumber: {
       type: String,
     },
-   
     currency: {
-      type: String,  // Add more options as necessary
+      type: String,
       required: true,
     },
     firstPayment: {
@@ -30,34 +29,32 @@ const customerSchema = mongoose.Schema(
     },
     clientStatus: {
       type: String,
-      enum: ["VIP", "New" , "Regular"],  // Modify the statuses as necessary
+      enum: ["VIP", "New", "Regular"],
       required: true,
     },
     project: {
-      type: Number,
-       ref:"projects"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "projects",
     },
-
     notes: {
       type: String,
     },
-    clientRequire:{
-      type:String,
+    clientRequire: {
+      type: String,
     },
-    clientendRequr:{
-      type:String
+    clientendRequr: {
+      type: String,
     },
-    addBy:{
+    addBy: {
       type: Number,
-      ref:"users"
-    }
+      ref: "users",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-customerSchema.plugin(autoIncrement, { id: "clientID" });
+
 
 module.exports = mongoose.model("clients", customerSchema);
-
