@@ -41,6 +41,7 @@ const addProject = async (req, res, next) => {
     project.imagesURLs = imagesURLs;
     project.videosURLs = videosURLs;
     project.docsURLs = docsURLs;
+    project.projectName = project.projectName.trim()
     await project.save();
     res.status(200).json({ project });
   } catch (error) {
