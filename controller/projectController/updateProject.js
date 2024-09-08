@@ -4,17 +4,19 @@ const projectSchema = require("../../model/projectSchema");
 const updateProject = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {DeletImages} = req.body
+    const {DeletImages , DeleteVideos} = req.body
     const updateData = { ...req.body };
- const deleted = JSON.parse(DeletImages)
-    console.log(deleted);
+  const deleted = JSON.parse(DeletImages)
+  const videDelete = JSON.parse(DeleteVideos)
+  console.log(videDelete);
+    const filesDelete = [...videDelete , ...deleted]
     
     let project = await projectSchema.findById(id);
     if (!project) {
       return res.status(404).json({ message: "This project desn't exist" });
     }
-    if (Array.isArray(deleted)) {
-      for (const image of deleted) {
+    if (Array.isArray(filesDelete)) {
+      for (const image of filesDelete) {
         const { fileID } = image;
         if (fileID) {
           const publicId = fileID.split('/').pop().split('.')[0];
