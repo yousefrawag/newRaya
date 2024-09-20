@@ -30,9 +30,9 @@ const projectSchema = mongoose.Schema(
     projectNotes:{type:String},
     operationType: { type: String },
     installments: { type: String },
-    installmentsPerYear: { type: Number },
-    installmentsFirstPyment: { type: Number },
-    installmentsFirstPermonth: { type: Number },
+    installmentsPerYear: { type: String },
+    installmentsFirstPyment: { type: String },
+    installmentsFirstPermonth: { type: String },
     InstallmentPeriod:{type:String},
     areaMatter: { type: String },
     imagesURLs: [file],
@@ -45,7 +45,29 @@ const projectSchema = mongoose.Schema(
       type:String
     } ,
     addedBy: { type: Number, ref: "users" },
+  
+    projectSatatus :{
+      type:String,
+      enum: ["جاهز" , "عظم"  , "بمراحل البناء" ,  "بمراحل الترخيص" , "على المخطط"],
+   
+    }  ,
+    spaceOuteside :{
+      type:String
+    },
+    typeOfSpaceoutside :{
+      type:String,
+    },
+    imageLink :{
+      type:String,
+    },
+    videoLink:{
+      type:String,
+    },
+    cashPries:{
+      type:String
+    }
   },
+
   {
     timestamps: true,
   }

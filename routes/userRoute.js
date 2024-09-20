@@ -27,6 +27,7 @@ router
     userController.addUser
   );
 router.get("/selectusers" ,userController.Selectusers)
+router.get("/admins" , userController.getusersAdmin)
 router
   .route("/:id")
   .put(

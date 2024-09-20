@@ -77,6 +77,16 @@ const updateProject = async (req, res, next) => {
       updateData.videosURLs = videosURLs;
       updateData.docsURLs = docsURLs;
     }
+    if (updateData.imageLink){
+    
+      const newimagelink = {fileID: new Date() , fileURL : updateData.imageLink}
+      updateData.imagesURLs.push(newimagelink)
+    }
+    if (updateData.videoLink){
+    
+      const newimagelink = {fileID: new Date() , fileURL : updateData.videoLink}
+      updateData.videosURLs.push(newimagelink)
+    }
     const updatedproject = await projectSchema.findByIdAndUpdate(
       id,
       updateData,
