@@ -49,6 +49,15 @@ const customerSchema = mongoose.Schema(
       type: Number,
       ref: "users",
     },
+    cashOption:{
+      type:Boolean
+    },
+    installmentsPyYear:{
+      type:String
+    },
+    endContactDate:{
+      type:Date
+    }
   },
   {
     timestamps: true,

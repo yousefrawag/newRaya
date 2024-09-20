@@ -42,6 +42,16 @@ const addProject = async (req, res, next) => {
     project.videosURLs = videosURLs;
     project.docsURLs = docsURLs;
     project.projectName = project.projectName.trim()
+    if (project.imageLink){
+    
+      const newimagelink = {fileID: new Date() , fileURL : project.imageLink}
+      project.imagesURLs.push(newimagelink)
+    }
+    if (project.videoLink){
+    
+      const newimagelink = {fileID: new Date() , fileURL : project.videoLink}
+      project.videosURLs.push(newimagelink)
+    }
     await project.save();
     res.status(200).json({ project });
   } catch (error) {

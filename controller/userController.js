@@ -193,3 +193,8 @@ exports.getCurrentLoggedUser = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+exports.getusersAdmin = async (req , res , nex) => {
+  const admins = await userSchema.find({type:"admin"})
+  const checkuser = admins.filter((item) => item._id !== 1)
+  res.status(200).json({checkuser})
+}

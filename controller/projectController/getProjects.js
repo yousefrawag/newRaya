@@ -1,6 +1,6 @@
 const projectSchema = require("../../model/projectSchema");
 const getallProjects = async (req, res, next) => {
-const {opertaionType , addedBy ,_id } = req.query
+const {opertaionType , addedBy ,_id  , projectSatatus} = req.query
   
   try {
     let filterion = {};
@@ -12,6 +12,9 @@ const {opertaionType , addedBy ,_id } = req.query
     }
     if (opertaionType) {
       filterion.opertaionType = decodeURIComponent(opertaionType);
+    }
+    if (projectSatatus) {
+      filterion.projectSatatus = decodeURIComponent(projectSatatus);
     }
 
     console.log(filterion);
