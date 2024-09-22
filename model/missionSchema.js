@@ -16,6 +16,10 @@ const missionSchema = mongoose.Schema(
       enum: ["inprogress", "completed"],
       default: "inprogress",
     },
+    missionType:{
+      type:String,
+      enum:["puplic" , "privet"]
+    },
     assignedTo: {
       type: Number,
       ref: "users",

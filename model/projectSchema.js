@@ -25,7 +25,7 @@ const projectSchema = mongoose.Schema(
 
     },
     pymentType: { type: String },
-    estatePrice: { type: Number },
+    estatePrice: { type: String },
     projectDetails:{type:String},
     projectNotes:{type:String},
     operationType: { type: String },
@@ -64,6 +64,9 @@ const projectSchema = mongoose.Schema(
       type:String,
     },
     cashPries:{
+      type:String
+    },
+    materPriec:{
       type:String
     }
   },

@@ -11,6 +11,7 @@ exports.getUsers = (req, res, next) => {
   userSchema
     .find(fillter)
     .populate("role")
+    .sort({ createdAt: -1 })
     .select("-password")
     .then((users) => {
       if (!users.length) {
@@ -194,7 +195,7 @@ exports.getCurrentLoggedUser = (req, res, next) => {
     .catch((err) => next(err));
 };
 exports.getusersAdmin = async (req , res , nex) => {
-  const admins = await userSchema.find({type:"admin"})
+  const admins = await userSchema.find({type:"admin"}).sort({ createdAt: -1 })
   const checkuser = admins.filter((item) => item._id !== 1)
   res.status(200).json({checkuser})
 }

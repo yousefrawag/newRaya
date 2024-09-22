@@ -6,6 +6,7 @@ const userMissions = async (req, res, next) => {
       .populate("assignedBy")
       .populate("project")
       .populate("assignedTo")
+      .sort({ createdAt: -1 })
     res.json({ missions });
   } catch (error) {
     next(error);

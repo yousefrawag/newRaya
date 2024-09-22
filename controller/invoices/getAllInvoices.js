@@ -15,7 +15,8 @@ const getAllInvoices = async (req, res, next) => {
     const invoices = await invoiceSchema
       .find(fillter)
       .populate("client")
-      .populate("project");
+      .populate("project")
+      .sort({ createdAt: -1 })
     res.status(200).json({ invoices });
   } catch (error) {
     next(error);
