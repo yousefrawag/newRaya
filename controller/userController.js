@@ -22,10 +22,11 @@ exports.getUsers = (req, res, next) => {
     .catch((err) => next(err));
 };
 exports.Selectusers = async (req , res , next) => {
-  const users  = await  userSchema
+  const findusers  = await  userSchema
   .find({})
   .populate("role")
   .select("-password")
+  const users = findusers.filter((item) => item._id !== 1)
   res.status(200).json({users})
 }
 exports.addUser = async (req, res, next) => {
