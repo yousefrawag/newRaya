@@ -12,7 +12,7 @@ const getAllMeeting = async (req, res, next) => {
     if(addedBy){
       fillters = {...fillters, addedBy}
     }
-    const meetings = await clientMeetingSchema.find(fillters).populate("addedBy").populate("project").populate("client");
+    const meetings = await clientMeetingSchema.find(fillters).populate("addedBy").populate("project").populate("client").sort({ createdAt: -1 });
     res.status(200).json({ meetings });
   } catch (error) {
     next(error);

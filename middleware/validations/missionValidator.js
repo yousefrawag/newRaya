@@ -44,18 +44,7 @@ exports.insert = [
           throw new Error(err);
         });
     }),
-  body("project")
-   
-    .custom((value) => {
-      return projectSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) throw new Error("this project doesn't exist");
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
+
 ];
 
 exports.update = [
@@ -104,16 +93,5 @@ exports.update = [
           throw new Error(err);
         });
     }),
-  body("project")
-    .optional()
-    .custom((value) => {
-      return projectSchema
-        .findOne({ _id: value })
-        .then((object) => {
-          if (!object) throw new Error("this project doesn't exist");
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-    }),
+
 ];

@@ -2,7 +2,7 @@ const missionSchema = require("../../model/missionSchema");
 
 const getAllMission = async (req, res, next) => {
   try {
-    const {assignedTo , project  ,  assignedBy  , status} = req.query
+    const {assignedTo , project  ,  assignedBy  , status ,  missionType} = req.query
     let filter = {}
     if(assignedTo) {
       filter = {...filter , assignedTo}
@@ -16,11 +16,15 @@ const getAllMission = async (req, res, next) => {
     if(status) {
       filter = {...filter , status}
     }
+    if(missionType) {
+      filter = {...filter , missionType}
+    }
     const allmissions = await missionSchema
       .find(filter)
       .populate("assignedTo")
       .populate("project")
-      .populate("assignedBy");
+      .populate("assignedBy")
+      .sort({ createdAt: -1 })
     res.json({ allmissions });
   } catch (error) {
     next(error);

@@ -19,7 +19,7 @@ const {opertaionType , addedBy ,_id  , projectSatatus} = req.query
 
     console.log(filterion);
     
-    const allproject = await projectSchema.find(filterion).populate("addedBy");
+    const allproject = await projectSchema.find(filterion).populate("addedBy").sort({ createdAt: -1 });
   
   
     

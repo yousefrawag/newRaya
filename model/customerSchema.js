@@ -29,7 +29,8 @@ const customerSchema = mongoose.Schema(
     },
     clientStatus: {
       type: String,
-      enum: ["VIP", "New", "Regular"],
+      enum: ["VIP عميل", "عميل محتمل", "عميل من خلال بنك"],
+      default:"VIP عميل",
       required: true,
     },
     project: {
@@ -50,12 +51,18 @@ const customerSchema = mongoose.Schema(
       ref: "users",
     },
     cashOption:{
-      type:Boolean
+      type:String,
+      enum:["كاش" , "غير متاح"],
+      default:"غير متاح"
     },
     installmentsPyYear:{
       type:String
     },
     endContactDate:{
+      type:Date
+    }
+    ,
+    customerDate :{
       type:Date
     }
   },
