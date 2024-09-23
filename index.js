@@ -23,7 +23,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: 'https://crm.rayapalcrm.com', // http://localhost:3002
+  origin: 'http://localhost:3002', // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
   allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
   credentials: true // Allow credentials to be included in the request
