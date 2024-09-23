@@ -8,6 +8,7 @@ const addMission = async (req, res, next) => {
     deadline,
     missionType,
     description,
+    Privetproject
   } = req.body;
   try {
     const newMission = await missionSchema.create({
@@ -19,6 +20,7 @@ const addMission = async (req, res, next) => {
       deadline,
       missionType,
       description,
+      Privetproject
     });
     res
       .status(201)

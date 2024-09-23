@@ -28,6 +28,10 @@ const missionSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "projects",
     },
+    Privetproject: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PrivetProjects",
+    },
     assignedBy: {
       type: Number,
       ref: "users",

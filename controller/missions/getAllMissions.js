@@ -24,6 +24,7 @@ const getAllMission = async (req, res, next) => {
       .populate("assignedTo")
       .populate("project")
       .populate("assignedBy")
+      .populate("Privetproject")
       .sort({ createdAt: -1 })
     res.json({ allmissions });
   } catch (error) {
