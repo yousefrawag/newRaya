@@ -10,6 +10,7 @@ const updateMission = async (req, res, next) => {
     deadline,
     missionType,
     description,
+    Privetproject
   } = req.body;
   try {
     const updateMission = await missionSchema.findByIdAndUpdate(
@@ -22,6 +23,7 @@ const updateMission = async (req, res, next) => {
         deadline,
         missionType,
         description,
+        Privetproject
       },
       { new: true }
     );
