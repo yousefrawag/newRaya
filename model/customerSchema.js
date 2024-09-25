@@ -6,7 +6,7 @@ const customerSchema = mongoose.Schema(
 
     fullName: {
       type: String,
-      required: true,
+   
     },
     region: {
       type: String,
