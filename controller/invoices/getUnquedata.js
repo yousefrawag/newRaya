@@ -4,8 +4,7 @@ const getUnquedata = async (req, res, next) => {
   
     const invoices = await invoiceSchema
       .find({})
-      .populate("client")
-      .populate("project");
+      
       const clients = [...new Set(invoices.map((item) => item.client))]
       const project = [...new Set(invoices.map((item) => item.project))]
     res.status(200).json({clients  ,  project });

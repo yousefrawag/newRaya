@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
-const invoiceSchema = mongoose.Schema(
+const PayvoucherSchema = mongoose.Schema(
   {
  
- resivedfrom:{
+ payFor:{
   type:String,
   trim:true
  },
@@ -31,4 +31,4 @@ const invoiceSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("invoices", invoiceSchema);
+module.exports = mongoose.model("payvoucher", PayvoucherSchema);

@@ -18,43 +18,33 @@ const insertMany = async (req, res) => {
     // Trim the keys of each item in jsonData
     const normalizedData = jsonData.map((item) => trimObjectKeys(item));
 // find user who add customer
-  const getUser = async (UserName) => {
-
-    const trimeName = UserName.trim()
-    const findUser = await userSchema.findOne({fullName:trimeName}).exec()
-    return findUser?  findUser._id : null}
+  
 
   
 
-    // Function to get the project ID based on the project name
-    const getProjectId = async (projectName) => {
-      const trimmedProjectName = projectName?.trim();
-      console.log(trimmedProjectName);
-      const project = await projectSchema.findOne({ projectName: trimmedProjectName }).exec();
-      console.log(project);
-      return project ? project._id : null;
-    };
+
 
     // Prepare the customer data
     const vailData = await Promise.all(normalizedData.map(async (item) => {
-      const projectId = await getProjectId(item.project?.trim());
-      const userId = await getUser(item.addBy?.trim())
+ 
       return {
-        fullName: item.fullName?.trim() || "",
-        region: item.region.trim() || "",
+        fullName: item.fullName || "",
+        region: item.region || "",
         phoneNumber: item.phoneNumber || "",
         currency: item.currency || "",
         firstPayment: item.firstPayment || "",
-        clientStatus: item.clientStatus || "عميل محتمل",
-        project: projectId,
+        clientStatus: item.clientStatus || " ",
+        project: item.project || "",
         notes: item.notes || "",
         clientRequire: item.clientRequire || "",
-        clientendRequr: item.clientendRequr.trim() || "",
-        addBy: userId,
-        cashOption: item.cashOption.trim(),
-        endContactDate: item.endContactDate,
+        clientendRequr: item.clientendRequr || "",
+        addBy: item.addBy || "",
+        cashOption: item.cashOption || "",
+        endContactDate: item.endContactDate || "",
         customerDate: item.customerDate || "",
-        installmentsPyYear:item.installmentsPyYear
+        installmentsPyYear:item.installmentsPyYear || "",
+        secondaryPhoneNumber:item.secondaryPhoneNumber || "",
+        createdAt:item.createdAt || ""
       };
     }));
 
@@ -64,8 +54,7 @@ const insertMany = async (req, res) => {
     // Fetch the inserted customers and populate the fields
     const populatedCustomers = await customerSchema
       .find({ _id: { $in: newCustomers.map(customer => customer._id) } })
-      .populate("addBy")
-      .populate("project")
+
       .sort({ createdAt: -1 });
 
     res.status(200).json({ newCustomers: populatedCustomers });

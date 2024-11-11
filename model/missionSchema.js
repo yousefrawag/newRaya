@@ -13,12 +13,12 @@ const missionSchema = mongoose.Schema(
     deadline: Date,
     status: {
       type: String,
-      enum: ["inprogress", "completed"],
-      default: "inprogress",
+      enum: ["فى تقدم", "مكتملة"],
+      default: "فى تقدم",
     },
     missionType:{
       type:String,
-      enum:["puplic" , "privet"]
+      enum:["عامة" , "خاصة"]
     },
     assignedTo: {
       type: Number,

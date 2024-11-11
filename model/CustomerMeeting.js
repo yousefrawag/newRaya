@@ -5,26 +5,33 @@ const clientMeetingSchema = mongoose.Schema(
   {
     title: {
       type: String,
+      trim:true
     },
     project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "projects"
+      type: String,
+      trim:true
     },
     client: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "clients"
+      type: String,
+      trim:true
     },
     meetingDate: {
       type: Date,
     },
     meetingDetails: {
       type: String,
+      trim:true
+
     },
     meetingResult: {
       type: String,
+      trim:true
+
     },
     phoneNumber:{
         type:String,
+        trim:true
+
 
     },
     addedBy: {

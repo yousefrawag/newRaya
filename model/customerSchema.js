@@ -6,18 +6,26 @@ const customerSchema = mongoose.Schema(
 
     fullName: {
       type: String,
+      trim:true
+
    
     },
     region: {
       type: String,
       required: true,
+      trim:true
+
     },
     phoneNumber: {
       type: String,
       required: true,
+      trim:true
+
     },
     secondaryPhoneNumber: {
       type: String,
+      trim:true
+
     },
     currency: {
       type: String,
@@ -25,38 +33,46 @@ const customerSchema = mongoose.Schema(
     },
     firstPayment: {
       type: String,
-      required: true,
+      trim:true
+
     },
     clientStatus: {
       type: String,
-      enum: ["VIP عميل", "عميل محتمل", "عميل من خلال بنك"],
-      default:"VIP عميل",
+      trim:true,
       required: true,
     },
     project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "projects",
+      type:String,
+      trim:true
     },
     notes: {
       type: String,
+      trim:true
+
     },
     clientRequire: {
       type: String,
+      trim:true
+
     },
     clientendRequr: {
       type: String,
+      trim:true
+
     },
     addBy: {
-      type: Number,
-      ref: "users",
+      type:String,
+      trim:true
     },
     cashOption:{
       type:String,
-      enum:["كاش" , "غير متاح"],
-      default:"غير متاح"
+      trim:true
+
     },
     installmentsPyYear:{
-      type:String
+      type:String,
+      trim:true
+
     },
     endContactDate:{
       type:Date
@@ -64,6 +80,10 @@ const customerSchema = mongoose.Schema(
     ,
     customerDate :{
       type:Date
+    },
+    isViwed:{
+      type:String,
+      trim:true
     }
   },
   {

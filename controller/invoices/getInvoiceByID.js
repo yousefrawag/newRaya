@@ -4,8 +4,7 @@ const getInvoiceByID = async (req, res, next) => {
   try {
     const invoice = await invoiceSchema
       .findById(id)
-      .populate("client")
-      .populate("project");
+   
     if (!invoice) {
       res.status(404).json({ message: "invoice doesn't exist" });
     }

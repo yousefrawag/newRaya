@@ -1,12 +1,11 @@
 const invoiceSchema = require("../../model/invoiceSchema");
 const updateInvoices = async (req, res, next) => {
   const { id } = req.params;
-  const { client, project, estateType, dueDate, status, total, notes } =
-    req.body;
+ 
   try {
     const new_update = await invoiceSchema.findByIdAndUpdate(
       id,
-      { client, project, estateType, dueDate, status, total, notes },
+      { ...req.body },
       { new: true }
     );
     if (!new_update) {

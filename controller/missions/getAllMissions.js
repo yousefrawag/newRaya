@@ -1,24 +1,42 @@
 const missionSchema = require("../../model/missionSchema");
-
+const projectschema = require("../../model/projectSchema")
+const PrivetprojectSchema = require("../../model/privetProjectschema")
+const userSchema = require("../../model/userSchema")
 const getAllMission = async (req, res, next) => {
   try {
-    const {assignedTo , project  ,  assignedBy  , status ,  missionType} = req.query
+    const {field , searTerm , startDate , endDate } = req.query
     let filter = {}
-    if(assignedTo) {
-      filter = {...filter , assignedTo}
+    if( ["missionType" , "title" , "status"].includes(field) && searTerm) {
+      filter[field] =  { $regex: new RegExp(searTerm, 'i') }
     }
-    if(project) {
-      filter = {...filter , project}
+   if (field === "project" && searTerm) {
+const foundProject = await projectschema.find({projectName:{ $regex: new RegExp(searTerm, 'i') }})
+if(foundProject && foundProject.length) {
+  filter[field] = foundProject[0]?._id
+}
+  }
+   if(field === "Privetproject" && searTerm) {
+    const foundProject = await PrivetprojectSchema.find({projectName:{ $regex: new RegExp(searTerm, 'i') }})
+    if(foundProject && foundProject.length) {
+      console.log(field , searTerm)
+      filter[field] = foundProject[0]?._id
     }
-    if(assignedBy) {
-      filter = {...filter , assignedBy}
+  }
+
+  if(field === "assignedTo" && searTerm) {
+    const foundProject = await userSchema.find({fullName:{ $regex: new RegExp(searTerm, 'i') }})
+    if(foundProject && foundProject.length) {
+      console.log(field , searTerm)
+      filter[field] = foundProject[0]?._id
     }
-    if(status) {
-      filter = {...filter , status}
-    }
-    if(missionType) {
-      filter = {...filter , missionType}
-    }
+  }
+if(["deadline" , "createdAt"].includes(field) && endDate){
+  filter[field] = {
+    $gte: new Date(startDate),  // greater than or equal to fromDate
+    $lte: new Date(endDate) 
+  }
+}
+
     const allmissions = await missionSchema
       .find(filter)
       .populate("assignedTo")

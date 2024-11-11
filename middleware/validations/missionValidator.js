@@ -28,7 +28,7 @@ exports.insert = [
     .optional()
     .isString()
     .withMessage("Status must be a string")
-    .isIn(["inprogress", "completed"])
+    .isIn(["فى تقدم", "مكتملة"])
     .withMessage('Status must be one of "inprogress" or "completed"'),
 
   body("assignedTo")
@@ -76,7 +76,7 @@ exports.update = [
     .optional()
     .isString()
     .withMessage("Status must be a string")
-    .isIn(["inprogress", "completed"])
+    .isIn(["فى تقدم", "مكتملة"])
     .withMessage('Status must be one of "inprogress"  or "completed"'),
 
   body("assignedTo")

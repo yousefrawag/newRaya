@@ -20,8 +20,6 @@ router
   .get(authorizationMW("canViewInvoices"), getAllInvoices)
   .post(
     authorizationMW("canAddInvoices"),
-    insert,
-    validationResult,
     addInvoice
   );
 router.get("/uinqData" , getUnquedata)
@@ -29,8 +27,6 @@ router
   .route("/:id")
   .put(
     authorizationMW("canEditInvoices"),
-    update,
-    validationResult,
     updateInvoice
   )
   .get(authorizationMW("canViewInvoices"), getInvoiceByID)

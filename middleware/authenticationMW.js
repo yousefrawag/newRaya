@@ -8,6 +8,6 @@ module.exports = (req, res, next) => {
     next();
   } catch (err) {
     err.message = "Not authenticated ";
-    next(err);
+   res.status(401).json({mesg:"not authenticated"})
   }
 };

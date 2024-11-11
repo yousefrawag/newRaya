@@ -20,6 +20,9 @@ const messageSchema = mongoose.Schema(
     },
     content: { type: String },
     filesURLs: [file],
+    read:
+      { type: Boolean, default: false }
+    
   },
   {
     timestamps: true,

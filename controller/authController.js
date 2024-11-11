@@ -17,7 +17,7 @@ exports.login = (req, res, next) => {
               id: user._id,
             },
             process.env.SECRET_KEY,
-            { expiresIn: "14d" }
+            { expiresIn: "1d" }
           );
           res.status(200).json({ action: "Authenticated", token, user });
         })

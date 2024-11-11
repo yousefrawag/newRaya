@@ -1,9 +1,9 @@
-const invoiceSchema = require("../../model/invoiceSchema");
-const getAllInvoices = async (req, res, next) => {
+const PayvoucherSchema = require("../../model/paymentVoucher");
+const GetallPaymentVoucher = async (req, res, next) => {
   try {
     const {field , searTerm , startDate  , endDate } = req.query
     let fillter = {}
-    if(["SignatureBy" , "ThatFor" , "totalPrice" , "resivedfrom"].includes(field) && searTerm) {
+    if(["SignatureBy" , "ThatFor" , "totalPrice" , "payFor"].includes(field) && searTerm) {
       fillter[field] =  { $regex: new RegExp(searTerm, 'i') }
     }
     if(field === "createdAt" && endDate){
@@ -12,13 +12,13 @@ const getAllInvoices = async (req, res, next) => {
         $lte: new Date(endDate) 
       }
     }
-    const invoices = await invoiceSchema
+    const PaymentVouchers = await PayvoucherSchema
       .find(fillter)
 
       .sort({ createdAt: -1 })
-    res.status(200).json({ invoices });
+    res.status(200).json({ PaymentVouchers });
   } catch (error) {
     next(error);
   }
 };
-module.exports = getAllInvoices;
+module.exports = GetallPaymentVoucher;
