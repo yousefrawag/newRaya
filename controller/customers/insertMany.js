@@ -52,7 +52,7 @@ const insertMany = async (req, res) => {
     // Insert the customer data into the database
     const newCustomers = await customerSchema.insertMany(vailData);
 
-    // Fetch the inserted customers and populate the fields
+
     const populatedCustomers = await customerSchema
       .find({ _id: { $in: newCustomers.map(customer => customer._id) } })
 
