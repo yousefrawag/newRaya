@@ -123,7 +123,7 @@ const handelNotifications = async (
 
     if (notification) {
       notification.relatedMessages.push(message._id);
-      notification.message = `You have new messages from ${user.type}: ${message.content}`;
+      notification.message = `لديك رسالة من ${user.type}: ${message.content}`;
       notification.read = false;
       await notification.save();
     } else {
@@ -132,7 +132,7 @@ const handelNotifications = async (
         chatID,
         notificationType,
         relatedMessages: [message._id],
-        message: `New message from ${user.type}: ${message.content}`,
+        message: `لديك رسالة من ${user.type}: ${message.content}`,
       });
 
       await notification.save();
@@ -155,8 +155,8 @@ exports.getChatMessages = async (req, res, next) => {
 };
 const sendingMailesToadmins = async (user , chatid , missionTitle , content , missionID , empId) => {
       const users = await notificationSchema.find({ chatID: chatid }).populate("usersID");
-      console.log(users[users.length - 1]?.usersID)
-      users[users.length - 1]?.usersID?.map((item) => {
+      console.log(users)
+      users[users.length]?.usersID?.map((item) => {
         return (
            setImmediate(() => {
         const transporter = nodemailer.createTransport({
