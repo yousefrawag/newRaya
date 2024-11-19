@@ -35,6 +35,7 @@ const insertMany = async (req, res) => {
         firstPayment: item.firstPayment || "",
         clientStatus: item.clientStatus || " ",
         project: item.project || "",
+        isViwed:item.isViwed || "",
         notes: item.notes || "",
         clientRequire: item.clientRequire || "",
         clientendRequr: item.clientendRequr || "",
