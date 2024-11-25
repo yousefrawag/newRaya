@@ -45,7 +45,7 @@ const insertMany = async (req, res) => {
         customerDate: item.customerDate || "",
         installmentsPyYear:item.installmentsPyYear || "",
         secondaryPhoneNumber:item.secondaryPhoneNumber || "",
-        createdAt:item.createdAt || ""
+        createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
       };
     }));
 

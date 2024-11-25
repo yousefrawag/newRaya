@@ -18,28 +18,7 @@ const GetallCustomer = async (req, res, next) => {
         filters[field] = { $regex: new RegExp(searTerm, 'i') };
       } 
 
-    //   if (field === "project") {
-    //  const findProjectid = await projectschema.find({
-    //       projectName: { $regex: new RegExp(searTerm, 'i') }, // Case-insensitive regex
-    //     })
-       
-    //     if (findProjectid.length > 0) {
-    //       filters['project'] = findProjectid[0]._id; // Use ObjectId for project
-    //       console.log(findProjectid[0]._id)
-    //     } else {
-    //       return res.status(404).json({ message: "Project not found" });
-    //     }
-    //   } 
-    //   if (field === "addBy") {
-       
-    //     const findUserid = await userSchema.find({fullName:{ $regex: new RegExp(searTerm, 'i') }})
-    //     if (findUserid.length > 0) {
-    //       filters["addBy"] = findUserid[0]._id;  // Use the numeric userId
-    //       console.log(filters);  // Logs { addBy: 1 } (or whatever the userId is)
-    //     }
-     
-    //   }
-
+ 
       if(["createdAt" , "endContactDate" , "customerDate"].includes(field) && endDate){
         filters[field] = {
           $gte: new Date(startDate),  // greater than or equal to fromDate
