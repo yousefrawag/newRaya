@@ -15,7 +15,7 @@ const missionsAddedToday = async (req, res, next) => {
           $lte: endOfToday,
         },
       })
-      .populate(["project", "assignedTo"]);
+      .populate(["project", "assignedTo" , "Privetproject"]);
     return res.status(200).json({ missions });
   } catch (error) {
     next(error);
