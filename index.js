@@ -53,6 +53,8 @@ server.use("/api/projects", require("./routes/ProjectRoute"));
 server.use("/api/Privetprojects", require("./routes/privetProjectRoute"));
 server.use("/api/missions", require("./routes/missionRoutes"));
 server.use("/api/company", require("./routes/CompanyRoute"));
+server.use("/api/projectStatuts", require("./routes/projectStatutsRoute"));
+server.use("/api/region", require("./routes/regionRoute"));
 
 // Not Found MiddleWare
 
