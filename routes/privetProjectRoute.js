@@ -9,6 +9,8 @@ const updateProject = require("../controller/privetProject/updateProject");
 const selectProject = require("../controller/privetProject/selectprivetproject")
 const authorizationMW = require("../middleware/authorizationMW");
 const multerUpload = require("../middleware/multer");
+const authuserViewhasMission = require("../middleware/authuserViewhasMission")
+
 const router = express.Router()
 router
   .route("/")
@@ -27,6 +29,6 @@ router
     multerUpload.array("files"),
     updateProject
   )
-  .get(authorizationMW("canViewPrivetProjects"), getProjectByID)
+  .get(authuserViewhasMission("canViewPrivetProjects"), getProjectByID)
   .delete(authorizationMW("canDeletePrivetProjects"), deleteProject);
 module.exports = router
