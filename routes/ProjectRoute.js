@@ -15,6 +15,7 @@ const {
 const authorizationMW = require("../middleware/authorizationMW");
 const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
+const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 
 const router = express.Router();
 
@@ -37,6 +38,6 @@ router
     multerUpload.array("files"),
     updateProject
   )
-  .get(authorizationMW("canViewProjects"), getProjectByID)
+  .get(authuserViewhasMission("canViewProjects"), getProjectByID)
   .delete(authorizationMW("canDeleteProjects"), deleteProject);
 module.exports = router;
