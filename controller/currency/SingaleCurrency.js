@@ -10,7 +10,7 @@ const SinagleCurrency = async (req , res) => {
         const currency = await currencySchema.findById(id)
         if(currency) {
         
-            res.status(200).json({mesg:"get singale currency " , currency})
+          return  res.status(200).json({mesg:"get singale currency " , currency})
         }        
     } catch (error) {
         throw new Error(error)

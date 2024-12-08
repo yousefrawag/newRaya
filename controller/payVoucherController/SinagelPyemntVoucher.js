@@ -6,7 +6,7 @@ const SinagelPyemntVoucher = async (req, res, next) => {
       .findById(id)
    
     if (!paymentsVouchers) {
-      res.status(404).json({ message: "payemntVoucher doesn't exist" });
+    return  res.status(404).json({ message: "payemntVoucher doesn't exist" });
     }
     res.status(200).json({ paymentsVouchers });
   } catch (error) {

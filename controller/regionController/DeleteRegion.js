@@ -5,7 +5,7 @@ const DeleteRegion = async (req , res) => {
     const currentregion = await regionScgema.findById(id)
     if(currentregion) {
         await regionScgema.findByIdAndDelete(id)
-        res.status(200).json({mesg:"currency deleted sucssfuly"});
+       return res.status(200).json({mesg:"currency deleted sucssfuly"});
     } else {
         res.status(404).json({mesg:"not found"})
     }

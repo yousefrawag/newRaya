@@ -17,7 +17,7 @@ const updateExpense = async (req, res, next) => {
       { new: true }
     );
     if (!new_update) {
-      res.status(404).json({ message: "Expense doesn't exist" });
+     return res.status(404).json({ message: "Expense doesn't exist" });
     }
     res
       .status(200)

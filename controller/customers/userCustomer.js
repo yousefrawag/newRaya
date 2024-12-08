@@ -30,7 +30,7 @@ const getUserCustomer = async (req, res , next) => {
     }
     const customer = await customerSchema.find(filters)
     if (!customer) {
-      res.status(404).json({ message: "Customer desn't exist" });
+     return res.status(404).json({ message: "Customer desn't exist" });
     }
     res.status(200).json({ customer });
   } catch (error) {

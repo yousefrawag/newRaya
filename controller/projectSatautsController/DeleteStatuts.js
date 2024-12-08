@@ -5,7 +5,7 @@ const DeleteStatuts = async (req , res) => {
     const currentcurrency = await projectStatuts.findById(id)
     if(currentcurrency) {
         await projectStatuts.findByIdAndDelete(id)
-        res.status(200).json({mesg:"currency deleted sucssfuly"});
+       return res.status(200).json({mesg:"currency deleted sucssfuly"});
     } else {
         res.status(404).json({mesg:"not found"})
     }

@@ -6,7 +6,7 @@ const getInvoiceByID = async (req, res, next) => {
       .findById(id)
    
     if (!invoice) {
-      res.status(404).json({ message: "invoice doesn't exist" });
+     return res.status(404).json({ message: "invoice doesn't exist" });
     }
     res.status(200).json({ invoice });
   } catch (error) {

@@ -9,7 +9,7 @@ const getMissionByID = async (req, res, next) => {
       .populate("project")
       .populate("assignedBy");
     if (!mission) {
-      res.json({ message: "this mission doesn't exist" });
+     return res.json({ message: "this mission doesn't exist" });
     }
 
     res.status(200).json({ mission });

@@ -6,7 +6,7 @@ const deleteProject = async (req, res, next) => {
   try {
     const project = await projectSchema.findById(id);
     if (!project) {
-      res.status(404).json({ message: "Project doesn't exist" });
+    return  res.status(404).json({ message: "Project doesn't exist" });
     }
     for (const index in project.imagesURLs) {
       let { fileID } = project.imagesURLs[index];

@@ -4,7 +4,7 @@ const getExpenseByID = async (req, res, next) => {
     const { id } = req.params;
     const expense = await expensesSchema.findById(id);
     if (!expense) {
-      res.status(404).json({ message: "Expense doesn't exist" });
+     return res.status(404).json({ message: "Expense doesn't exist" });
     }
     res.status(200).json({ expense });
   } catch (error) {

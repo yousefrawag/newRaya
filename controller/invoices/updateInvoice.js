@@ -9,7 +9,7 @@ const updateInvoices = async (req, res, next) => {
       { new: true }
     );
     if (!new_update) {
-      res.status(404).json({ mesg: "thsi inovces not found in db" });
+     return res.status(404).json({ mesg: "thsi inovces not found in db" });
     }
     res
       .status(200)

@@ -4,7 +4,7 @@ const getMeetingById = async (req, res, next) => {
     const { id } = req.params;
     const meeting = await meetingSchema.findById(id).populate("addedBy");
     if (!meeting) {
-      res.status(404).json({ message: "this meeting doesn't exist" });
+    return res.status(404).json({ message: "this meeting doesn't exist" });
     }
     res.status(200).json({ meeting });
   } catch (error) {
