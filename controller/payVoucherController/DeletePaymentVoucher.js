@@ -6,7 +6,7 @@ const DeletePaymentVoucher = async (req, res, next) => {
     if (!payemntvoucher) {
      return res.status(404).json({ message: "paymentvoucher doesn't exist" });
     }
-    res.status(200).json({ message: "paymentvoucher deleted successfully" });
+  return  res.status(200).json({ message: "paymentvoucher deleted successfully" });
   } catch (error) {
     next(error);
   }

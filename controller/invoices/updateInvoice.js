@@ -11,7 +11,7 @@ const updateInvoices = async (req, res, next) => {
     if (!new_update) {
      return res.status(404).json({ mesg: "thsi inovces not found in db" });
     }
-    res
+  return  res
       .status(200)
       .json({ message: "invoice updated successfully", new_update });
   } catch (error) {

@@ -9,7 +9,7 @@ const addInvoice = async (req, res, next) => {
     };
 
     const invoice = await invoiceSchema.create(invoiceData);
-    res.status(201).json({ message: "Invoice created successfully", invoice });
+  return  res.status(201).json({ message: "Invoice created successfully", invoice });
   } catch (error) {
     next(error);
   }

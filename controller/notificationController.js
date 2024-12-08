@@ -74,7 +74,7 @@ exports.deleteNotification = async (req, res, next) => {
       );
       return res.status(200).json({ message: "Notification deleted" });
     }
-    res.json("failed");
+ 
   } catch (error) {
    next(error)
   }

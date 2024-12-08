@@ -5,7 +5,7 @@ const DeleteCountry = async (req , res) => {
   const currentCountry = countrySchema.findById(id)
   if(currentCountry) {
     await countrySchema.findByIdAndDelete(id) 
-      res.status(200).json({mesg:"country delted "})
+    return  res.status(200).json({mesg:"country delted "})
   }
 
 }

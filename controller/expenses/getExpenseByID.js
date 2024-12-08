@@ -6,7 +6,7 @@ const getExpenseByID = async (req, res, next) => {
     if (!expense) {
      return res.status(404).json({ message: "Expense doesn't exist" });
     }
-    res.status(200).json({ expense });
+  return  res.status(200).json({ expense });
   } catch (error) {
     next(error);
   }

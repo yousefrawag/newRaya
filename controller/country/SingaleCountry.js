@@ -9,7 +9,7 @@ const SingaleCountry = async (req , res) => {
         const currentCountry = await countrySchema.findById(id)
         if(currentCountry) {
         
-            res.status(200).json({mesg:"get singale country " , currentCountry})
+         return   res.status(200).json({mesg:"get singale country " , currentCountry})
         }        
     } catch (error) {
         throw new Error(error)

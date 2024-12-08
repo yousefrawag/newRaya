@@ -8,7 +8,7 @@ const getInvoiceByID = async (req, res, next) => {
     if (!invoice) {
      return res.status(404).json({ message: "invoice doesn't exist" });
     }
-    res.status(200).json({ invoice });
+   return res.status(200).json({ invoice });
   } catch (error) {
     next(error);
   }

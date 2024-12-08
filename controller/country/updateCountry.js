@@ -8,7 +8,7 @@ const updateCountry = async (req , res) => {
         countryName,
         locations
       } , {new : true}) 
-      res.status(200).json({mesg:"country updated" , newCountryUpdate})
+     return res.status(200).json({mesg:"country updated" , newCountryUpdate})
   }
 
 }

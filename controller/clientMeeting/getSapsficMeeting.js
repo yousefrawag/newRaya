@@ -6,7 +6,7 @@ const getMeetingById = async (req, res, next) => {
     if (!meeting) {
      return res.status(404).json({ message: "this meeting doesn't exist" });
     }
-    res.status(200).json({ meeting });
+   return res.status(200).json({ meeting });
   } catch (error) {
     next(error)
   }

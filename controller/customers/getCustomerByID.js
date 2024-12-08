@@ -7,7 +7,7 @@ const getCustomerByID = async (req, res , next) => {
     if (!customer) {
     return  res.status(404).json({ message: "Customer desn't exist" });
     }
-    res.status(200).json({ customer });
+  return  res.status(200).json({ customer });
   } catch (error) {
     next(error);
   }
