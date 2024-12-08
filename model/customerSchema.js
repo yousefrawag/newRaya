@@ -17,7 +17,8 @@ const customerSchema = mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      trim:true
+      trim:true,
+      unique: true,
 
     },
     secondaryPhoneNumber: {
