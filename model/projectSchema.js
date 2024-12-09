@@ -48,7 +48,7 @@ const projectSchema = mongoose.Schema(
   
     projectSatatus :{
       type:String,
-      enum: ["جاهز" , "عظم"  , "بمراحل البناء" ,  "بمراحل الترخيص" , "على المخطط"],
+     
    
     }  ,
     spaceOuteside :{
