@@ -5,7 +5,14 @@ const getallProjects = async (req, res, next) => {
 const {field , searTerm , startDate , endDate } = req.query
   
   try {
-    let filterion = {};
+      const id = req.token.id
+        const user = await userSchema.findById(id)
+        let filterion 
+        if(user.type === "admin") {
+          filterion = {};
+        }else{
+          filterion = {addedBy: user?._id};
+        }
     if (["projectName" , "estateType" , 
       "detailedAddress" , "governoate" , 
       "operationType" , "clientType" , 

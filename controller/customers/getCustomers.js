@@ -4,7 +4,15 @@ const userSchema = require("../../model/userSchema")
 const GetallCustomer = async (req, res, next) => {
   try {
     const { field, searTerm , startDate , endDate } = req.query;
-    let filters = {};
+    const id = req.token.id
+    const user = await userSchema.findById(id)
+    let filters 
+    if(user.type === "admin") {
+       filters = {};
+    }else{
+      filters = {addBy: user?.fullName.trim()};
+    }
+   
    
       if (
         ["fullName" , "region" , "currency" , 
