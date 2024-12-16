@@ -10,7 +10,11 @@ const GetallCustomer = async (req, res, next) => {
     if(user.type === "admin") {
        filters = {};
     }else{
-      filters = {addBy: user?.fullName.trim()};
+      filters = {
+        addBy: {
+          $regex: new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
+        }
+      };      
     }
    
    

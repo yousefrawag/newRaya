@@ -13,7 +13,7 @@ const {field , searTerm , startDate , endDate } = req.query
         }else{
           filterion = {addedBy: user?._id};
         }
-    if (["projectName" , "estateType" , 
+    if (["projectName" ,"projectOwner" ,"projectOwnerPhone" , "estateType" , 
       "detailedAddress" , "governoate" , 
       "operationType" , "clientType" , 
       "areaMatter" , "spaceOuteside" ,

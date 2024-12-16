@@ -10,7 +10,8 @@ const file = mongoose.Schema(
 );
 const projectSchema = mongoose.Schema(
   {
-   
+    projectOwner:String,
+    projectOwnerPhone:String,
     projectName: String,
     estateType: { type: String },
     governorate: { type: String },
