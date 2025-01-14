@@ -2,29 +2,41 @@ const userSchema = require("../model/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-exports.login = (req, res, next) => {
-  userSchema
-    .findOne({ email: req.body.email })
-    .populate("role")
-    .then((user) => {
-      if (!user) throw new Error("User doesn't exist");
-      bcrypt
-        .compare(req.body.password, user.password)
-        .then((result) => {
-          if (!result) throw new Error("Invalid Password");
-          let token = jwt.sign(
-            {
-              id: user._id,
-            },
-            process.env.SECRET_KEY,
-            { expiresIn: "10h" }
-          );
-          res.status(200).json({ action: "Authenticated", token, user });
-        })
-        .catch((err) => next(err));
-    })
-    .catch((err) => next(err));
+const addNewdeaily = require("../controller/DeailyReport/AddNewdeaily")
+exports.login = async (req, res, next) => {
+  try {
+    // Find user by email
+    const user = await userSchema.findOne({ email: req.body.email }).populate("role");
+    if (!user) {
+      throw new Error("User doesn't exist");
+    }
+
+    // Compare password
+    const passwordMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!passwordMatch) {
+      throw new Error("Invalid Password");
+    }
+
+    // Generate token
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "10h" }
+    );
+
+    // Add daily login record
+    await addNewdeaily(user._id);
+
+    // Respond with success
+    res.status(200).json({ action: "Authenticated", token, user });
+  } catch (err) {
+    // Pass error to the next middleware
+    next(err);
+  }
 };
+
 
 exports.forgotPassword = async (req, res, next) => {
   const { email } = req.body;
