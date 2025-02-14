@@ -11,37 +11,35 @@ const GetallCustomer = async (req, res, next) => {
        filters = {};
     }else{
       filters = {
-        addBy: {
-          $regex: new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
-        }
+        addBy: id
       };      
     }
    
    
-      if (
-        ["fullName" , "region" , "currency" , 
-          "firstPayment" , "clientStatus" , 
-          "cashOption" , "installmentsPyYear" , 
-          "isViwed" ,"notes","phoneNumber",
-          "project", "addBy",
-           "clientendRequr" , "clientRequire"].includes(field) && searTerm
+      // if (
+      //   ["fullName" , "region" , "currency" , 
+      //     "firstPayment" , "clientStatus" , 
+      //     "cashOption" , "installmentsPyYear" , 
+      //     "isViwed" ,"notes","phoneNumber",
+      //     "project", "addBy",
+      //      "clientendRequr" , "clientRequire"].includes(field) && searTerm
       
-      ) {
-        filters[field] = { $regex: new RegExp(searTerm, 'i') };
-      } 
+      // ) {
+      //   filters[field] = { $regex: new RegExp(searTerm, 'i') };
+      // } 
 
  
-      if(["createdAt" , "endContactDate" , "customerDate"].includes(field) && endDate){
-        filters[field] = {
-          $gte: new Date(startDate),  // greater than or equal to fromDate
-          $lte: new Date(endDate) 
-        }
-      }
+      // if(["createdAt" , "endContactDate" , "customerDate"].includes(field) && endDate){
+      //   filters[field] = {
+      //     $gte: new Date(startDate),  // greater than or equal to fromDate
+      //     $lte: new Date(endDate) 
+      //   }
+      // }
     
 
-    const Customers = await customerSchema.find(filters).sort({ createdAt: -1 });
+    const data = await customerSchema.find(filters).populate("addBy").sort({ createdAt: -1 });
 
-    res.status(200).json({ Customers });
+    res.status(200).json({ data });
   } catch (error) {
     next(error);
   }

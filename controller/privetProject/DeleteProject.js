@@ -20,7 +20,7 @@ const deleteProject = async (req, res, next) => {
       let { fileID } = project.docsURLs[index];
       await cloudinary.delete(fileID);
     }
-    await projectSchema.findByIdAndDelete(id);
+    await PrivetprojectSchema.findByIdAndDelete(id);
     res.status(200).json({ message: "project deleted successfully" });
   } catch (error) {
     next(error);

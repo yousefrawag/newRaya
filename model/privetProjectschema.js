@@ -11,17 +11,18 @@ const file = mongoose.Schema(
 const PriverprojectSchema = mongoose.Schema(
   {
    
-    projectName: String,
+    name: String,
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],
     addedBy: { type: Number, ref: "users" },
-    projectDetails:{
-    type:String
+    projectRequire:{
+  
   },
-  projectNotes :{
+  notes:{
     type:String
-}
+  }
+
   },
 
   {

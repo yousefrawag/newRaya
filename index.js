@@ -4,12 +4,15 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authMW = require("./middleware/authenticationMW");
+const {createDefaultPolicy} = require("./model/PrivcySecurty")
 // setting up server
 const server = express();
 const port = process.env.Port || process.env.LOCALPORT;
 mongoose
   .connect(process.env.MONGOOOSE_URL)
-  .then(() => {
+  .then( async() => {
+    await createDefaultPolicy()
+    
     console.log("conectect to DB server .......");
     server.listen(port, () => {
       console.log(`Server is listening on port ${port}.....`);
@@ -23,7 +26,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: process.env.CLIENT_URL, // specify the origin that you want to allow
+  origin: ["http://localhost:5174" , 'http://localhost:5173' , "https://trcololrs.vercel.app" , "http://localhost:3000"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
   allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
   credentials: true // Allow credentials to be included in the request
@@ -35,28 +38,26 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
 server.use("/api", require("./routes/authRoute"));
-server.use(authMW);
-server.use("/api/expenses", require("./routes/expensesRoute"));
-server.use("/api/clientmeeting", require("./routes/clientMeeting"));
-server.use("/api/currency", require("./routes/currencyRoute"));
-server.use("/api/paymentVoucher", require("./routes/paymentVoucherroute"));
-server.use("/api/country", require("./routes/CuontryRoutes"));
+
+
 server.use("/api/chats", require("./routes/chatRoute"));
 server.use("/api/notifications", require("./routes/notificationRoute"));
 server.use("/api/messages", require("./routes/messageRoute"));
 server.use("/api/customers", require("./routes/customerRoute"));
-server.use("/api/meetings", require("./routes/meetingRoutes"));
+
 server.use("/api/users", require("./routes/userRoute"));
 server.use("/api/roles", require("./routes/roleRoute"));
-server.use("/api/invoices", require("./routes/invoiceRoute"));
+
 server.use("/api/projects", require("./routes/ProjectRoute"));
 server.use("/api/Privetprojects", require("./routes/privetProjectRoute"));
 server.use("/api/missions", require("./routes/missionRoutes"));
-server.use("/api/company", require("./routes/CompanyRoute"));
-server.use("/api/projectStatuts", require("./routes/projectStatutsRoute"));
-server.use("/api/region", require("./routes/regionRoute"));
-server.use("/api/DeailyRoutes", require("./routes/DeailyRoutes"));
 
+server.use("/api/DeailyRoutes", require("./routes/DeailyRoutes"));
+server.use("/api/Services", require("./routes/ServicesRoutes"));
+server.use("/api/visav", require("./routes/VisaRoutes"));
+server.use("/api/prvicy", require("./routes/prvcyRoute"));
+server.use('/api/cutomerRequest' , require("./routes/CustomerMessages"))
+server.use('/api/Section' , require("./routes/SectionsRoutes"))
 // Not Found MiddleWare
 
 server.use((req, res, next) => {

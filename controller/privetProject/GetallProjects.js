@@ -23,11 +23,11 @@ const { field , searTerm  , startDate , endDate  } = req.query
     }
 
     
-    const allproject = await PrivetprojectSchema.find(filterion).populate("addedBy").sort({ createdAt: -1 });
+    const data = await PrivetprojectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
   
   
     
-      res.status(200).json({ allproject });
+      res.status(200).json({ data });
  
   
   } catch (error) {

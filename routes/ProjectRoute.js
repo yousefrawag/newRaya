@@ -13,17 +13,21 @@ const {
   update,
 } = require("../middleware/validations/projectValidator");
 const authorizationMW = require("../middleware/authorizationMW");
+const protected = require("../middleware/authenticationMW")
 const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 
 const router = express.Router();
-
+router.use(protected)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router
   .route("/")
-  .get(authorizationMW("canViewProjects") , getProjects)
+  .get(
+    authorizationMW("canViewProjects") ,
+    
+    getProjects)
   .post(
     authorizationMW("canAddProjects"),
     multerUpload.array("files"),
@@ -38,6 +42,10 @@ router
     multerUpload.array("files"),
     updateProject
   )
-  .get(authuserViewhasMission("canViewProjects"), getProjectByID)
-  .delete(authorizationMW("canDeleteProjects"), deleteProject);
+  .get(
+    authuserViewhasMission("canViewProjects"), 
+    getProjectByID)
+  .delete(
+    authorizationMW("canDeleteProjects"),
+   deleteProject);
 module.exports = router;

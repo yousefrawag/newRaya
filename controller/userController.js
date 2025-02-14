@@ -2,6 +2,9 @@ const userSchema = require("../model/userSchema");
 const cloudinary = require("../middleware/cloudinary");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const path = require("path");
+const { log } = require("console");
+const logo = path.join(__dirname, "../images/logo2.jpg");
 exports.getUsers = (req, res, next) => {
   const {field , searTerm} = req.query
   let fillter = {}
@@ -13,11 +16,11 @@ exports.getUsers = (req, res, next) => {
     .populate("role")
     .sort({ createdAt: -1 })
     .select("-password")
-    .then((users) => {
-      if (!users.length) {
+    .then((data) => {
+      if (!data.length) {
         res.status(404).json({ message: "there is no users" });
       }
-      res.status(200).json({ users });
+      res.status(200).json({ data });
     })
     .catch((err) => next(err));
 };
@@ -29,9 +32,14 @@ exports.Selectusers = async (req , res , next) => {
   const users = findusers.filter((item) => item._id !== 1)
   res.status(200).json({users})
 }
+
+
+
 exports.addUser = async (req, res, next) => {
+  console.log(req.body)
   try {
     let user = new userSchema(req.body);
+
     if (req.file) {
       const { imageURL, imageID } = await cloudinary.upload(
         req.file.path,
@@ -40,7 +48,10 @@ exports.addUser = async (req, res, next) => {
       user.imageURL = imageURL;
       user.imageID = imageID;
     }
+    
     await user.save();
+
+    // Create the transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -49,25 +60,58 @@ exports.addUser = async (req, res, next) => {
       },
     });
 
+
+
     const mailOptions = {
       from: process.env.GMAIL_EMAIL,
       to: user.email,
-      subject: "User Credantials",
-      text: `
-      Dear ${req.body.fullName},
-          Your account created and you can use it now 
-          Email: ${user.email}
-          password: ${req.body.password}
-      
-      Make sure to change the default password to more secure one `,
+      subject: "🎉 تم إنشاء حسابك بنجاح!",
+      html: `
+        <div style="direction: rtl; text-align: right; font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; color: #333; line-height: 1.8;">
+          <!-- شعار الشركة -->
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="cid:logo" alt="شعار الشركة" style="width: 150px; border-radius: 10px;">
+          </div>
+
+          <h2 style="color: #218bc7;">🎉 مرحبًا ${user.name}!</h2>
+          <p>تم إنشاء حسابك بنجاح على منصتنا  ألوان المسافر. يمكنك الآن تسجيل الدخول باستخدام التفاصيل التالية:</p>
+
+          <p><strong>✉️ البريد الإلكتروني:</strong> ${user.email}</p>
+          <p><strong>🔑 كلمة المرور:</strong> ${req.body.password}</p>
+
+          <p style="color: #d9534f;"><strong>⚠️ ملاحظة:</strong> يُرجى تغيير كلمة المرور فور تسجيل الدخول لحماية حسابك.</p>
+
+          <p>يمكنك تسجيل الدخول إلى حسابك عبر الرابط التالي:</p>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="${process.env.CLIENT_URL}" 
+              style="display: inline-block; padding: 12px 24px; background-color: #218bc7; color: white; text-decoration: none; font-size: 16px; border-radius: 5px;">
+              🔐 تسجيل الدخول إلى الحساب
+            </a>
+          </div>
+
+          <p style="margin-top: 20px; font-size: 12px; color: #888;">📌 هذا البريد مرسل تلقائيًا، لا ترد عليه.</p>
+        </div>
+      `,
+      attachments: [
+        {
+          filename: "logo2.jpg",
+          path: logo, // ✅ Ensure this path is correct
+          cid: "logo",
+        },
+      ],
     };
+
+    // Send Email
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ action: "user added successfully" });
+    res.status(200).json({ action: "تم إنشاء الحساب وإرسال البريد الإلكتروني بنجاح" });
+
   } catch (error) {
     next(error);
   }
 };
+
 
 exports.updateUser = async (req, res, next) => {
   try {
@@ -107,7 +151,7 @@ exports.updateUserOwnInfo = async (req, res, next) => {
       return res.status(404).json({ message: "This user desn't exist" });
     }
     if (req.file) {
-      if (customer.imageID) await cloudinary.delete(customer.imageID);
+      if (user.imageID) await cloudinary.delete(user.imageID);
       const { imageURL, imageID } = await cloudinary.upload(
         req.file.path,
         "userImages"
@@ -148,11 +192,11 @@ exports.getUserById = (req, res, next) => {
     .findById(id)
     .populate("role")
     .select("-password")
-    .then((user) => {
-      if (!user) {
+    .then((data) => {
+      if (!data) {
         res.status(404).json({ message: "User doesn't exist" });
       }
-      res.status(200).json({ user });
+      res.status(200).json({ data });
     })
     .catch((err) => next(err));
 };

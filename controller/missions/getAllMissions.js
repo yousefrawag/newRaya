@@ -37,14 +37,15 @@ if(["deadline" , "createdAt"].includes(field) && endDate){
   }
 }
 
-    const allmissions = await missionSchema
-      .find(filter)
+    const data = await missionSchema
+      .find({})
       .populate("assignedTo")
       .populate("project")
       .populate("assignedBy")
       .populate("Privetproject")
+      .populate("section")
       .sort({ createdAt: -1 })
-    res.json({ allmissions });
+    res.json({ data });
   } catch (error) {
     next(error);
   }

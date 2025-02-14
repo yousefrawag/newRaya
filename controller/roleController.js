@@ -4,8 +4,8 @@ const userSchema = require("../model/userSchema");
 exports.getAllRoles = (req, res, next) => {
   roleSchema
     .find({})
-    .then((roles) => {
-      res.status(200).json(roles);
+    .then((data) => {
+      res.status(200).json(data);
     })
     .catch((err) => next(err));
 };

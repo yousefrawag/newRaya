@@ -4,13 +4,13 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const customerSchema = mongoose.Schema(
   {
 
-    fullName: {
+    name: {
       type: String,
       trim:true
 
    
     },
-    region: {
+    secoundName: {
       type: String,
       trim:true
 
@@ -21,68 +21,49 @@ const customerSchema = mongoose.Schema(
       unique: true,
 
     },
-    secondaryPhoneNumber: {
+    Section: {
       type: String,
       trim:true
 
     },
-    currency: {
+    AplicationType: {
       type: String,
    
     },
-    firstPayment: {
+    numberusers: {
       type: String,
       trim:true
 
     },
-    clientStatus: {
-      type: String,
-      trim:true,
-  
-    },
-    project: {
-      type:String,
-      trim:true
-    },
+ 
+
     notes: {
       type: String,
       trim:true
 
     },
-    clientRequire: {
-      type: String,
-      trim:true
 
-    },
-    clientendRequr: {
-      type: String,
-      trim:true
-
-    },
+ 
     addBy: {
-      type:String,
-      trim:true
+       type: Number,
+          ref: "users",
     },
-    cashOption:{
+
+    total:{
       type:String,
       trim:true
 
     },
-    installmentsPyYear:{
-      type:String,
-      trim:true
-
-    },
-    endContactDate:{
-      type:Date
+    Paymenttype:{
+      type:String
     }
     ,
-    customerDate :{
-      type:Date
+    Arrievcashe :{
+      type:String
     },
-    isViwed:{
+    inprocessCashe:{
       type:String,
-      trim:true
+      
     }
   },
   {

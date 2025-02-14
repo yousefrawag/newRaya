@@ -13,17 +13,19 @@ const missionSchema = mongoose.Schema(
     deadline: Date,
     status: {
       type: String,
-      enum: ["فى تقدم", "مكتملة"],
+      enum: ["فى تقدم", "مكتملة" , "مغلقة"],
       default: "فى تقدم",
     },
     missionType:{
       type:String,
-      enum:["عامة" , "خاصة"]
+      enum:["مشروع عام" , "مشروع خاص"]
     },
-    assignedTo: {
-      type: Number,
-      ref: "users",
-    },
+    assignedTo:[
+      {
+        type: Number,
+        ref: "users",
+      }
+    ] ,
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "projects",
@@ -32,13 +34,27 @@ const missionSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "PrivetProjects",
     },
+    requirements:[
+      {
+        type:{type:String},
+        complated:{type:Boolean , default:false},
+        userEdit:{
+          type: Number,
+          ref: "users",
+        }
+      }
+    ],
+    section:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "section",
+    },
     assignedBy: {
       type: Number,
       ref: "users",
     },
-    update: {
-      type: Boolean,
-      default: false,
+    chatID: {
+      type: Number,
+      ref: "chats",
     },
   },
   {

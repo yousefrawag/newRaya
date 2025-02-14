@@ -3,195 +3,145 @@ const messageSchema = require("../model/messageSchema");
 const notificationSchema = require("../model/notificationSchema");
 const userSchema = require("../model/userSchema");
 const cloudinary = require("../middleware/cloudinary");
-const nodemailer = require("nodemailer")
-exports.sendMessage = async (req, res, next) => {
-  try {
-    const { chatID, senderID, content } = req.body;
+const nodemailer = require("nodemailer");
+const missionSchema = require("../model/missionSchema")
+const path = require("path");
+const { log } = require("console");
+const logo = path.join(__dirname, "../images/logo2.jpg");
 
-    const user = await userSchema.findOne({ _id: senderID });
-    const chat = await chatSchema.findOne({ _id: chatID }).populate("employeeID").populate("missionID");
-    const filesURLs = [];
-    if (req.files) {
-      for (const index in req.files) {
-        const { imageURL: fileURL, imageID: fileID } = await cloudinary.upload(
-          req.files[index].path,
-          "chatsFiles"
-        );
-        filesURLs.push({ fileURL, fileID });
+exports.sendMessage = async (req, res) => {
+  try {
+    const { chatID, content, senderID } = req.body;
+
+    let chat = await chatSchema.findById(chatID).populate("participants").populate("missionID");
+console.log(chat)
+    if (!chat) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    // If participants are empty, fetch from the mission and update chat
+    if (!chat.participants || chat?.participants?.length === 0) {
+      const mission = await missionSchema.findById(chat.missionID).populate("assignedTo");
+      if (mission && mission.participants.length > 0) {
+        chat.participants = mission.participants.map(user => user._id);
+        await chat.save();
+        console.log("✅ Updated chat participants:", chat.participants);
       }
     }
 
-    if (user.type === "admin") {
-      const message = new messageSchema({ chatID, senderID, content })
-      message.filesURLs = filesURLs;
-      await message.save();
-      await handelNotifications(
-        [chat.employeeID._id],
-        chatID,
-        "toEmployee",
-        message,
-        user
-      );
-      setImmediate(() => {
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.GMAIL_EMAIL,
-            pass: process.env.GMAIL_PASS,
-          },
-        });
-  
-        const mailOptions = {
-          from: "alrayapalms@gmail.com",
-          to: chat?.employeeID?.email,
-          subject: "New Message",
-          html: `
-              <p>Dear ${chat?.employeeID.fullName},</p>
-              <p>You have received a New Message From Mission <span style="color:#218bc7">${chat?.missionID?.title}</span> </p>
-             <p style="display:block">From Admin: 
-                <img src="${user?.imageURL}" width="60" height="60" style="border-radius: 50%; margin-bottom: 15px  ; display:block" />
-                ${user.fullName}
-            </p>
-              <p>message: ${content}</p>
-              <p>Make sure to open Your Account And Check it</p>
-              <a href="${process.env.CLIENT_URL}/reportDetails/${chat?.missionID?._id}/${chat?.employeeID._id}" style="display: inline-block; padding: 10px 20px; background-color: #218bc7; color: white; text-decoration: none; border-radius: 5px;">View Chat</a>
-          `,
-      };
-  
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error("Error sending email:", error);
-          } else {
-            console.log("Email sent:", info.response);
-          }
-        });
-      });
-      return res
-        .status(200)
-        .json({ message: "Message sent successfully", message });
-    }
-
-    if (user.type === "employee") {
-    
-      if (chat.employeeID._id != senderID) {
-
-        return res
-          .status(403)
-          .json({ message: "This user is unauthorized to send a message" });
-      }
-
-      const message = new messageSchema({ chatID, senderID, content })
-      message.filesURLs = filesURLs;
-      await message.save();
-      const users = await userSchema.find({ type: "admin" });
-
-      await handelNotifications(
-        users.map((user) => user._id),
-        chatID,
-        "toAdmin",
-        message,
-        user
-      );
-      const missionTitle =  chat?.missionID?.title
-      const missionId = chat?.missionID?._id
-      const empId = chat?.employeeID?._id
-  await sendingMailesToadmins(user , chatID , missionTitle , content , missionId , empId)
-        
-           return res
-        .status(200)
-        .json({ message: "Message sent successfully", message });
-    
-
-
-} }catch (error) {
-   throw new Error(error)
-  }
-};
-const handelNotifications = async (
-  usersID,
-  chatID,
-  notificationType,
-  message,
-  user
-) => {
-  try {
-    let notification = await notificationSchema.findOne({
-      usersID,
+    // Create new message
+    const newMessage = new messageSchema({
       chatID,
-      notificationType,
+      senderID: senderID,
+      content,
     });
 
-    if (notification) {
-      notification.relatedMessages.push(message._id);
-      notification.message = `لديك رسالة من ${user.type}: ${message.content}`;
-      notification.read = false;
-      await notification.save();
-    } else {
-      notification = new notificationSchema({
-        usersID,
-        chatID,
-        notificationType,
-        relatedMessages: [message._id],
-        message: `لديك رسالة من ${user.type}: ${message.content}`,
-      });
+    await newMessage.save();
+const user = await userSchema.findById(senderID)
+    // Send notifications
+    handleNotifications(chat.participants, chatID, newMessage, user);
+    sendEmailNotifications(chat.participants, chat, user, content);
 
-      await notification.save();
-    }
+    res.status(201).json(newMessage);
+  } catch (error) {
+    console.error("🚨 Error sending message:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+const handleNotifications = async (usersID, chatID, message, user) => {
+  try {
+    // console.log("📨 يتم إرسال  اشعار إلى المشاركين:", usersID);
+    const notifications = usersID.map(
+      (id) =>
+        new notificationSchema({
+          usersID: [id],
+          chatID,
+          relatedMessages: [message._id],
+          message: `لديك رسالة من ${user.name}: ${message.content}`,
+          read: false,
+        })
+    );
+
+    await notificationSchema.insertMany(notifications);
   } catch (error) {
     console.error("Error handling notification:", error);
   }
 };
 
+const sendEmailNotifications = async (participants, chat, sender, content) => {
+  try {
+    // console.log("📨 يتم إرسال البريد الإلكتروني إلى المشاركين:", chat);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_EMAIL,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    for (const participant of participants) {
+      const user = await userSchema.findById(participant);
+      if (!user || !user.email) continue;
+
+      const mailOptions = {
+        from: process.env.GMAIL_EMAIL,
+        to: user.email,
+        subject: "💬 رسالة جديدة في محادثة المهمة",
+        html: `
+          <div style="direction: rtl; text-align: center; font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; border-radius: 10px;">
+            <img src="cid:logo" style="width: 150px; border-radius: 10px;" alt="شعار الشركة">
+            
+            <h2 style="color: #333;">💬 لديك رسالة جديدة</h2>
+            
+            <p style="font-size: 18px; color: #555; margin-bottom: 10px;">
+              <strong>📌 عزيزي ${user.name},</strong>
+            </p>
+            
+            <p style="font-size: 16px; color: #444; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0px 3px 6px rgba(0,0,0,0.1);">
+              <span style="color: #218bc7;">${chat.missionID.title}</span>
+              <br>
+              <strong>👤 من: </strong> ${sender.name} <br>
+              <strong>💬 الرسالة:</strong> ${content}
+            </p>
+
+            <p style="font-size: 16px; color: #777; margin-top: 10px;">اضغط على الزر أدناه لعرض المحادثة:</p>
+
+            <a href="${process.env.CLIENT_URL}/team-chat/${chat._id}/${chat?.missionID}"
+              style="display: inline-block; padding: 12px 20px; background-color: #218bc7; color: white; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0,0,0,0.2);">
+              📩 عرض المحادثة
+            </a>
+
+            <p style="font-size: 14px; color: #999; margin-top: 20px;">🚀 فريق العمل الخاص بك</p>
+          </div>
+        `,
+        attachments: [
+          {
+            filename: "logo2.jpg",
+            path: logo, // Ensure correct path
+            cid: "logo", // Content ID for inline display
+          },
+        ],
+      };
+
+      transporter.sendMail(mailOptions, (error) => {
+        if (error) console.error("🚨 Error sending email:", error);
+      });
+    }
+  } catch (error) {
+    console.error("❌ Error sending email notifications:", error);
+  }
+};
+
+
 exports.getChatMessages = async (req, res, next) => {
   try {
     const { chatID } = req.params;
-    const messages = await messageSchema
-      .find({ chatID })
-      .sort({ createdAt: 1 }).populate("chatID").populate("senderID");
+    const messages = await messageSchema.find({ chatID }).sort({ createdAt: 1 }).populate("senderID");
     return res.status(200).json({ messages });
   } catch (error) {
     next(error);
   }
 };
-const sendingMailesToadmins = async (user , chatid , missionTitle , content , missionID , empId) => {
-      const users = await notificationSchema.find({ chatID: chatid }).populate("usersID");
-      console.log(users)
-      users[users.length]?.usersID?.map((item) => {
-        return (
-           setImmediate(() => {
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.GMAIL_EMAIL,
-            pass: process.env.GMAIL_PASS,
-          },
-        });
-  
-        const mailOptions = {
-          from: "alrayapalms@gmail.com",
-          to: item?.email,
-          subject: "New Message",
-          html: `
-              <p>Dear ${item?.fullName},</p>
-              <p>You have received a New Message From Mission <span style="color:#218bc7">${missionTitle}</span> </p>
-             <p style="display:block">From Employee: 
-                <img src="${user?.imageURL}" width="60" height="60" style="border-radius: 50%; margin-bottom: 15px  ; display:block" />
-                ${user.fullName}
-            </p>
-              <p>message: ${content}</p>
-              <p>Make sure to open Your Account And Check it</p>
-              <a href="${process.env.CLIENT_URL}/reportDetails/${missionID}/${empId}"  style="display: inline-block; padding: 10px 20px; background-color: #218bc7; color: white; text-decoration: none; border-radius: 5px;">View Chat</a>
-          `,
-      };
-  
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error("Error sending email:", error);
-          } else {
-            console.log("Email sent:", info.response);
-          }
-        });
-      })
-        )
-        })
-  }

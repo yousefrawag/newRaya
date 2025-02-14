@@ -3,10 +3,12 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const chatSchema = mongoose.Schema(
   {
     _id: Number,
-    employeeID: {
-      type: Number,
-      ref: "users",
-    },
+    participants: [
+      {
+        type: Number,
+        ref: "users",
+      },
+    ],
     missionID:{
       type:Number,
       ref:"missions"

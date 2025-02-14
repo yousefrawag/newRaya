@@ -2,6 +2,8 @@ const projectSchema = require("../../model/projectSchema");
 const cloudinary = require("../../middleware/cloudinary");
 
 const addProject = async (req, res, next) => {
+  console.log(req.token);
+  
   try {
     let project = new projectSchema(req.body);
     project.addedBy = req.token.id;
@@ -41,7 +43,7 @@ const addProject = async (req, res, next) => {
     project.imagesURLs = imagesURLs;
     project.videosURLs = videosURLs;
     project.docsURLs = docsURLs;
-    project.projectName = project.projectName.trim()
+   
     if (project.imageLink){
     
       const newimagelink = {fileID: new Date() , fileURL : project.imageLink}

@@ -10,6 +10,7 @@ const getUserCustomer = require("../controller/customers/userCustomer")
 const uinqCoustomerData = require("../controller/customers/uinqCoustomerData")
 const insertMany = require("../controller/customers/insertMany")
 const validationResult = require("../middleware/validations/validatorResult");
+const protect = require("../middleware/authenticationMW")
 const {
   insert,
   update,
@@ -17,10 +18,12 @@ const {
 const multerUpload = require("../middleware/multer");
 
 const authorizationMW = require("../middleware/authorizationMW");
-
+router.use(protect)
 router
   .route("/")
-  .get(authorizationMW("canViewClients"), getCustomers)
+  .get( 
+    authorizationMW("canViewClients"),
+    getCustomers)
   .post(
     authorizationMW("canAddClients"),
     addCustomer
@@ -34,12 +37,14 @@ router
   .route("/:id")
   .put(
     authorizationMW("canEditClients"),
-    multerUpload.single("image"),
-    update,
-    validationResult,
+ 
     updateCustomer
   )
-  .get(authorizationMW("canViewClients"), getCustomerByID)
-  .delete(authorizationMW("canDeleteClients"), deleteCustomer);
+  .get(
+    authorizationMW("canViewClients"), 
+  getCustomerByID)
+  .delete(
+    authorizationMW("canDeleteClients"), 
+    deleteCustomer);
 
 module.exports = router;

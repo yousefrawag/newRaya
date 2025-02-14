@@ -59,13 +59,17 @@ exports.forgotPassword = async (req, res, next) => {
       },
     });
 
+    const encodedToken = encodeURIComponent(resetToken);
+    const resetLink = `${process.env.CLIENT_URL}/auth/Reset-Password?token=${encodedToken}`;
+    
     const mailOptions = {
       from: process.env.GMAIL_EMAIL,
       to: user.email,
       subject: "Password Reset",
       text: `You requested a password reset. Use the following link to reset your password: 
-        ${process.env.CLIENT_URL}/resetPassword/${resetToken}`,
+            ${resetLink}`,
     };
+    
 
     await transporter.sendMail(mailOptions);
     res
