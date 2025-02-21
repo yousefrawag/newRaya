@@ -114,12 +114,7 @@ const sendMissionUpdateEmails = async (mission) => {
             <p style="font-size: 16px; color: #555;">تم تعديل المهمة الخاصة بك، إليك التفاصيل الجديدة:</p>
             
             <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin: 20px auto; font-size: 16px;">
-              <tr>
-                <td style="padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
-                  <strong>📋 المهمة:</strong>
-                </td>
-                <td style="padding: 10px; border: 1px solid #ddd;">${mission.title}</td>
-              </tr>
+            
               <tr>
                 <td style="padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
                   <strong>📌 الحالة:</strong>
