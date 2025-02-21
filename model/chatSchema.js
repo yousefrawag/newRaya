@@ -10,7 +10,7 @@ const chatSchema = mongoose.Schema(
       },
     ],
     missionID:{
-      type:Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref:"missions"
     }
   },

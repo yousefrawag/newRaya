@@ -39,7 +39,7 @@ console.log(chat)
     await newMessage.save();
 const user = await userSchema.findById(senderID)
     // Send notifications
-    handleNotifications(chat.participants, chatID, newMessage, user);
+    handleNotifications(chat.participants, chat?.missionID?._id, newMessage, user , req);
     sendEmailNotifications(chat.participants, chat, user, content);
 
     res.status(201).json(newMessage);
@@ -50,17 +50,18 @@ const user = await userSchema.findById(senderID)
 };
 
 
-const handleNotifications = async (usersID, chatID, message, user) => {
+const handleNotifications = async (usersID, chatID, message, user , req) => {
   try {
-    // console.log("📨 يتم إرسال  اشعار إلى المشاركين:", usersID);
+    console.log("📨 يتم إرسال  اشعار إلى المشاركين:", chatID);
     const notifications = usersID.map(
       (id) =>
         new notificationSchema({
-          usersID: [id],
-          chatID,
-          relatedMessages: [message._id],
-          message: `لديك رسالة من ${user.name}: ${message.content}`,
-          read: false,
+          user:id,  // Ensure this is a number if required
+          employee: req.token?.id,
+          levels: "missions",
+          type: "message",
+          allowed:chatID,
+          message:  ` ${message.content }   رسالة جديده`,
         })
     );
 
@@ -101,7 +102,7 @@ const sendEmailNotifications = async (participants, chat, sender, content) => {
             </p>
             
             <p style="font-size: 16px; color: #444; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0px 3px 6px rgba(0,0,0,0.1);">
-              <span style="color: #218bc7;">${chat.missionID.title}</span>
+             
               <br>
               <strong>👤 من: </strong> ${sender.name} <br>
               <strong>💬 الرسالة:</strong> ${content}

@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-sequence")(mongoose);
 const missionSchema = mongoose.Schema(
   {
-    _id: Number,
-    title: {
-      type: String,
-    },
+   
 
     description: {
       type: String,
@@ -18,7 +15,7 @@ const missionSchema = mongoose.Schema(
     },
     missionType:{
       type:String,
-      enum:["مشروع عام" , "مشروع خاص"]
+      enum:["خدمة عامة" , "خدمة مخصصة"]
     },
     assignedTo:[
       {
@@ -44,10 +41,7 @@ const missionSchema = mongoose.Schema(
         }
       }
     ],
-    section:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "section",
-    },
+
     assignedBy: {
       type: Number,
       ref: "users",
@@ -61,6 +55,32 @@ const missionSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-missionSchema.plugin(autoIncrement, { id: "missionID" });
+missionSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "project", // Populate the `project` field
+    populate: {
+      path: "customers", // Populate the `customers` field inside `project`
+      model: "clients", // Reference the `clients` model
+    },
+  })
+    .populate({
+      path: "Privetproject", // Populate the `Privetproject` field
+     
+    })
+    .populate({
+      path: "assignedBy", // Populate the `assignedBy` field
+    
+    })
+    .populate({
+      path: "assignedTo", // Populate the `assignedTo` field (array of user IDs)
+    
+    })
+    .populate({
+      path: "requirements.userEdit", // Populate the `userEdit` field inside `requirements`
+    
+    });
+
+  next();
+});
 
 module.exports = mongoose.model("missions", missionSchema);

@@ -1,6 +1,7 @@
 const cloudinary = require("../../middleware/cloudinary");
 const projectSchema = require("../../model/projectSchema");
-
+const userSchema = require("../../model/userSchema");
+const notificationSchema = require("../../model/notificationSchema");
 const deleteProject = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -22,6 +23,19 @@ const deleteProject = async (req, res, next) => {
     }
     await projectSchema.findByIdAndDelete(id);
     res.status(200).json({ message: "project deleted successfully" });
+     const admins = await userSchema.find({ type: "admin" });
+              // ✅ Create notifications properly
+              const notifications = admins.map((admin) => ({
+                user: admin._id,  // Ensure this is a number if required
+                employee: req.token?.id,
+                levels: "projects",
+                type: "delete",
+                allowed:id,
+                message: "تم حذف خدمة عامة",
+              }));
+          
+              // ✅ Save notifications
+              await notificationSchema.insertMany(notifications);
   } catch (error) {
     next(error);
   }

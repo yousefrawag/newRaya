@@ -8,7 +8,7 @@ const getallProjects = async (req, res, next) => {
 
   
     
-    const data = await projectSchema.find({}).populate("customers").populate("addedBy").sort({ createdAt: -1 });
+    const data = await projectSchema.find({}).populate("customers").populate("section").populate("addedBy").sort({ createdAt: -1 });
   
   
     

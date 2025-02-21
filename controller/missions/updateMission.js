@@ -3,7 +3,8 @@ const chatSchema = require("../../model/chatSchema");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const logo = path.join(__dirname, "../../images/logo2.jpg");
-const sectionSchema = require("../../model/Sections")
+const projectSchema = require("../../model/projectSchema")
+const notificationSchema = require("../../model/notificationSchema");
 const updateMission = async (req, res, next) => {
   const { id } = req.params;
   const {
@@ -16,7 +17,7 @@ const updateMission = async (req, res, next) => {
     missionType,
     description,
     Privetproject,
-    section
+   
   } = req.body;
 
   try {
@@ -35,7 +36,7 @@ const updateMission = async (req, res, next) => {
         missionType,
         description,
         Privetproject,
-        section
+       
       },
       { new: true }
     );
@@ -43,13 +44,9 @@ const updateMission = async (req, res, next) => {
     if (!updatedMission) {
       return res.status(404).json({ message: "Mission not found" });
     }
-    if(section){
-      const CurrenSection = await sectionSchema.findById(section)
-      if(!CurrenSection) return res.status(403).json("not found")
-        
-          updatedMission.requirements = CurrenSection.Features
-          await updatedMission.save();
-     
+    if(project){
+      const CurrentProject = await projectSchema.findById(project).populate("section")
+      updatedMission.requirements = CurrentProject?.section?.Features
     }
  
      
@@ -74,7 +71,17 @@ const updateMission = async (req, res, next) => {
     setImmediate(() => sendMissionUpdateEmails(populatedMission));
 
     res.status(200).json({ message: "Mission updated successfully", updatedMission });
+  const notifications = assignedTo.map((admin) => ({
+      user: admin,  // Ensure this is a number if required
+      employee: req.token?.id,
+      levels: "missions",
+      type: "update",
+      allowed:updatedMission?._id,
+      message:"تم تعديل المهمة الخاصة بك",
+    }));
 
+    // ✅ Save notifications
+    await notificationSchema.insertMany(notifications);
   } catch (error) {
     console.error("Error updating mission:", error);
     next(error);

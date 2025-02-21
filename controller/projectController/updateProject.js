@@ -1,6 +1,8 @@
 
 const cloudinary = require("../../middleware/cloudinary");
 const projectSchema = require("../../model/projectSchema");
+const userSchema = require("../../model/userSchema");
+const notificationSchema = require("../../model/notificationSchema");
 const updateProject = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -97,6 +99,20 @@ const updateProject = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "project updated successfully", updatedproject });
+        const admins = await userSchema.find({ type: "admin" });
+      
+          // ✅ Create notifications properly
+          const notifications = admins.map((admin) => ({
+            user: admin._id,  // Ensure this is a number if required
+            employee: req.token?.id,
+            levels: "projects",
+            type: "update",
+            allowed:updatedproject?._id,
+            message: "تم تعديل خدمة عامة",
+          }));
+      
+          // ✅ Save notifications
+          await notificationSchema.insertMany(notifications);
   } catch (error) {
     next(error);
   }

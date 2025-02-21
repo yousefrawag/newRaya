@@ -7,7 +7,7 @@ const userMissions = async (req, res, next) => {
       .populate("project")
       .populate("assignedTo")
       .populate("Privetproject")
-      .populate("section")
+    
       .sort({ createdAt: -1 })
     res.json({ data });
   } catch (error) {

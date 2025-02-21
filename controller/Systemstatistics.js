@@ -13,7 +13,20 @@ const getDashboardStats = async (req, res) => {
     const inProgressTasks = await Mission.countDocuments({ status: "فى تقدم" });
     const closedTasks = await Mission.countDocuments({ status: "مغلقة" });
     const totalMissions = await Mission.countDocuments();
-
+    const customerFinancialStats = await Customer.aggregate([
+      {
+        $group: {
+          _id: null, // Group all documents together
+          totalSum: { $sum: "$total" }, // Sum of all "total" fields
+          totalArrivedCash: { $sum: "$Arrievcashe" }, // Sum of all "Arrievcashe" fields
+          totalInProgressCash: { $sum: "$inprocessCashe" }, // Sum of all "inprocessCashe" fields
+        },
+      },
+    ]);
+    
+    // If there are no customers, return default values
+    const stats = customerFinancialStats[0] || { totalSum: 0, totalArrivedCash: 0, totalInProgressCash: 0 }
+    
     // 🔹 General Stats
     const totalCustomers = await Customer.countDocuments();
     const totalServices = await Service.countDocuments();
@@ -23,6 +36,28 @@ const getDashboardStats = async (req, res) => {
     const totlaProjects = await Project.countDocuments()
     const totalPrivetproject = await privetProjectschema.countDocuments()
     const totalVisa = await Visa.countDocuments()
+    const sectionCustomerCounts = await Project.aggregate([
+      {
+        $lookup: {
+          from: "sections", // Join with the 'sections' collection
+          localField: "section",
+          foreignField: "_id",
+          as: "sectionDetails",
+        },
+      },
+      { $unwind: "$sectionDetails" }, // Convert array to object
+      {
+        $group: {
+          _id: "$section",
+          sectionName: { $first: "$sectionDetails.name" },
+          sectionId: { $first: "$sectionDetails._id" },
+          customerCount: { $sum: 1 }, // Count customers in each section
+        },
+      },
+      { $sort: { customerCount: -1 } } // Sort by most customers
+    ]);
+    
+    // Now return it in the response
 
     // 🔹 Get Top 10 Users Who Added the Most Customers
     const topUsers = await Customer.aggregate([
@@ -57,6 +92,7 @@ const getDashboardStats = async (req, res) => {
         closedTasks,
         totalMissions,
       },
+      
       generalStats: {
         totalCustomers,
         totalServices,
@@ -68,6 +104,9 @@ const getDashboardStats = async (req, res) => {
         totalVisa
       },
       topUsers,
+      sectionCustomerCounts ,
+      financialStats: stats,
+     
     });
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);

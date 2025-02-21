@@ -3,11 +3,24 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const notificationSchema = mongoose.Schema(
   {
     _id: Number,
-    usersID: [{ type: Number, ref: "users" }],
-    chatID: { type: Number, ref: "chats" },
-    notificationType: { type: String, enum: ["toAdmin", "toEmployee"] },
-    relatedMessages: [{ type: Number, ref: "messages" }],
+    user:{ type: Number, ref: "users" },
+    employee:{ type: Number, ref: "users" },
+    levels: {
+      type: String,
+      enum: ["projects", "users", "clients" , "missions"],
+      required: true,
+    },
+    type:{
+      type: String,
+      enum: ["add", "update", "delete" , "message"],
+      required: true,
+    },
+ 
     message: { type: String },
+    allowed: {
+      type:mongoose.Schema.Types.ObjectId,
+      refPath: "levels",
+    },
     read: { type: Boolean, default: false },
   },
   {

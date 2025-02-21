@@ -1,4 +1,5 @@
 const missionSchema = require("../../model/missionSchema");
+const { populate } = require("../../model/roleSchema");
 
 const getMissionByID = async (req, res, next) => {
   const { id } = req.params;
@@ -9,11 +10,14 @@ const getMissionByID = async (req, res, next) => {
       .populate("project") // Populate project
       .populate({
         path: "project",
-        populate: { path: "customers" }, // Populate customers within the project
-      })
+        populate: [
+          { path: "customers" }, 
+          { path: "section" }
+        ]
+      })      
       .populate("Privetproject")
       .populate("assignedBy")
-      .populate("section")
+   
     if (!data) {
      return res.json({ message: "this mission doesn't exist" });
     }

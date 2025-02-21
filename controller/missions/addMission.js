@@ -5,6 +5,9 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const logo = path.join(__dirname, "../../images/logo2.jpg");
 const sectionSchema = require("../../model/Sections")
+const projectSchema = require("../../model/projectSchema");
+
+const notificationSchema = require("../../model/notificationSchema");
 const addMission = async (req, res, next) => {
   try {
     const {
@@ -16,7 +19,7 @@ const addMission = async (req, res, next) => {
       missionType,
       description,
       Privetproject,
-      section
+     
     } = req.body;
 
     // Create a new mission
@@ -27,21 +30,27 @@ const addMission = async (req, res, next) => {
       project,
       assignedBy: req.token.id,
       deadline,
-      section ,
+     
       
       missionType,
       description,
       Privetproject,
     });
-
+    if(project){
+      const CurrentProject = await projectSchema.findById(project).populate("section")
+      console.log(CurrentProject)
+      newMission.requirements = CurrentProject?.section?.Features
+    }else{
+      newMission.requirements = requirements
+    }
+  
     // Create a chat for the mission
     const newChat = await chatSchema.create({
       missionID: newMission._id, 
       participants: assignedTo, 
     });
-    const CurrenSection = await sectionSchema.findById(section)
-    if(!CurrenSection) return res.status(403).json("not found")
-      newMission.requirements = CurrenSection.Features
+ 
+     
     // Link the chat ID to the mission
     newMission.chatID = newChat._id;
     await newMission.save();
@@ -62,7 +71,17 @@ const addMission = async (req, res, next) => {
       message: "Mission created successfully",
       data: newMission,
     });
+  const notifications = assignedTo.map((admin) => ({
+      user: admin,  // Ensure this is a number if required
+      employee: req.token?.id,
+      levels: "missions",
+      type: "add",
+      allowed:newMission?._id,
+      message:"تم إضافة مهمة جديده لك ",
+    }));
 
+    // ✅ Save notifications
+    await notificationSchema.insertMany(notifications);
   } catch (error) {
     console.error("Error adding mission:", error);
     next(error);
@@ -98,7 +117,7 @@ const sendMissionEmails = async (mission) => {
             <h2 style="color: #218bc7;">🔔 لديك مهمة جديدة!</h2>
             <p style="font-size: 18px; color: #333;">مرحبًا <b>${user.name}</b>,</p>
             <p style="font-size: 16px;">تم تعيين مهمة جديدة لك بواسطة <b>${mission.assignedBy.name}</b>.</p>
-            <p><strong>📌 عنوان المهمة:</strong> ${mission.title}</p>
+         
             <p><strong>📅 تاريخ التسليم:</strong> ${new Date(mission.deadline).toLocaleDateString("ar-EG")}</p>
 
             <p style="margin-top: 10px; font-size: 14px; color: #555;">

@@ -1,11 +1,13 @@
 const projectSchema = require("../../model/projectSchema");
 const cloudinary = require("../../middleware/cloudinary");
-
+const userSchema = require("../../model/userSchema");
+const notificationSchema = require("../../model/notificationSchema");
 const addProject = async (req, res, next) => {
-  console.log(req.token);
+  console.log(req.body)
   
   try {
     let project = new projectSchema(req.body);
+    
     project.addedBy = req.token.id;
     const imagesURLs = [];
     const videosURLs = [];
@@ -56,6 +58,20 @@ const addProject = async (req, res, next) => {
     }
     await project.save();
     res.status(200).json({ project });
+    const admins = await userSchema.find({ type: "admin" });
+
+    // ✅ Create notifications properly
+    const notifications = admins.map((admin) => ({
+      user: admin._id,  // Ensure this is a number if required
+      employee: req.token?.id,
+      levels: "projects",
+      type: "add",
+      allowed:project?._id,
+      message: "تم إضافة خدمة عامة جديدة",
+    }));
+
+    // ✅ Save notifications
+    await notificationSchema.insertMany(notifications);
   } catch (error) {
     next(error);
   }

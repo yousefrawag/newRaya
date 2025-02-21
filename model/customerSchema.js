@@ -10,7 +10,7 @@ const customerSchema = mongoose.Schema(
 
    
     },
-    secoundName: {
+    email: {
       type: String,
       trim:true
 
@@ -50,7 +50,7 @@ const customerSchema = mongoose.Schema(
     },
 
     total:{
-      type:String,
+      type:Number,
       trim:true
 
     },
@@ -59,10 +59,10 @@ const customerSchema = mongoose.Schema(
     }
     ,
     Arrievcashe :{
-      type:String
+      type:Number
     },
     inprocessCashe:{
-      type:String,
+      type:Number,
       
     }
   },

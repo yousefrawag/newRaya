@@ -6,27 +6,26 @@ exports.getUserNotifications = async (req, res, next) => {
 
     const notifications = await notificationSchema
       .find({
-        usersID: { $in: [id] },
+        user:id ,
         read: false,
       })
-      .populate({
-        path: "chatID",
-        populate: {
-          path: "missionID",
-        },
-      })
+      .populate("user") // Populating user details
+      .populate("employee") // Populating employee details
+      .populate("allowed")
+   
+      
       .sort({ createdAt: -1 });
 
-    const missions = await missionSchema.find();
-    const missionsAvailable = new Set(missions.map((item) => item._id));
+    // const missions = await missionSchema.find();
+    // const missionsAvailable = new Set(missions.map((item) => item._id));
 
-    // ✅ Safe filtering to prevent null errors
-    const validNotifications = notifications.filter((item) => {
-      const missionid = item.chatID?.missionID?._id;  // Safe check
-      return missionid && missionsAvailable.has(missionid);
-    });
+    // // ✅ Safe filtering to prevent null errors
+    // const validNotifications = notifications.filter((item) => {
+    //   const missionid = item.chatID?.missionID?._id;  // Safe check
+    //   return missionid && missionsAvailable.has(missionid);
+    // });
 
-    return res.status(200).json({ notifications: validNotifications });  // Send valid data only
+    return res.status(200).json({ notifications: notifications });  // Send valid data only
   } catch (error) {
     next(error);
   }
@@ -38,14 +37,13 @@ exports.markNotificationAsRead = async (req, res, next) => {
     const { id } = req.params;
 
     const updatedNotifications = await notificationSchema.updateMany(
-      { usersID: { $in: [id] }, read: false },
-      { $set: { read: true } }
+      { user: id, read: false }, // Filter by user ID and unread notifications
+      { $set: { read: true } } // Mark as read
     );
 
     return res.status(200).json({ message: "All notifications marked as read", updatedNotifications });
   } catch (error) {
     console.log(error);
-    
     next(error);
   }
 };
