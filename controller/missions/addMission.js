@@ -3,7 +3,7 @@ const chatSchema = require("../../model/chatSchema");
 const userSchema = require("../../model/userSchema");
 const nodemailer = require("nodemailer");
 const path = require("path");
-const logo = path.join(__dirname, "../../images/logo2.jpg");
+const logo = path.join(__dirname, "../../images/logo2.png");
 const sectionSchema = require("../../model/Sections")
 const projectSchema = require("../../model/projectSchema");
 
@@ -19,7 +19,7 @@ const addMission = async (req, res, next) => {
       missionType,
       description,
       Privetproject,
-     
+      requirements
     } = req.body;
 
     // Create a new mission
@@ -31,18 +31,12 @@ const addMission = async (req, res, next) => {
       assignedBy: req.token.id,
       deadline,
      
-      
+      requirements,
       missionType,
       description,
       Privetproject,
     });
-    if(project){
-      const CurrentProject = await projectSchema.findById(project).populate("section")
-      console.log(CurrentProject)
-      newMission.requirements = CurrentProject?.section?.Features
-    }else{
-      newMission.requirements = requirements
-    }
+
   
     // Create a chat for the mission
     const newChat = await chatSchema.create({
@@ -58,9 +52,9 @@ const addMission = async (req, res, next) => {
     // Populate necessary mission details
     const populatedMission = await missionSchema
       .findById(newMission._id)
-      .populate({ path: "assignedTo", select: "name email" })
+      .populate({ path: "assignedTo", select: "fullName email" })
       .populate({ path: "project", select: "projectName" })
-      .populate({ path: "assignedBy", select: "name email" })
+      .populate({ path: "assignedBy", select: "fullName email" })
       .populate({ path: "Privetproject", select: "projectName" })
       .lean();
 
@@ -115,8 +109,8 @@ const sendMissionEmails = async (mission) => {
 
             <!-- محتوى البريد -->
             <h2 style="color: #218bc7;">🔔 لديك مهمة جديدة!</h2>
-            <p style="font-size: 18px; color: #333;">مرحبًا <b>${user.name}</b>,</p>
-            <p style="font-size: 16px;">تم تعيين مهمة جديدة لك بواسطة <b>${mission.assignedBy.name}</b>.</p>
+            <p style="font-size: 18px; color: #333;">مرحبًا <b>${user.fullName}</b>,</p>
+            <p style="font-size: 16px;">تم تعيين مهمة جديدة لك بواسطة <b>${mission.assignedBy.fullName}</b>.</p>
          
             <p><strong>📅 تاريخ التسليم:</strong> ${new Date(mission.deadline).toLocaleDateString("ar-EG")}</p>
 
@@ -137,9 +131,10 @@ const sendMissionEmails = async (mission) => {
         `,
         attachments: [
           {
-            filename: "logo2.jpg",
+            filename: "logo2.png",
             path: logo, // تأكد من أن مسار الصورة صحيح
             cid: "logo",
+             contentType: "image/png"
           },
         ],
       };

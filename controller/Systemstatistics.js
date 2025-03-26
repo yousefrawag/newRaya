@@ -77,7 +77,7 @@ const getDashboardStats = async (req, res) => {
         $project: {
           _id: 1,
           totalCustomers: 1,
-          "userDetails.name": 1,
+          "userDetails.fullName": 1,
           "userDetails.imageURL": 1, // Get name and image
         },
       },

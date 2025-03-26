@@ -8,9 +8,20 @@ const getallProjects = async (req, res, next) => {
 
   
     
-    const data = await projectSchema.find({}).populate("customers").populate("section").populate("addedBy").sort({ createdAt: -1 });
-  
-  
+    const data = await projectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
+    const projectStatusCount = data.reduce((acc, item) => {
+      const status = item.projectStatus; // Extract project status
+    
+      if (!acc[status]) {
+        acc[status] = { status: status, count: 0 }; // Initialize if not exists
+      }
+    
+      acc[status].count += 1; // Increment count
+    
+      return acc;
+    }, {});
+
+    console.log(projectStatusCount);
     
       res.status(200).json({ data });
  

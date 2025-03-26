@@ -9,9 +9,7 @@ const getDeailyreport= async (req, res, next) => {
         endOfDay.setHours(23, 59, 59, 999); // Set to 23:59:59
     
         // Query to find records where `login` is within the current day
-        const records = await DeailyReportsmodule.find({
-          login: { $gte: startOfDay, $lt: endOfDay },
-        })
+        const records = await DeailyReportsmodule.find()
           .populate({
             path: "employeeID",
             populate: {

@@ -4,13 +4,13 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const customerSchema = mongoose.Schema(
   {
 
-    name: {
+    fullName: {
       type: String,
       trim:true
 
    
     },
-    email: {
+    region: {
       type: String,
       trim:true
 
@@ -21,50 +21,88 @@ const customerSchema = mongoose.Schema(
       unique: true,
 
     },
-    Section: {
+    secondaryPhoneNumber: {
       type: String,
       trim:true
 
     },
-    AplicationType: {
+    currency: {
       type: String,
    
     },
-    numberusers: {
+    firstPayment: {
       type: String,
       trim:true
 
     },
- 
-
+    clientStatus: {
+      type: String,
+      trim:true,
+  
+    },
+    project: {
+      type:String,
+      trim:true
+    },
     notes: {
       type: String,
       trim:true
 
     },
-
- 
-    addBy: {
-       type: Number,
-          ref: "users",
-    },
-
-    total:{
-      type:Number,
+    clientRequire: {
+      type: String,
       trim:true
 
     },
-    Paymenttype:{
-      type:String
+    clientendRequr: {
+      type: String,
+      trim:true
+
+    },
+    addBy: {
+      type:String,
+      trim:true
+    },
+    cashOption:{
+      type:String,
+      trim:true
+
+    },
+    installmentsPyYear:{
+      type:String,
+      trim:true
+
+    },
+    endContactDate:{
+      type:Date
     }
     ,
-    Arrievcashe :{
-      type:Number
+    customerDate :{
+      type:Date
     },
-    inprocessCashe:{
-      type:Number,
-      
-    }
+    isViwed:{
+      type:String,
+      trim:true
+    },
+    SectionFollow: [{
+      details: {
+        type: String
+      },
+      detailsDate: {
+        type: Date,
+      },
+      user: {
+        type: Number,
+        ref: "users",
+      },
+      CustomerDealsatuts:{
+        type:String
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now // Automatically sets the creation date
+      }
+    }]
   },
   {
     timestamps: true,

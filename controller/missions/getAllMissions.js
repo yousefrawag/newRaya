@@ -10,13 +10,9 @@ const getAllMission = async (req, res, next) => {
     const data = await missionSchema
       .find({})
       .populate("assignedTo")
-      .populate({
-        path: "project",
-        populate: [
-          { path: "customers" }, 
-          { path: "section" }
-        ]
-      }) 
+      .populate(
+ "project"
+      ) 
       .populate("assignedBy")
       .populate("Privetproject")
     

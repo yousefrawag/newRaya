@@ -10,6 +10,7 @@ const router = express.Router();
 router.use(protect)
 router.route("/getCurrentLoggedUser").get(userController.getCurrentLoggedUser);
 router.route("/changePassword").post(userController.changePassword);
+router.route("/logout").post(userController.logout);
 router
   .route("/update")
   .put(

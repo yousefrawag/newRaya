@@ -32,7 +32,7 @@ router
   // where any can select customers
 router.get("/selectCustomer" ,SelectCustomer )
 router.get("/uinqData"  , uinqCoustomerData)
-router.get("/user/:id" ,  getUserCustomer)
+router.get("/userCustomer" ,  getUserCustomer)
 router
   .route("/:id")
   .put(

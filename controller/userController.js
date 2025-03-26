@@ -5,6 +5,8 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const { log } = require("console");
 const logo = path.join(__dirname, "../images/logo2.jpg");
+const DeailyReportsmodule = require("../model/DeailyReports");
+
 exports.getUsers = (req, res, next) => {
   const {field , searTerm} = req.query
   let fillter = {}
@@ -199,6 +201,31 @@ exports.getUserById = (req, res, next) => {
       res.status(200).json({ data });
     })
     .catch((err) => next(err));
+};
+exports.logout = async (req, res, next) => {
+  try {
+    // Find the latest login record that has no logout time
+    const findDeailyUser = await DeailyReportsmodule.findOne({
+      employeeID: req.token.id,
+      logout: { $exists: false }, // Ensures we get only open sessions
+    }).sort({ login: -1 }); // Get the latest session
+
+    if (!findDeailyUser) {
+      return res.status(400).json({ msg: "No active session found for logout" });
+    }
+
+    // Set logout time and calculate total hours
+    const logoutTime = new Date();
+    const totalHours = (logoutTime - findDeailyUser.login) / (1000 * 60 * 60); // Convert ms to hours
+
+    findDeailyUser.logout = logoutTime;
+    findDeailyUser.totaHours = totalHours.toFixed(2); // Store hours with 2 decimals
+    await findDeailyUser.save();
+
+    res.status(200).json({ msg: "User logged out successfully", totalHours });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.changePassword = async (req, res, next) => {

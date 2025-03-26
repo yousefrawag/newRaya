@@ -11,8 +11,10 @@ const GetallCustomer = async (req, res, next) => {
        filters = {};
     }else{
       filters = {
-        addBy: id
-      };      
+        addBy: {
+          $regex: new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
+        }
+      };     
     }
    
    
@@ -37,7 +39,7 @@ const GetallCustomer = async (req, res, next) => {
       // }
     
 
-    const data = await customerSchema.find(filters).populate("addBy").sort({ createdAt: -1 });
+    const data = await customerSchema.find(filters).sort({ createdAt: -1 }).populate("SectionFollow.user");
 
     res.status(200).json({ data });
   } catch (error) {

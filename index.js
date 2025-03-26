@@ -26,7 +26,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://tr-colors-admin.netlify.app" , 'http://localhost:5173' , "https://trcololrs.vercel.app" , "http://localhost:3001"], // specify the origin that you want to allow
+  origin: ["https://rayapal-crm.netlify.app" , 'https://www.trcolors.com' , "http://localhost:3003" , "http://localhost:5173"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
   allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
   credentials: true // Allow credentials to be included in the request
@@ -44,7 +44,7 @@ server.use("/api/chats", require("./routes/chatRoute"));
 server.use("/api/notifications", require("./routes/notificationRoute"));
 server.use("/api/messages", require("./routes/messageRoute"));
 server.use("/api/customers", require("./routes/customerRoute"));
-
+server.use("/api/currency", require("./routes/currencyRoute"));
 server.use("/api/users", require("./routes/userRoute"));
 server.use("/api/roles", require("./routes/roleRoute"));
 
@@ -58,6 +58,8 @@ server.use("/api/visav", require("./routes/VisaRoutes"));
 server.use("/api/prvicy", require("./routes/prvcyRoute"));
 server.use('/api/cutomerRequest' , require("./routes/CustomerMessages"))
 server.use('/api/Section' , require("./routes/SectionsRoutes"))
+server.use("/api/region", require("./routes/regionRoute"));
+server.use("/api/projectStatuts", require("./routes/projectStatutsRoute"));
 // Not Found MiddleWare
 
 server.use((req, res, next) => {

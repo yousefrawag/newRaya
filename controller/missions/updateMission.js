@@ -2,7 +2,7 @@ const missionSchema = require("../../model/missionSchema");
 const chatSchema = require("../../model/chatSchema");
 const nodemailer = require("nodemailer");
 const path = require("path");
-const logo = path.join(__dirname, "../../images/logo2.jpg");
+const logo = path.join(__dirname, "../../images/logo2.png");
 const projectSchema = require("../../model/projectSchema")
 const notificationSchema = require("../../model/notificationSchema");
 const updateMission = async (req, res, next) => {
@@ -44,10 +44,7 @@ const updateMission = async (req, res, next) => {
     if (!updatedMission) {
       return res.status(404).json({ message: "Mission not found" });
     }
-    if(project){
-      const CurrentProject = await projectSchema.findById(project).populate("section")
-      updatedMission.requirements = CurrentProject?.section?.Features
-    }
+ 
  
      
     // Update the chat participants if assigned users changed
@@ -61,9 +58,9 @@ const updateMission = async (req, res, next) => {
     // Populate mission details
     const populatedMission = await missionSchema
       .findById(id)
-      .populate({ path: "assignedTo", select: "name email" })
+      .populate({ path: "assignedTo", select: "fullName email" })
       .populate({ path: "project", select: "projectName" })
-      .populate({ path: "assignedBy", select: "name email" })
+      .populate({ path: "assignedBy", select: "fullName email" })
       .populate({ path: "Privetproject", select: "projectName" })
       .lean();
 
@@ -110,7 +107,7 @@ const sendMissionUpdateEmails = async (mission) => {
           <div style="text-align: center; direction: rtl; font-family: Arial, sans-serif;">
             <img src="cid:logo" style="width: 100%; max-width: 600px;" alt="شعار الشركة">
             <h2 style="color: #333;">🔄 تم تحديث المهمة الموكلة إليك</h2>
-            <p style="font-size: 18px; color: #555;">📌 <strong>عزيزي ${user.name},</strong></p>
+            <p style="font-size: 18px; color: #555;">📌 <strong>عزيزي ${user.fullName},</strong></p>
             <p style="font-size: 16px; color: #555;">تم تعديل المهمة الخاصة بك، إليك التفاصيل الجديدة:</p>
             
             <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin: 20px auto; font-size: 16px;">
@@ -132,7 +129,7 @@ const sendMissionUpdateEmails = async (mission) => {
                 <td style="padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
                   <strong>🛠️ المحدّث:</strong>
                 </td>
-                <td style="padding: 10px; border: 1px solid #ddd;">${mission.assignedBy.name}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${mission.assignedBy.fullName}</td>
               </tr>
             </table>
 
@@ -142,13 +139,14 @@ const sendMissionUpdateEmails = async (mission) => {
             </a>
           </div>
         `,
-        attachments: [
-          {
-            filename: "logo2.jpg",
-            path: logo, // Ensure the correct path
-            cid: "logo", // Content ID for inline display
-          },
-        ],
+           attachments: [
+              {
+                filename: "logo2.png",
+                path: logo, // تأكد من أن مسار الصورة صحيح
+                cid: "logo",
+                 contentType: "image/png"
+              },
+            ],
       };
 
       transporter.sendMail(mailOptions, (error, info) => {

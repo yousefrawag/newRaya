@@ -1,4 +1,3 @@
-const cloudinary = require("../../middleware/cloudinary");
 const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
@@ -6,38 +5,54 @@ const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
-    let customer = await customerSchema.findById(id);
-    if (!customer) {
-      return res.status(404).json({ message: "This customer desn't exist" });
-    }
-  
+    console.log(req.body);
+    
+    // Remove SectionFollow from updateData to prevent overwrite
+    delete updateData.SectionFollow;
+    
+    // Prepare the new SectionFollow entry
+    const newSectionFollow = {
+      details: req.body.SectionFollow.details,
+      detailsDate: req.body.SectionFollow.detailsDate,
+      user: req.token.id,
+      CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
+      createdAt: new Date(),
+    };
+
+    // Single atomic update operation
     const updatedCustomer = await customerSchema.findByIdAndUpdate(
       id,
-      updateData,
       {
-        new: true,
-      }
+        $set: updateData, // Update top-level fields
+        $push: { SectionFollow: newSectionFollow } // Add to array
+      },
+      { new: true } // Return the updated document
     );
-    res
-      .status(200)
-      .json({ message: "customer updated successfully", updatedCustomer });
-       const admins = await userSchema.find({ type: "admin" });
-            
-            // ✅ Create notifications properly
-            const notifications = admins.map((admin) => ({
-              user: admin._id,  // Ensure this is a number if required
-              employee: req.token?.id,
-              levels: "clients",
-              type: "update",
-              allowed:updatedCustomer?._id,
-              message: "تم  تعديل بيانات العميل",
-            }));
-        
-            // ✅ Save notifications
-            await notificationSchema.insertMany(notifications);
+
+    if (!updatedCustomer) {
+      return res.status(404).json({ message: "This customer doesn't exist" });
+    }
+
+    res.status(200).json({ 
+      message: "Customer updated successfully", 
+      updatedCustomer 
+    });
+
+    // Notify admins (same as before)
+    const admins = await userSchema.find({ type: "admin" });
+    const notifications = admins.map(admin => ({
+      user: admin._id,
+      employee: req.token?.id,
+      levels: "clients",
+      type: "update",
+      allowed: updatedCustomer?._id,
+      message: "تم تعديل بيانات العميل",
+    }));
+
+    await notificationSchema.insertMany(notifications);
+
   } catch (error) {
     next(error);
   }
 };
-
 module.exports = updateCustomer;

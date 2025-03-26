@@ -15,7 +15,7 @@ const missionSchema = mongoose.Schema(
     },
     missionType:{
       type:String,
-      enum:["خدمة عامة" , "خدمة مخصصة"]
+      enum:["مشروع خاص" , "مشروع عام"]
     },
     assignedTo:[
       {
@@ -58,10 +58,7 @@ const missionSchema = mongoose.Schema(
 missionSchema.pre(/^find/, function (next) {
   this.populate({
     path: "project", // Populate the `project` field
-    populate: {
-      path: "customers", // Populate the `customers` field inside `project`
-      model: "clients", // Reference the `clients` model
-    },
+
   })
     .populate({
       path: "Privetproject", // Populate the `Privetproject` field

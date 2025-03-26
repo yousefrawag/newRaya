@@ -8,13 +8,7 @@ const getMissionByID = async (req, res, next) => {
       .findById(id)
       .populate("assignedTo")
       .populate("project") // Populate project
-      .populate({
-        path: "project",
-        populate: [
-          { path: "customers" }, 
-          { path: "section" }
-        ]
-      })      
+    
       .populate("Privetproject")
       .populate("assignedBy")
    
