@@ -71,9 +71,7 @@ exports.addUser = async (req, res, next) => {
       html: `
         <div style="direction: rtl; text-align: right; font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; color: #333; line-height: 1.8;">
           <!-- شعار الشركة -->
-          <div style="text-align: center; margin-bottom: 20px;">
-            <img src="cid:logo" alt="شعار الشركة" style="width: 150px; border-radius: 10px;">
-          </div>
+       
 
           <h2 style="color: #218bc7;">🎉 مرحبًا ${user.name}!</h2>
           <p>تم إنشاء حسابك بنجاح على منصتنا  ألوان المسافر. يمكنك الآن تسجيل الدخول باستخدام التفاصيل التالية:</p>
@@ -95,13 +93,7 @@ exports.addUser = async (req, res, next) => {
           <p style="margin-top: 20px; font-size: 12px; color: #888;">📌 هذا البريد مرسل تلقائيًا، لا ترد عليه.</p>
         </div>
       `,
-      attachments: [
-        {
-          filename: "logo2.jpg",
-          path: logo, // ✅ Ensure this path is correct
-          cid: "logo",
-        },
-      ],
+  
     };
 
     // Send Email
