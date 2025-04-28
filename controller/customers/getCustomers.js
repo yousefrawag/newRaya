@@ -38,10 +38,12 @@ const GetallCustomer = async (req, res, next) => {
       //   }
       // }
     
+      const clients = await customerSchema.find(filters).populate("SectionFollow.user").sort({ createdAt: -1 });
 
-    const data = await customerSchema.find(filters).sort({ createdAt: -1 }).populate("SectionFollow.user");
+ 
+      
 
-    res.status(200).json({ data });
+    res.status(200).json({ data:clients });
   } catch (error) {
     next(error);
   }
