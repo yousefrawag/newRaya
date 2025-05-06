@@ -4,7 +4,10 @@ const GetallStauts = require("../controller/projectSatautsController/GetallStaut
 const updateStatuts = require("../controller/projectSatautsController/updateStatuts");
 const DeleteStatuts = require("../controller/projectSatautsController/DeleteStatuts");
 const authorizationMW = require("../middleware/authorizationMW");
+const protect = require("../middleware/authenticationMW")
+
 const router = express.Router();
+router.use(protect)
 router
   .route("/")
   .post(authorizationMW("canAddAdministration"), AddprojectStatuts)

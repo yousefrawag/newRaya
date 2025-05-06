@@ -14,8 +14,11 @@ const addCustomer = async (req, res, next) => {
         return res.status(404).json({mesg:"userfound"})
       }
       let customer = new customerSchema(req.body);
+      if(req.body.SectionFollow){
         customer.SectionFollow[0].user = req.token.id
-        customer.addBy = req.token.id
+      }
+       
+        // customer.addBy = req.token.id
       await customer.save();
      res.status(200).json({
         message: `${customer.clientStatus} created successfully`,

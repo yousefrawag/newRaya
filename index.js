@@ -26,7 +26,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://rayapal-crm.netlify.app" , 'https://www.trcolors.com' , "http://localhost:3003" , "http://localhost:5173"], // specify the origin that you want to allow
+  origin: ["https://rayapal-crm.netlify.app" ,  "http://localhost:5173"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
   allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
   credentials: true // Allow credentials to be included in the request
@@ -59,7 +59,10 @@ server.use("/api/prvicy", require("./routes/prvcyRoute"));
 server.use('/api/cutomerRequest' , require("./routes/CustomerMessages"))
 server.use('/api/Section' , require("./routes/SectionsRoutes"))
 server.use("/api/region", require("./routes/regionRoute"));
+server.use("/api/location", require("./routes/LocationRoute"));
 server.use("/api/projectStatuts", require("./routes/projectStatutsRoute"));
+server.use("/api/clientStauts", require("./routes/ClientsautsRoute"));
+server.use("/api/clientcheckStauts", require("./routes/clientsCheckstauts"));
 // Not Found MiddleWare
 
 server.use((req, res, next) => {
