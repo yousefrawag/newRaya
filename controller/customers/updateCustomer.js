@@ -1,46 +1,50 @@
 const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
+
 const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log(req.body);
-    
+
     const updateData = { ...req.body };
-    console.log(req.body);
     
     // Remove SectionFollow from updateData to prevent overwrite
     delete updateData.SectionFollow;
-    
-    // Prepare the new SectionFollow entry
-    const newSectionFollow = {
-      details: req.body.SectionFollow.details,
-      detailsDate: req.body.SectionFollow.detailsDate,
-      user: req.token.id,
-      CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
-      createdAt: new Date(),
+
+    const updateOperation = {
+      $set: updateData
     };
 
-    // Single atomic update operation
+    // If SectionFollow is provided, prepare and add it
+    if (req.body.SectionFollow) {
+      const newSectionFollow = {
+        details: req.body.SectionFollow.details,
+        detailsDate: req.body.SectionFollow.detailsDate,
+        user: req.token.id,
+        CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
+        createdAt: new Date(),
+      };
+      updateOperation.$push = { SectionFollow: newSectionFollow };
+    }
+
+    // Perform atomic update
     const updatedCustomer = await customerSchema.findByIdAndUpdate(
       id,
-      {
-        $set: updateData, // Update top-level fields
-        $push: { SectionFollow: newSectionFollow } // Add to array
-      },
-      { new: true } // Return the updated document
+      updateOperation,
+      { new: true }
     );
 
     if (!updatedCustomer) {
       return res.status(404).json({ message: "This customer doesn't exist" });
     }
 
-    res.status(200).json({ 
-      message: "Customer updated successfully", 
-      updatedCustomer 
+    res.status(200).json({
+      message: "Customer updated successfully",
+      updatedCustomer
     });
 
-    // Notify admins (same as before)
+    // Notify admins
     const admins = await userSchema.find({ type: "admin" });
     const notifications = admins.map(admin => ({
       user: admin._id,
@@ -57,4 +61,5 @@ const updateCustomer = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = updateCustomer;
