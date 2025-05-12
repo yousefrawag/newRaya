@@ -8,6 +8,6 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 const router = express.Router();
 router.use(protect)
-router.route("/").get( getCheckstauts ).post(authorizationMW("canAddAdministration") , Addcheckstauts)
-router.route("/:id").delete(authorizationMW("canDeleteAdministration") , Deletecheckstauts).put(authorizationMW("canEditAdministration") , Updatecheckstauts)
+router.route("/").get( getCheckstauts ).post(authorizationMW("canAddisvewied") , Addcheckstauts)
+router.route("/:id").delete(authorizationMW("canDeleteisvewied") , Deletecheckstauts).put(authorizationMW("canEditisvewied") , Updatecheckstauts)
 module.exports = router;

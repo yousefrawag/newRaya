@@ -8,6 +8,6 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 const router = express.Router();
 router.use(protect)
-router.route("/").get( getAllCurrency ).post(authorizationMW("canAddAdministration") , Addcurrency)
-router.route("/:id").delete(authorizationMW("canDeleteAdministration") , DeleteCurrency).put(authorizationMW("canEditAdministration") , updateCurrency).get(SinagleCurrency)
+router.route("/").get( getAllCurrency ).post(authorizationMW("canAddappCurency") , Addcurrency)
+router.route("/:id").delete(authorizationMW("canDeleteappCurency") , DeleteCurrency).put(authorizationMW("canEditappCurency") , updateCurrency).get(SinagleCurrency)
 module.exports = router;

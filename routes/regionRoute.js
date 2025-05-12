@@ -9,10 +9,10 @@ const router = express.Router();
 router.use(protect)
 router
   .route("/")
-  .post(authorizationMW("canAddAdministration"), AddRegion)
+  .post(authorizationMW("canAddprojectstypes"), AddRegion)
   .get( GetAllRegions);
 router
   .route("/:id")
-  .put(authorizationMW("canEditAdministration"), updateRegion)
-  .delete(authorizationMW("canDeleteAdministration"), DeleteRegion);
+  .put(authorizationMW("canEditprojectstypes"), updateRegion)
+  .delete(authorizationMW("canDeleteprojectstypes"), DeleteRegion);
 module.exports = router;

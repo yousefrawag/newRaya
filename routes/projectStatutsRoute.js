@@ -10,10 +10,10 @@ const router = express.Router();
 router.use(protect)
 router
   .route("/")
-  .post(authorizationMW("canAddAdministration"), AddprojectStatuts)
+  .post(authorizationMW("canAddprojectstuts"), AddprojectStatuts)
   .get( GetallStauts);
 router
   .route("/:id")
-  .put(authorizationMW("canEditAdministration"), updateStatuts)
-  .delete(authorizationMW("canDeleteAdministration"), DeleteStatuts);
+  .put(authorizationMW("canEditprojectstuts"), updateStatuts)
+  .delete(authorizationMW("canDeleteprojectstuts"), DeleteStatuts);
 module.exports = router;
