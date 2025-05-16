@@ -1,18 +1,27 @@
 const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
+function normalizePhoneNumber(phone) {
+  if (!phone) return "";
+  return phone.replace(/[^\d]/g, ""); // Remove everything except digits
+}
+
 const addCustomer = async (req, res, next) => {
 
     try {
       // Save the single customer data from req.body
       const {phoneNumber} = req.body
-      const founduser = await customerSchema.findOne({phoneNumber})
-      console.log(req.token);
-      if(founduser) {
+     const normalizedPhone = normalizePhoneNumber(phoneNumber);
+
+    const foundUser = await customerSchema.findOne({
+      phoneNumber: normalizedPhone,
+    });
+      if(foundUser) {
     
         
         return res.status(404).json({mesg:"userfound"})
       }
+        req.body.phoneNumber = normalizedPhone;
       let customer = new customerSchema(req.body);
       if(req.body.SectionFollow){
         customer.SectionFollow[0].user = req.token.id
