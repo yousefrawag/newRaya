@@ -30,6 +30,9 @@ const customerSchema = mongoose.Schema(
       type: String,
    
     },
+    source:{
+      type:String
+    } ,
     firstPayment: {
       type: String,
       trim:true
