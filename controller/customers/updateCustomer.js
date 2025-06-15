@@ -5,7 +5,8 @@ const notificationSchema = require("../../model/notificationSchema");
 const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(req.body);
+    const {notes} = req.body
+    console.log(notes);
 
     const updateData = { ...req.body };
     

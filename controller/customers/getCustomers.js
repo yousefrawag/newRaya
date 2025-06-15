@@ -38,7 +38,33 @@ const GetallCustomer = async (req, res, next) => {
       //   }
       // }
     
-      const clients = await customerSchema.find(filters).populate("SectionFollow.user").sort({ createdAt: -1 });
+    const clients = await customerSchema.aggregate([
+  // 1. فلترة حسب أي فلاتر (إن وجدت)
+  { $match: filters },
+
+  // 2. حساب آخر تاريخ متابعة (من داخل SectionFollow)
+  {
+    $addFields: {
+      lastFollowUpdate: {
+        $max: "$SectionFollow.createdAt"
+      }
+    }
+  },
+
+  // 3. ترتيب حسب آخر متابعة
+  { $sort: { lastFollowUpdate: -1 } },
+
+  // 4. جلب بيانات المستخدم المرتبط (SectionFollow.user)
+  {
+    $lookup: {
+      from: "users", // اسم مجموعة المستخدمين في قاعدة البيانات
+      localField: "SectionFollow.user",
+      foreignField: "_id",
+      as: "SectionFollowUsers"
+    }
+  }
+]);
+
 
  
       
