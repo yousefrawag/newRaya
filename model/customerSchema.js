@@ -71,6 +71,14 @@ const customerSchema = mongoose.Schema(
       trim:true
 
     },
+    Paymentpermonth:{
+      type:Number,
+      trim:true
+    },
+    userfollow:{
+    type:String,
+      trim:true
+    },
     installmentsPyYear:{
       type:String,
       trim:true

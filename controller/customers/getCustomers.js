@@ -16,33 +16,27 @@ const GetallCustomer = async (req, res, next) => {
         }
       };     
     }
-   
-   
-      // if (
-      //   ["fullName" , "region" , "currency" , 
-      //     "firstPayment" , "clientStatus" , 
-      //     "cashOption" , "installmentsPyYear" , 
-      //     "isViwed" ,"notes","phoneNumber",
-      //     "project", "addBy",
-      //      "clientendRequr" , "clientRequire"].includes(field) && searTerm
-      
-      // ) {
-      //   filters[field] = { $regex: new RegExp(searTerm, 'i') };
-      // } 
 
- 
-      // if(["createdAt" , "endContactDate" , "customerDate"].includes(field) && endDate){
-      //   filters[field] = {
-      //     $gte: new Date(startDate),  // greater than or equal to fromDate
-      //     $lte: new Date(endDate) 
-      //   }
-      // }
+   
+   
     
-    const clients = await customerSchema.aggregate([
-  // 1. فلترة حسب أي فلاتر (إن وجدت)
-  { $match: filters },
-
-  // 2. حساب آخر تاريخ متابعة (من داخل SectionFollow)
+    
+const clients = await customerSchema.aggregate([
+  {
+    $match: {
+      ...filters,
+      ...(startDate && endDate && {
+        SectionFollow: {
+          $elemMatch: {
+            detailsDate: {
+              $gte: new Date(startDate),
+              $lte: new Date(endDate)
+            }
+          }
+        }
+      })
+    }
+  },
   {
     $addFields: {
       lastFollowUpdate: {
@@ -50,14 +44,10 @@ const GetallCustomer = async (req, res, next) => {
       }
     }
   },
-
-  // 3. ترتيب حسب آخر متابعة
   { $sort: { lastFollowUpdate: -1 } },
-
-  // 4. جلب بيانات المستخدم المرتبط (SectionFollow.user)
   {
     $lookup: {
-      from: "users", // اسم مجموعة المستخدمين في قاعدة البيانات
+      from: "users",
       localField: "SectionFollow.user",
       foreignField: "_id",
       as: "SectionFollowUsers"
