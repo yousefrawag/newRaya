@@ -8,6 +8,6 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 const router = express.Router();
 router.use(protect)
-router.route("/").get(authorizationMW("canAddCustomerTypes") ,  Callcentercustomerstauts ).post(authorizationMW("canAddCustomerTypes") , AddNewstauts)
+router.route("/").get(  Callcentercustomerstauts ).post(authorizationMW("canAddCustomerTypes") , AddNewstauts)
 router.route("/:id").delete(authorizationMW("canDeleteCustomerTypes") , Deletestauts).put(authorizationMW("canEditCustomerTypes") , Updatestauts)
 module.exports = router;
