@@ -65,6 +65,7 @@ server.use("/api/clientStauts", require("./routes/ClientsautsRoute"));
 server.use("/api/clientcheckStauts", require("./routes/clientsCheckstauts"));
 server.use("/api/callcenterCustomerstauts", require("./routes/CllcenetrCutomerRoute"));
 server.use("/api/expenss", require("./routes/ExpensessRoute"));
+server.use("/api/requirements", require("./routes/RequireRoutes"));
 // Not Found MiddleWare
 
 server.use((req, res, next) => {
