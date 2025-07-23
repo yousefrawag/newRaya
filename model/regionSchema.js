@@ -5,7 +5,8 @@ const regoineSchema = mongoose.Schema(
             type:String,
             unique: true,
             required: true
-        }
+        } ,
+      
     },
     {
         timestamps: true,

@@ -53,8 +53,8 @@ const customerSchema = mongoose.Schema(
 
     },
     clientRequire: {
-      type: String,
-      trim:true
+      type: [String],
+   
 
     },
     clientendRequr: {
@@ -62,6 +62,10 @@ const customerSchema = mongoose.Schema(
       trim:true
 
     },
+    governote: {
+      type:String,
+      trim:true
+    },   
     addBy: {
       type:String,
       trim:true

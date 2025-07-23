@@ -5,6 +5,9 @@ const projectlocation = mongoose.Schema(
             type:String,
             unique: true,
             required: true
+        } ,
+          relatedRegions:{
+            type:[String]
         }
     },
     {
