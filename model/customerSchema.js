@@ -83,6 +83,10 @@ const customerSchema = mongoose.Schema(
     type:String,
       trim:true
     },
+    InstallmentType:{
+          type:String,
+      trim:true
+    },
     installmentsPyYear:{
       type:String,
       trim:true

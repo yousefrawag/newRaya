@@ -36,6 +36,15 @@ const projectSchema = mongoose.Schema(
     installmentsFirstPermonth: { type: String },
     InstallmentPeriod:{type:String},
     areaMatter: { type: String },
+status: {
+  type: String,
+  enum: ["archiev", "process"],
+  default: "process"
+}
+ ,
+    city:{
+      type:String
+    },
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],

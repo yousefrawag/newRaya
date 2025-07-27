@@ -1,6 +1,6 @@
 const projectSchema = require("../../model/projectSchema");
 
-const getallProjects = async (req, res, next) => {
+const GetarvievData = async (req, res, next) => {
 
   
   try {
@@ -10,7 +10,7 @@ const getallProjects = async (req, res, next) => {
 
 
     const data = await projectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
-    const filtered = data.filter(item => item.status?.trim() === 'process');
+    const filtered = data.filter(item => item.status?.trim() === 'archiev');
     const projectStatusCount = data.reduce((acc, item) => {
       const status = item.projectStatus; // Extract project status
     
@@ -33,4 +33,4 @@ const getallProjects = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = getallProjects;
+module.exports = GetarvievData;

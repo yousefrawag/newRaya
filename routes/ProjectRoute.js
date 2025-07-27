@@ -16,6 +16,7 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protected = require("../middleware/authenticationMW")
 const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
+const projectArchev = require("../controller/projectController/GetarvievData")
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 
 const router = express.Router();
@@ -33,6 +34,7 @@ router
     multerUpload.array("files"),
     addProject
   );
+  router.get("/archiev" ,projectArchev )
 router.get("/selectproject" ,selectProject)
 router.get("/uinqData" , UinqDataProject)
 router

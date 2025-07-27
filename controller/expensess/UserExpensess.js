@@ -8,7 +8,7 @@ const UserExpensess = async (req, res, next) => {
     const currentYear = currentDate.getFullYear();
 
     // Fetch all expenses for the user
-    const allExpenses = await ExpensessSchema.find({ user: userId });
+    const allExpenses = await ExpensessSchema.find({ user: userId }).populate("user");
 
     // Calculate totals and monthly expenses by currency
     const currencyStats = allExpenses.reduce((acc, expense) => {
@@ -44,7 +44,7 @@ const UserExpensess = async (req, res, next) => {
       transactionCount: currencyStats[currency].transactionCount
     }));
 
-    res.json({ success: true, data: result });
+    res.json({ success: true, data: result , allExpenses });
   } catch (error) {
     next(error);
   }
