@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
-
+const file = mongoose.Schema(
+  {
+    fileURL: String,
+    fileID: String,
+  },
+  { _id: false }
+);
 const DeailyemployeeReportsmodule = mongoose.Schema(
   {
     
@@ -21,7 +27,7 @@ const DeailyemployeeReportsmodule = mongoose.Schema(
    notes:{
     type:String
    },
-
+    docsURLs: [file],
 
   },
   {

@@ -6,8 +6,9 @@ const GetallCustomer = async (req, res, next) => {
     const { field, searTerm , startDate , endDate } = req.query;
     const id = req.token.id
     const user = await userSchema.findById(id)
+    const CurrentPermission = user?.role === 9
     let filters 
-    if(user.type === "admin") {
+    if(user.type === "admin" || CurrentPermission) {
        filters = {};
     }else{
       filters = {

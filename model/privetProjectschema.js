@@ -16,9 +16,7 @@ const PriverprojectSchema = mongoose.Schema(
     videosURLs: [file],
     docsURLs: [file],
     addedBy: { type: Number, ref: "users" },
-    projectDetails:{
-  
-  },
+    projectDetails:String,
   notes:{
     type:String
   }

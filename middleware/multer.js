@@ -13,7 +13,14 @@ const fileFilter = (req, file, cb) => {
     "video/mp4",
     "application/pdf",
     "image/webp",
-  
+    
+  // Excel
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+  "application/vnd.ms-excel", // .xls
+
+  // Word
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+  "application/msword" ,
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 ];
   if (mimetype.includes(file.mimetype)) {
