@@ -1,15 +1,21 @@
 const projectSchema = require("../../model/projectSchema");
-
+const userSchema = require("../../model/userSchema")
 const getallProjects = async (req, res, next) => {
 
   
   try {
+  const id = req.token.id
+    const user = await userSchema.findById(id)
+let filters ;
+if(user.type === "admin") {
+  filters ={}
+}else {
+  filters = {addedBy:id}
+}
 
 
 
-
-
-    const data = await projectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
+    const data = await projectSchema.find(filters).populate("addedBy").sort({ createdAt: -1 });
     const filtered = data.filter(item => item.status?.trim() === 'process');
     const projectStatusCount = data.reduce((acc, item) => {
       const status = item.projectStatus; // Extract project status
