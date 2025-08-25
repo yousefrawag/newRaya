@@ -83,6 +83,10 @@ const customerSchema = mongoose.Schema(
     type:String,
       trim:true
     },
+     clientwork:{
+    type:String,
+      trim:true
+    },
     InstallmentType:{
           type:String,
       trim:true

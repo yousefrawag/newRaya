@@ -67,6 +67,8 @@ server.use("/api/callcenterCustomerstauts", require("./routes/CllcenetrCutomerRo
 server.use("/api/expenss", require("./routes/ExpensessRoute"));
 server.use("/api/requirements", require("./routes/RequireRoutes"));
 server.use("/api/Dealiy-reports", require("./routes/EmployeeDealy"));
+server.use("/api/client-work", require("./routes/RouteClientwork"));
+
 // Not Found MiddleWare
 
 server.use((req, res, next) => {
