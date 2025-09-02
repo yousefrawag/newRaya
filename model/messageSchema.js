@@ -18,8 +18,11 @@ const messageSchema = mongoose.Schema(
       type: Number,
       ref: "users",
     },
+    updated: { type: Boolean, default: false },
     content: { type: String },
-    filesURLs: [file],
+  imagesURLs: [file],
+    videosURLs: [file],
+    docsURLs: [file],
     read:
       { type: Boolean, default: false }
     

@@ -10,6 +10,8 @@ const { log } = require("console");
 const logo = path.join(__dirname, "../images/logo2.jpg");
 
 exports.sendMessage = async (req, res) => {
+  console.log("bodey data" , req.body);
+  
   try {
     const { chatID, content, senderID } = req.body;
 
@@ -28,13 +30,52 @@ console.log(chat)
         console.log("✅ Updated chat participants:", chat.participants);
       }
     }
+    const imagesURLs = [];
+    const videosURLs = [];
+    const docsURLs = [];
+    if (req.files) {
+      console.log("yes there is files")
+      for (const index in req.files) {
+
+        if (
+          req.files[index].mimetype === "image/png" ||
+          req.files[index].mimetype === "image/jpeg"
+        ) {
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(
+              req.files[index].path,
+              "projectFiles/images"
+            );
+          imagesURLs.push({ fileURL, fileID });
+        } else if (req.files[index].mimetype === "video/mp4") {
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(
+              req.files[index].path,
+              "projectFiles/videos"
+            );
+          videosURLs.push({ fileURL, fileID });
+        } else if (req.files[index].mimetype === "application/pdf") {
+
+          const { imageURL: fileURL, imageID: fileID } =
+            await cloudinary.upload(req.files[index].path, "projectFiles/docs");
+          docsURLs.push({ fileURL, fileID });
+        }
+      }
+    }
 
     // Create new message
     const newMessage = new messageSchema({
       chatID,
       senderID: senderID,
       content,
+      imagesURLs ,
+      docsURLs
     });
+        newMessage.imagesURLs = imagesURLs;
+    newMessage.videosURLs = videosURLs;
+    newMessage.docsURLs = docsURLs;
 
     await newMessage.save();
 const user = await userSchema.findById(senderID)
@@ -118,13 +159,7 @@ const sendEmailNotifications = async (participants, chat, sender, content) => {
             <p style="font-size: 14px; color: #999; margin-top: 20px;">🚀 فريق العمل الخاص بك</p>
           </div>
         `,
-        attachments: [
-          {
-            filename: "logo2.jpg",
-            path: logo, // Ensure correct path
-            cid: "logo", // Content ID for inline display
-          },
-        ],
+      
       };
 
       transporter.sendMail(mailOptions, (error) => {
@@ -146,3 +181,31 @@ exports.getChatMessages = async (req, res, next) => {
     next(error);
   }
 };
+exports.DeleateMessage = async (req , res  , next) => {
+  const {id} = req.params
+  console.log("id message" , id);
+  
+  const currentMessage = await messageSchema.findById(id)
+  if(!currentMessage){
+    return res.status(404).json({mesg:"message not found"})
+  }
+
+  await messageSchema.findByIdAndDelete(id)
+  res.status(200).json({mesg:"message deleated sucsfully"})
+}
+exports.UpdateMessage = async (req , res , next) => {
+  const {id} = req.params
+  const {content} = req.body
+  console.log("id" , id , "content" , content);
+  try {
+  const currentIitem = await messageSchema.findById(id)
+  if(!currentIitem) {
+    res.status(404).json({mesg:" not fond this message"})
+  }
+  const updatemessage = await messageSchema.findByIdAndUpdate(id , {content , upadetTiem:new Date , updated:true} , { new: true })
+  res.status(200).json({mesg:"message updated sucsfuly" , updatemessage})    
+  } catch (error) {
+    next(error)
+  }
+
+}
