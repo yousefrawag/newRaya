@@ -56,12 +56,18 @@ console.log(chat)
               "projectFiles/videos"
             );
           videosURLs.push({ fileURL, fileID });
-        } else if (req.files[index].mimetype === "application/pdf") {
+        } else if (
+  req.files[index].mimetype === "application/pdf" ||
+  req.files[index].mimetype === "application/msword" ||
+  req.files[index].mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+  req.files[index].mimetype === "application/vnd.ms-excel" ||
+  req.files[index].mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+) {
+  const { imageURL: fileURL, imageID: fileID } =
+    await cloudinary.upload(req.files[index].path, "projectFiles/docs");
+  docsURLs.push({ fileURL, fileID });
+}
 
-          const { imageURL: fileURL, imageID: fileID } =
-            await cloudinary.upload(req.files[index].path, "projectFiles/docs");
-          docsURLs.push({ fileURL, fileID });
-        }
       }
     }
 
