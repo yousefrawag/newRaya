@@ -1,12 +1,13 @@
 const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
+const dealyReport = require("../../model/DealyemployeeReports")
 
 const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {notes} = req.body
-    console.log(notes);
+    console.log(id);
 
     const updateData = { ...req.body };
     
@@ -27,6 +28,22 @@ const updateCustomer = async (req, res, next) => {
         createdAt: new Date(),
       };
       updateOperation.$push = { SectionFollow: newSectionFollow };
+    
+      try {
+          const delayData = {
+        ReportType:req.body.SectionFollow.ReportType,
+        Customers:[id],
+        addedBy:req.token.id
+      }
+         const newadd  =  await dealyReport.create(delayData)
+         console.log(newadd);
+         
+
+      } catch (error) {
+        next(error)
+      }
+      console.log("sectionflow avalibale");
+      
     }
 
     // Perform atomic update
