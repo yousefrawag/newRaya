@@ -1,6 +1,8 @@
 const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
+const dealyReport = require("../../model/DealyemployeeReports")
+
 function normalizePhoneNumber(phone) {
   if (!phone) return "";
   return phone.replace(/[^\d]/g, ""); // Remove everything except digits
@@ -29,6 +31,12 @@ const addCustomer = async (req, res, next) => {
        
         // customer.addBy = req.token.id
       await customer.save();
+         const delayData = {
+              ReportType:"إضافة عميل",
+              Customers:[customer?._id],
+              addedBy:req.token.id
+            }
+               const newadd  =  await dealyReport.create(delayData)
      res.status(200).json({
         message: `${customer.clientStatus} created successfully`,
         customer,
