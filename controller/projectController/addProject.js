@@ -58,7 +58,10 @@ const addProject = async (req, res, next) => {
     }
     await project.save();
     res.status(200).json({ project });
-    const admins = await userSchema.find({ type: "admin" });
+  const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
 
     // ✅ Create notifications properly
     const notifications = admins.map((admin) => ({

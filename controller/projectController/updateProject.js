@@ -99,7 +99,10 @@ const updateProject = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "project updated successfully", updatedproject });
-        const admins = await userSchema.find({ type: "admin" });
+    const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
       
           // ✅ Create notifications properly
           const notifications = admins.map((admin) => ({

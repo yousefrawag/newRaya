@@ -41,7 +41,10 @@ const addCustomer = async (req, res, next) => {
         message: `${customer.clientStatus} created successfully`,
         customer,
       });
-      const admins = await userSchema.find({ type: "admin" });
+    const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
       console.log(customer);
       // ✅ Create notifications properly
       const notifications = admins.map((admin) => {

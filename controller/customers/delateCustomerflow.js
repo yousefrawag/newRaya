@@ -59,7 +59,10 @@ const updateCustomer = async (req, res, next) => {
     }
 
     // Notify admins
-    const admins = await userSchema.find({ type: "admin" });
+  const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
     const notifications = admins.map(admin => ({
       user: admin._id,
       employee: req.token?.id,

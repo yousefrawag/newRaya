@@ -23,7 +23,10 @@ const deleteProject = async (req, res, next) => {
     }
     await projectSchema.findByIdAndDelete(id);
     res.status(200).json({ message: "project deleted successfully" });
-     const admins = await userSchema.find({ type: "admin" });
+    const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
               // ✅ Create notifications properly
               const notifications = admins.map((admin) => ({
                 user: admin._id,  // Ensure this is a number if required
