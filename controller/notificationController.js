@@ -4,26 +4,19 @@ exports.getUserNotifications = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const notifications = await notificationSchema
-      .find({
-        user:id ,
-        read: false,
-      })
-      .populate("user") // Populating user details
-      .populate("employee") // Populating employee details
-      .populate("allowed")
    
-      
-      .sort({ createdAt: -1 });
+const notifications = await notificationSchema
+  .find({
+    user: id,
+    read: false,
+  })
+  .populate("user") // Populating user details
+  .populate("employee") // Populating employee details
+  .populate("allowed")
+  .sort({ createdAt: -1 }) // آخر إشعارات الأول
+  .limit(20)
 
-    // const missions = await missionSchema.find();
-    // const missionsAvailable = new Set(missions.map((item) => item._id));
 
-    // // ✅ Safe filtering to prevent null errors
-    // const validNotifications = notifications.filter((item) => {
-    //   const missionid = item.chatID?.missionID?._id;  // Safe check
-    //   return missionid && missionsAvailable.has(missionid);
-    // });
 
     return res.status(200).json({ notifications: notifications });  // Send valid data only
   } catch (error) {
