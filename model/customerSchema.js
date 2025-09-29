@@ -125,7 +125,12 @@ const customerSchema = mongoose.Schema(
         type: Date,
         default: Date.now // Automatically sets the creation date
       }
-    }]
+    }] ,
+    
+    ArchievStatuts :{
+      type:Boolean ,
+      default:false
+    }
   },
   {
     timestamps: true,

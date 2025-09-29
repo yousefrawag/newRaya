@@ -1,15 +1,17 @@
 const customerSchema = require("../../model/customerSchema");
 const projectschema = require("../../model/projectSchema")
 const userSchema = require("../../model/userSchema")
-const GetallCustomer = async (req, res, next) => {
+const GetCustomerArchived = async (req, res, next) => {
   try {
     const { field, searTerm , startDate , endDate } = req.query;
     const id = req.token.id
     const user = await userSchema.findById(id)
     const CurrentPermission = user?.role === 9
-    let filters 
+    let filters =  {ArchievStatuts:true}
     if(user.type === "admin" || CurrentPermission) {
-       filters = {ArchievStatuts: { $in: [false, null] }};
+       filters = {
+           ...filters ,
+       };
     }else{
       filters = {
         ...filters ,
@@ -67,4 +69,4 @@ const clients = await customerSchema.aggregate([
   }
 };
 
-module.exports = GetallCustomer;
+module.exports = GetCustomerArchived;

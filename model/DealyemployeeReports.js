@@ -24,6 +24,10 @@ const DeailyemployeeReportsmodule = mongoose.Schema(
    
          ref: "users",
     },
+    endcontact:{
+
+    type:String
+    },
    notes:{
     type:String
    },

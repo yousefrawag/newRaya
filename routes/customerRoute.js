@@ -11,6 +11,8 @@ const uinqCoustomerData = require("../controller/customers/uinqCoustomerData")
 const deleteSectionfloow = require("../controller/customers/delateCustomerflow")
 const insertMany = require("../controller/customers/insertMany")
 const validationResult = require("../middleware/validations/validatorResult");
+const CustomerArchive = require("../controller/customers/Customerstatuts")
+const GetCustomerArchived = require("../controller/customers/GetCustomerArchived")
 const protect = require("../middleware/authenticationMW")
 const {
   insert,
@@ -35,6 +37,8 @@ router.get("/selectCustomer" ,SelectCustomer )
 router.get("/uinqData"  , uinqCoustomerData)
 router.get("/userCustomer" ,  getUserCustomer)
 router.put("/sectionfloow/:id" , deleteSectionfloow)
+router.route("/customer-archive/:id").put(CustomerArchive)
+router.get("/customer-archived" , GetCustomerArchived)
 router
   .route("/:id")
   .put(
