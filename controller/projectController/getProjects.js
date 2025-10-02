@@ -29,9 +29,12 @@ if(user.role === 7) {
       return acc;
     }, {});
 
-    console.log(projectStatusCount);
+    const data3 = filtered.map((item) =>( {
+  ...item.toObject(),
+    projectName:item.projectName?.trim()
+    }))
     
-      res.status(200).json({ data:filtered });
+      res.status(200).json({ data:data3 });
  
   
   } catch (error) {
