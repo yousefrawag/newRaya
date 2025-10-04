@@ -8,7 +8,7 @@ const GetByid = require("../controller/EmployeeDealyReports/GetByid");
 const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 const multerUpload = require("../middleware/multer");
-
+const GetCustomerByid = require("../controller/EmployeeDealyReports/GetCustomerReports")
 const router = express.Router();
 router.use(protect)
 router
@@ -16,6 +16,7 @@ router
   .post( multerUpload.array("files"), AddDealyReport)
   .get( GetAllReports);
   router.get("/user" , GetUserReports)
+  router.get("/customer/:id" , GetCustomerByid)
 router
   .route("/:id")
   .put( UpdateOne)

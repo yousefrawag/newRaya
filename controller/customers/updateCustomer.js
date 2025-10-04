@@ -33,7 +33,8 @@ const updateCustomer = async (req, res, next) => {
           const delayData = {
         ReportType:req.body.SectionFollow.ReportType,
         Customers:[id],
-        addedBy:req.token.id
+        addedBy:req.token.id ,
+        endcontact:req.body.SectionFollow.details
       }
          const newadd  =  await dealyReport.create(delayData)
          console.log(newadd);

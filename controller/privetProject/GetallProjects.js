@@ -7,7 +7,7 @@ const getallProjects = async (req, res, next) => {
    
 
     
-    const data = await PrivetprojectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
+    const data = await PrivetprojectSchema.find({ArchievStatuts: { $in: [false, null] }}).populate("addedBy").sort({ createdAt: -1 });
   
   
     
