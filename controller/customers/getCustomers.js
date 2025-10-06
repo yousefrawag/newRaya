@@ -9,7 +9,7 @@ const GetallCustomer = async (req, res, next) => {
     const CurrentPermission = user?.role === 9
     let filters 
     if(user.type === "admin" || CurrentPermission) {
-       filters = {ArchievStatuts: { $in: [false, null] } , moduleType:{$in: ["cutomer", null]}};
+       filters = {ArchievStatuts: { $in: [false, null] } , moduleType:{$in: ["customer", null]}};
     }else{
       filters = {
         ...filters ,

@@ -31,6 +31,7 @@ router
     authorizationMW("canViewClients"),
     getCustomers)
   .post(
+      protect ,
     authorizationMW("canAddClients"),
     addCustomer
   )
