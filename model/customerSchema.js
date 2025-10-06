@@ -130,7 +130,14 @@ const customerSchema = mongoose.Schema(
     ArchievStatuts :{
       type:Boolean ,
       default:false
-    }
+    } ,
+    email:{
+      type:String
+    } ,
+  moduleType:{
+    type:String ,
+    enum:["lead" , "customer"]
+  },
   },
   {
     timestamps: true,

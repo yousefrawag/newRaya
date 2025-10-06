@@ -8,7 +8,7 @@ function normalizePhoneNumber(phone) {
   return phone.replace(/[^\d]/g, ""); // Remove everything except digits
 }
 
-const addCustomer = async (req, res, next) => {
+const CustomerSales = async (req, res, next) => {
 
     try {
       // Save the single customer data from req.body
@@ -25,18 +25,11 @@ const addCustomer = async (req, res, next) => {
       }
         req.body.phoneNumber = normalizedPhone;
       let customer = new customerSchema(req.body);
-      if(req.body.SectionFollow){
-        customer.SectionFollow[0].user = req.token.id
-      }
-       customer.moduleType ="customer"
+ 
+       customer.moduleType ="lead"
         // customer.addBy = req.token.id
       await customer.save();
-         const delayData = {
-              ReportType:"إضافة عميل",
-              Customers:[customer?._id],
-              addedBy:req.token.id
-            }
-               const newadd  =  await dealyReport.create(delayData)
+       
      res.status(200).json({
         message: `${customer.clientStatus} created successfully`,
         customer,
@@ -54,7 +47,7 @@ const addCustomer = async (req, res, next) => {
           levels: "clients",
           type: "add",
           allowed: customer._id, // Use customer._id
-          message: "تم إضافة عميل جديد",
+          message: "تم تعبئة نموذج جديد من  عميل حملات تسويقية",
         };
         console.log("Notification being created:", notification); // Log the notification
         return notification;
@@ -69,4 +62,4 @@ const addCustomer = async (req, res, next) => {
   
 };
 
-module.exports = addCustomer;
+module.exports = CustomerSales;

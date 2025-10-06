@@ -13,6 +13,8 @@ const insertMany = require("../controller/customers/insertMany")
 const validationResult = require("../middleware/validations/validatorResult");
 const CustomerArchive = require("../controller/customers/Customerstatuts")
 const GetCustomerArchived = require("../controller/customers/GetCustomerArchived")
+const CustomerSales  = require("../controller/customers/CustomerSales")
+const GetCustomerLeads = require("../controller/customers/GetCustomerLeads")
 const protect = require("../middleware/authenticationMW")
 const {
   insert,
@@ -21,35 +23,40 @@ const {
 const multerUpload = require("../middleware/multer");
 
 const authorizationMW = require("../middleware/authorizationMW");
-router.use(protect)
+// router.use(protect)
 router
   .route("/")
   .get( 
+    protect ,
     authorizationMW("canViewClients"),
     getCustomers)
   .post(
     authorizationMW("canAddClients"),
     addCustomer
   )
-  router.post("/many" , authorizationMW("canAddClients"), insertMany);
+  router.route("/leads").post(CustomerSales).get(protect ,GetCustomerLeads )
+  router.post("/many" , protect , authorizationMW("canAddClients"), insertMany);
   // where any can select customers
-router.get("/selectCustomer" ,SelectCustomer )
-router.get("/uinqData"  , uinqCoustomerData)
-router.get("/userCustomer" ,  getUserCustomer)
-router.put("/sectionfloow/:id" , deleteSectionfloow)
-router.route("/customer-archive/:id").put(CustomerArchive)
-router.get("/customer-archived" , GetCustomerArchived)
+router.get("/selectCustomer" ,protect , SelectCustomer )
+router.get("/uinqData"  ,protect , uinqCoustomerData)
+router.get("/userCustomer" ,protect ,  getUserCustomer)
+router.put("/sectionfloow/:id" ,protect , deleteSectionfloow)
+router.route("/customer-archive/:id").put(protect , CustomerArchive)
+router.get("/customer-archived" ,protect , GetCustomerArchived)
 router
   .route("/:id")
   .put(
+    protect ,
     authorizationMW("canEditClients"),
  
     updateCustomer
   )
   .get(
+    protect, 
     authorizationMW("canViewClients"), 
   getCustomerByID)
   .delete(
+    protect ,
     authorizationMW("canDeleteClients"), 
     deleteCustomer);
 
