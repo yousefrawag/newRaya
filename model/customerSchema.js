@@ -121,6 +121,9 @@ const customerSchema = mongoose.Schema(
       CustomerDealsatuts:{
         type:String
       },
+      nextReminderDate:{
+type:Date
+      } ,
       createdAt: {
         type: Date,
         default: Date.now // Automatically sets the creation date

@@ -11,7 +11,7 @@ const GetCustomerLeads = async (req, res, next) => {
    
     
     
-const clients = await customerSchema.find({moduleType:"lead"}).sort({ createdAt: -1 })
+const clients = await customerSchema.find({moduleType:"lead" , ArchievStatuts: { $in: [false, null] }}).sort({ createdAt: -1 })
 ;
 
 
