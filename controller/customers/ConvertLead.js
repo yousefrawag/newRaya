@@ -1,0 +1,71 @@
+const customerSchema = require("../../model/customerSchema");
+const userSchema = require("../../model/userSchema");
+const notificationSchema = require("../../model/notificationSchema");
+const dealyReport = require("../../model/DealyemployeeReports")
+
+const ConvertLead = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const {user} = req.body
+    
+    const CurrentLead = await customerSchema.findById(id)
+    if(!CurrentLead){
+        return res.status(404).json({mesg:"this customer not exict yet"})
+    }
+if(!user || !id) {
+    res.status(404).json({mesg:"not found user or customer lead"})
+}
+CurrentLead.moduleType = "customer"
+CurrentLead.addBy = user
+    // Perform atomic update
+    const updatedCustomer = await customerSchema.findByIdAndUpdate(
+      id,
+      CurrentLead,
+      { new: true }
+    );
+
+    if (!updatedCustomer) {
+      return res.status(404).json({ message: "This customer doesn't exist" });
+    }
+
+    res.status(200).json({
+      message: "Customer updated successfully",
+      updatedCustomer
+    });
+
+    // Notify admins
+    const userNotvcation  = await userSchema.find({fullName:user})
+   
+    
+    await  new notificationSchema({
+         user: userNotvcation[0]._id,
+      employee: req.token?.id,
+      levels: "clients",
+      type: "update",
+      allowed: updatedCustomer?._id,
+      message: "تم تحويل عميل الى قائمه عملائك 🔊",
+    
+    }).save()
+    
+   const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
+
+    const notifications = admins.map(admin => ({
+      user: admin._id,
+      employee: req.token?.id,
+      levels: "clients",
+      type: "update",
+      allowed: updatedCustomer?._id,
+      message: "تم  تحويل طلب الى عميل فعلى  ",
+    }));
+
+    await notificationSchema.insertMany(notifications);
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = ConvertLead;
