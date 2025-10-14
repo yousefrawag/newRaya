@@ -12,7 +12,9 @@ const getUserCustomer = async (req, res, next) => {
 
     console.log("User Info:", founduser);
 
-    let filters = { addBy: founduser.fullName.trim() };
+    let filters = { addBy:{
+       $regex: new RegExp(`(^|\\s|\\/)+${founduser?.fullName.trim()}($|\\s|\\/)`, 'i')
+    } };
     const data = await customerSchema.find(filters);
 
     if (!data.length) {

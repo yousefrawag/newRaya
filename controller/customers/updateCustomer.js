@@ -25,24 +25,28 @@ const updateCustomer = async (req, res, next) => {
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
         CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
+        nextReminderDate:req.body.SectionFollow?.nextReminderDate ,
         createdAt: new Date(),
       };
       updateOperation.$push = { SectionFollow: newSectionFollow };
+    console.log("sectionfllow" , req.body.SectionFollow);
     
-      try {
-          const delayData = {
-        ReportType:req.body.SectionFollow.ReportType,
-        Customers:[id],
-        addedBy:req.token.id ,
-        endcontact:req.body.SectionFollow.details
-      }
-         const newadd  =  await dealyReport.create(delayData)
-         console.log(newadd);
+      // try {
+
+
+      //     const delayData = {
+      //   ReportType:req.body.SectionFollow.ReportType,
+      //   Customers:[id],
+      //   addedBy:req.token.id ,
+      //   endcontact:req.body.SectionFollow.details
+      // }
+      //    const newadd  =  await dealyReport.create(delayData)
+      //    console.log(newadd);
          
 
-      } catch (error) {
-        next(error)
-      }
+      // } catch (error) {
+      //   next(error)
+      // }
       console.log("sectionflow avalibale");
       
     }
