@@ -7,7 +7,7 @@ const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {notes} = req.body
-    console.log(id);
+    console.log(req.body.SectionFollow);
 
     const updateData = { ...req.body };
     
@@ -31,22 +31,22 @@ const updateCustomer = async (req, res, next) => {
       updateOperation.$push = { SectionFollow: newSectionFollow };
     console.log("sectionfllow" , req.body.SectionFollow);
     
-      // try {
+      try {
 
 
-      //     const delayData = {
-      //   ReportType:req.body.SectionFollow.ReportType,
-      //   Customers:[id],
-      //   addedBy:req.token.id ,
-      //   endcontact:req.body.SectionFollow.details
-      // }
-      //    const newadd  =  await dealyReport.create(delayData)
-      //    console.log(newadd);
+          const delayData = {
+        ReportType:req.body.SectionFollow.ReportType,
+        Customers:[id],
+        addedBy:req.token.id ,
+        endcontact:req.body.SectionFollow.details
+      }
+         const newadd  =  await dealyReport.create(delayData)
+         console.log(newadd);
          
 
-      // } catch (error) {
-      //   next(error)
-      // }
+      } catch (error) {
+        next(error)
+      }
       console.log("sectionflow avalibale");
       
     }
