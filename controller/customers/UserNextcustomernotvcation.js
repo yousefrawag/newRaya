@@ -3,31 +3,36 @@ const userSchema = require("../../model/userSchema");
 
 const UserNextcustomernotvcation = async (req, res, next) => {
   try {
-    const founduser = await userSchema.findById(req.token.id).lean();
-    if (!founduser) {
+    // 1️⃣ المستخدم الحالي
+    const foundUser = await userSchema.findById(req.token.id).lean();
+    if (!foundUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // 2️⃣ احسب تاريخ اليوم (محلي)
     const today = new Date();
-    const startOfDay = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0));
-    const endOfDay = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999));
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
 
-    console.log({ startOfDay, endOfDay });
-
-    const reminders = await customerSchema.find({
-      addBy: founduser.fullName.trim(),
-      "SectionFollow.nextReminderDate": { $gte: startOfDay, $lte: endOfDay },
+    // 3️⃣ هات كل العملاء اللى عندهم تذكيرات
+    const customers = await customerSchema.find({
+      addBy: foundUser.fullName.trim(),
+      "SectionFollow.nextReminderDate": { $exists: true }
     }).lean();
 
-    console.log("Reminders found:", reminders.length);
-
-    const formattedReminders = reminders.flatMap(client =>
+    // 4️⃣ فلترة التذكيرات حسب اليوم الفعلي (اليوم/الشهر/السنة)
+    const reminders = customers.flatMap(client =>
       (client.SectionFollow || [])
-        .filter(follow =>
-          follow.nextReminderDate &&
-          new Date(follow.nextReminderDate) >= startOfDay &&
-          new Date(follow.nextReminderDate) <= endOfDay
-        )
+        .filter(follow => {
+          if (!follow.nextReminderDate) return false;
+          const d = new Date(follow.nextReminderDate);
+          return (
+            d.getDate() === todayDay &&
+            d.getMonth() === todayMonth &&
+            d.getFullYear() === todayYear
+          );
+        })
         .map(follow => ({
           id: client._id,
           customerName: client.fullName,
@@ -40,15 +45,16 @@ const UserNextcustomernotvcation = async (req, res, next) => {
         }))
     );
 
-    res.status(200).json({
-      count: formattedReminders.length,
-      data: formattedReminders,
+    // 5️⃣ رجّع النتيجة
+    return res.status(200).json({
+      count: reminders.length,
+      data: reminders,
     });
+
   } catch (error) {
     console.error("Error in UserNextcustomernotvcation:", error);
     next(error);
   }
 };
-
 
 module.exports = UserNextcustomernotvcation;

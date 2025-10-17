@@ -25,7 +25,9 @@ const updateCustomer = async (req, res, next) => {
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
         CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
-        nextReminderDate:req.body.SectionFollow?.nextReminderDate ,
+nextReminderDate: req.body.SectionFollow?.nextReminderDate
+  ? new Date(req.body.SectionFollow.nextReminderDate)
+  : null,
         createdAt: new Date(),
       };
       updateOperation.$push = { SectionFollow: newSectionFollow };
@@ -41,7 +43,7 @@ const updateCustomer = async (req, res, next) => {
         endcontact:req.body.SectionFollow.details
       }
          const newadd  =  await dealyReport.create(delayData)
-         console.log(newadd);
+         console.log(newSectionFollow);
          
 
       } catch (error) {
