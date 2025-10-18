@@ -7,7 +7,7 @@ const getallProjects = async (req, res, next) => {
   const id = req.token.id
     const user = await userSchema.findById(id)
 let filters ;
-if(user.role === 7 || user.type === "admin") {
+if(user.role === 9 || user.type === "admin") {
    filters = {
   }
 }else {
