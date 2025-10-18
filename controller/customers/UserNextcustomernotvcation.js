@@ -8,6 +8,20 @@ const UserNextcustomernotvcation = async (req, res, next) => {
     if (!foundUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    const CurrentPermission = foundUser?.role === 9
+    let filters 
+    if(foundUser.type === "admin" || CurrentPermission) {
+       filters = {"SectionFollow.nextReminderDate": { $exists: true }};
+    }else{
+      filters = {
+        ...filters ,
+              "SectionFollow.nextReminderDate": { $exists: true } ,
+        addBy: {
+          $regex: new RegExp(`(^|\\s|\\/)+${foundUser?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
+        }
+      };     
+    }
+    
 
     // 2️⃣ احسب تاريخ اليوم (محلي)
     const today = new Date();
@@ -16,10 +30,8 @@ const UserNextcustomernotvcation = async (req, res, next) => {
     const todayYear = today.getFullYear();
 
     // 3️⃣ هات كل العملاء اللى عندهم تذكيرات
-    const customers = await customerSchema.find({
-      addBy: foundUser.fullName.trim(),
-      "SectionFollow.nextReminderDate": { $exists: true }
-    }).lean();
+    const customers = await customerSchema.find(filters
+     ).lean();
 
     // 4️⃣ فلترة التذكيرات حسب اليوم الفعلي (اليوم/الشهر/السنة)
     const reminders = customers.flatMap(client =>
