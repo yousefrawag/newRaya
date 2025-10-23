@@ -137,10 +137,14 @@ type:Date
     email:{
       type:String
     } ,
+    opeartiontype:{
+      type:String
+    } ,
   moduleType:{
     type:String ,
     enum:["lead" , "customer"]
   },
+
   },
   {
     timestamps: true,
