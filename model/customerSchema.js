@@ -140,6 +140,7 @@ type:Date
     opeartiontype:{
       type:String
     } ,
+    clientRequireLocation:String ,
   moduleType:{
     type:String ,
     enum:["lead" , "customer"]
