@@ -16,6 +16,8 @@ const campaignSchema = new mongoose.Schema(
     link: String,
     imageUrl: String,
     customers: [customerSchema],
+    failedCount:{ type: Number, default: 0 },
+    failedNumbers: [customerSchema],
     status: {
       type: String,
       enum: ["draft", "sending", "sent", "failed"],

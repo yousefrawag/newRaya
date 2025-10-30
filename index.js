@@ -32,6 +32,9 @@ const corsOptions = {
   credentials: true // Allow credentials to be included in the request
 
 };
+
+// cron-jop whtassap notvcations
+require("./controller/reminderJob")
 //endpoint middelware
 server.use(cors(corsOptions));
 server.use(express.json());

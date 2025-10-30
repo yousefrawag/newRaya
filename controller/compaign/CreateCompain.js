@@ -1,11 +1,11 @@
 const axios = require("axios");
 const Campaign = require("../../model/campgain");
 
-const DEVICE_ID = "ce2cb0ab-43d1-4a20-bd6c-d67b39cb7fc3";
+const DEVICE_ID = "7cc5f83a-dc0c-4caf-b158-363dbf1aa5cd";
 const BASE_URL = "https://noti-fire.com/api";
 const MAX_DAILY = 400;
 const BATCH_SIZE = 20;
-const DELAY = 1200;
+const DELAY = 4000;
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -48,91 +48,148 @@ exports.addCustomers = async (req, res) => {
 };
 
 // ⬅️ الخطوة 3: إرسال الحملة
-exports.sendCampaign = async (req, res , next) => {
+exports.sendCampaign = async (req, res, next) => {
   try {
     const { campaignId, message, link, imageUrl } = req.body;
     const campaign = await Campaign.findById(campaignId);
     if (!campaign) return res.status(404).json({ message: "Campaign not found" });
 
+    // ضبط حالة الحملة
     campaign.status = "sending";
-    campaign.message = message
-    campaign.link = link || ""
-    campaign.imageUrl = imageUrl || ""
+    campaign.message = message || "";
+    campaign.link = link || "";
+    campaign.imageUrl = imageUrl || "";
     await campaign.save();
 
-    const allNumbers = campaign.customers.map((c) => c.phoneNumber).slice(0, MAX_DAILY);
-    console.log("numbers" , allNumbers);
-    
+    // نجمع الأرقام (و نطبق حد الإرسال اليومي)
+    const allNumbers = campaign.customers
+      .map((c) => c.phoneNumber?.toString().trim())
+      .filter(Boolean)
+      .slice(0, MAX_DAILY); // نطبق الحد اليومي
+
+    console.log("📞 Total numbers to send:", allNumbers.length);
+
     let sentCount = 0;
+    const failedNumbers = [];
 
-    for (let i = 0; i < allNumbers.length; i += BATCH_SIZE) {
-      const batch = allNumbers.slice(i, i + BATCH_SIZE);
+    // نرسل رقم-واحد-وراء-الآخر مع DELAY بين كل رسالة
+    for (let idx = 0; idx < allNumbers.length; idx++) {
+      const raw = allNumbers[idx];
+      // تأكد من الشكل +XXXXXXXX
+      const to = raw.startsWith("+") ? raw : `+${raw}`;
 
-      try {
-        if (imageUrl) {
-          // 🔹 حالة: صورة + نص + لينك
-          for (const to of batch) {
-            await axios.post(`${BASE_URL}/send/media`, {
-              device_id: DEVICE_ID,
-              to,
-              type: "image",
-              mediaUrl: imageUrl,
-              caption: `${message}${link ? "\n" + link : ""}`,
-            });
-            sentCount++;
-            await sleep(DELAY);
-          }
-        } else if (link) {
-            console.log("link" , link);
-            
-          // 🔹 حالة: نص + لينك
-          for (const to of batch) {
-            await axios.post(`${BASE_URL}/send/link/preview`, {
-              device_id: DEVICE_ID,
-              to,
-              message:message,
-              linkPreview: {
-                title: "عرض الرابط",
-                body: message.slice(0, 100),
-                sourceUrl: link,
-                thumbnailUrl: "https://i.postimg.cc/g0KvYfbB/Screenshot-2025-10-20-174821.png",
-                renderLargerThumbnail: true,
-              },
-            });
-            sentCount++;
-            await sleep(DELAY);
-          }
-        } else {
-          // 🔹 حالة: نص فقط
-          await axios.post(`${BASE_URL}/send/bulk/message`, {
-            device_id: DEVICE_ID,
-            message,
-            numbers: batch,
-          });
-          sentCount += batch.length;
-        }
-      } catch (err) {
-        console.error("❌ خطأ في batch:", err.response?.status, err.response?.data || err.message);
+      // validate basic format (يمكن تعديله حسب حاجتك)
+      if (!/^\+\d{8,15}$/.test(to)) {
+        console.warn(`⚠️ Skipping invalid number format: ${to}`);
+        failedNumbers.push({ number: to, reason: "Invalid format" });
+        // ننتظر DELAY حتى لو تخطيناه عشان ما نضغطش على API فجأة
+        await sleep(DELAY);
+        continue;
       }
 
+      try {
+        // حالة: صورة + لينك (نستخدم link/preview مع thumbnail = imageUrl ليظهر clickable preview)
+        if (link && imageUrl) {
+          await axios.post(`${BASE_URL}/send/link/preview`, {
+           device_id: DEVICE_ID,
+            to,
+            message: message || "",
+            linkPreview: {
+              title: "شركة الراية للتسويق العقاري",
+              body: (message || "").slice(0, 255),
+              sourceUrl: link,
+              thumbnailUrl: imageUrl,
+              renderLargerThumbnail: true,
+            },
+          });
+        }
+        // حالة: صورة فقط
+        else if (imageUrl) {
+          await axios.post(`${BASE_URL}/send/media`, {
+           device_id: DEVICE_ID,
+            to,
+            type: "image",
+            mediaUrl: imageUrl,
+            caption: message || "",
+          });
+        }
+        // حالة: لينك فقط (نستخدم link/preview)
+        else if (link) {
+          await axios.post(`${BASE_URL}/send/link/preview`, {
+            device_id: DEVICE_ID,
+            to,
+            message: message || "",
+            linkPreview: {
+              title: "عرض الرابط",
+              body: (message || "").slice(0, 255),
+              sourceUrl: link,
+              thumbnailUrl: "https://i.postimg.cc/g0KvYfbB/Screenshot-2025-10-20-174821.png",
+              renderLargerThumbnail: true,
+            },
+          });
+        }
+        // حالة: نص فقط
+        else {
+          await axios.post(`${BASE_URL}/send/message`, {
+            device_id: DEVICE_ID,
+            to,
+            message: message || "",
+          });
+        }
+
+        sentCount++;
+        console.log(`✅ Message sent to ${to} (index ${idx + 1}/${allNumbers.length})`);
+      } catch (err) {
+        // سجل فشل هذا الرقم واستمر
+        const status = err.response?.status;
+        const errorMsg = err.response?.data?.message || err.message || "Unknown error";
+        console.warn(`❌ Failed to send to ${to} (${status}): ${errorMsg}`);
+
+        failedNumbers.push({
+          number: to,
+          reason: errorMsg,
+          status: status || null,
+        });
+      }
+
+      // دائمًا ننتظر DELAY حتى لو نجح أو فشل (حتى لا نتجاوز rate limits)
       await sleep(DELAY);
     }
 
+    // بعد الانتهاء حدث الحملة
     campaign.sentCount = sentCount;
-    campaign.status = "sent";
+    campaign.failedCount = failedNumbers.length;
+    campaign.failedNumbers = failedNumbers;
+    campaign.status = sentCount > 0 ? "sent" : (failedNumbers.length > 0 ? "failed" : "sent");
     await campaign.save();
 
-    res.json({ message: "Campaign sent successfully ✅", sentCount });
+    return res.json({
+      message: "Campaign finished",
+      sentCount,
+      failedCount: failedNumbers.length,
+      failedNumbers,
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error("🔥 Campaign error:", err);
+    return res.status(500).json({ error: err.message });
   }
 };
-exports.getAllcompain = async (req , res) => {
+exports.getAllcompain = async (req , res , next) => {
     try {
         const compains = await Campaign.find({}).sort({ createdAt: -1 }).populate("user")
         res.status(200).json({data:compains})
     } catch (error) {
         next(error)
     }
+}
+exports.SendWatssaoNotvcation = async (to , message) => {
+  try {
+    axios.post(`${BASE_URL}/send/message` , {
+       device_id: DEVICE_ID,
+       to ,
+      message,
+    })
+  } catch (error) {
+        console.error(error);
+  }
 }
