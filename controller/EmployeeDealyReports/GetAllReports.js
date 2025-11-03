@@ -1,8 +1,26 @@
 const DealyemployeeReports = require("../../model/DealyemployeeReports")
 const GetAllReports = async (req, res, next) => {
   try {
+    const { field, searTerm , startDate , endDate } = req.query;
+           const dateFilter = {};
+    if (startDate && endDate) {
+      dateFilter.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    } else if (startDate) {
+      dateFilter.createdAt = { $gte: new Date(startDate) };
+    } else if (endDate) {
+      dateFilter.createdAt = { $lte: new Date(endDate) };
+    }
+
+    // 🔍 الفلترة الأساسية (مثل البحث أو غيره)
+    const filter = {
+   
+      ...dateFilter,
+    };
     const data = await DealyemployeeReports
-      .find({  })
+      .find(filter)
       .populate("Customers")
       .populate("addedBy")
 

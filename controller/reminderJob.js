@@ -57,7 +57,7 @@ cron.schedule("0 8 * * *", async () => {
 const to = user.phoneNumber?.toString().trim().includes("+") ? user.phoneNumber.toString().trim() : `+${user.phoneNumber.toString().trim()}`
 
       const message = `
-📢 *منصة الراية للتسويق العقاري* 📢
+📢*منصه الرايه لخدمات التسويق والاستثمار* 📢
 
 مرحبًا ${user.fullName} 👋
 
@@ -75,7 +75,7 @@ ${clients.map((c, i) => `${i + 1}. ${c}`).join("\n")}
 
       // ✅ مثال للإرسال الفعلي عبر UltraMsg API
       try {
-     SendWatssaoNotvcation(to ,  message)
+    await SendWatssaoNotvcation(to ,  message)
         console.log(`✅ Message sent successfully to ${user.fullName}`);
       } catch (error) {
         console.error(`❌ Failed to send to ${user.fullName}:`, error.message);

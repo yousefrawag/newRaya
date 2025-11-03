@@ -2,7 +2,7 @@ const regionScgema= require("../../model/regionSchema")
 const AddRegion = async (req , res) => {
     const {name} = req.body
     if(name){
-        const addnew = await regionScgema.create({name})
+        const addnew = await regionScgema.create({...req.body})
      return   res.status(200).json({mesg:"region  add sucuufuly" ,addnew });
     } else {
         res.status(400).json({mesg:"name is required"})

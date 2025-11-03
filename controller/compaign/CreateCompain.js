@@ -184,11 +184,12 @@ exports.getAllcompain = async (req , res , next) => {
 }
 exports.SendWatssaoNotvcation = async (to , message) => {
   try {
-    axios.post(`${BASE_URL}/send/message` , {
-       device_id: DEVICE_ID,
-       to ,
+    const res = await axios.post(`${BASE_URL}/send/message`, {
+      device_id: DEVICE_ID,
+      to,
       message,
-    })
+    });
+    return res.data;
   } catch (error) {
         console.error(error);
   }
