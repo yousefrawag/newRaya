@@ -194,3 +194,14 @@ exports.SendWatssaoNotvcation = async (to , message) => {
         console.error(error);
   }
 }
+exports.getCompainByid = async (req , res , next) => {
+  try {
+    const currentCompain = await Campaign.findById(req.params.id).populate("user")
+    if(!currentCompain){
+      return res.status(404).json({mesg:"compain not found"})
+    }
+    res.status(200).json({data:currentCompain})
+  } catch (error) {
+    next(error)
+  }
+}

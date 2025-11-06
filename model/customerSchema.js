@@ -1,6 +1,27 @@
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-sequence")(mongoose);
-
+const clientRequirementSchema = new mongoose.Schema({
+  rquireLocation: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  requireRegion: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  require: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  requireType: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+}, { _id: false });
 const customerSchema = mongoose.Schema(
   {
 
@@ -57,11 +78,16 @@ const customerSchema = mongoose.Schema(
    
 
     },
+      clientRequirements: {
+    type: [clientRequirementSchema], // مصفوفة من الطلبات
+    default: [],
+  },
     clientendRequr: {
       type: String,
       trim:true
 
     },
+
     governote: {
       type:String,
       trim:true
