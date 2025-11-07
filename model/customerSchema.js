@@ -3,22 +3,22 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const clientRequirementSchema = new mongoose.Schema({
   rquireLocation: {
     type: String,
-    required: true,
+    
     trim: true,
   },
   requireRegion: {
     type: String,
-    required: true,
+   
     trim: true,
   },
   require: {
     type: String,
-    required: true,
+ 
     trim: true,
   },
   requireType: {
     type: String,
-    required: true,
+ 
     trim: true,
   },
 }, { _id: false });
