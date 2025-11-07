@@ -171,6 +171,9 @@ type:Date
     type:String ,
     enum:["lead" , "customer"]
   },
+  clientworkDesc:{
+    type:String
+  }
 
   },
   {

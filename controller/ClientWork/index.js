@@ -2,7 +2,7 @@ const ClientWorkSchema = require("../../model/ClientWork")
  const AddWork = async (req , res) => {
     const {name} = req.body
     if(name){
-        const addnew = await ClientWorkSchema.create({name})
+        const addnew = await ClientWorkSchema.create({...req.body})
        return res.status(200).json({mesg:"currency add sucuufuly"});
     } else {
         res.status(400).json({mesg:"name is required"})
@@ -26,7 +26,7 @@ const updatework = async (req , res) =>{
     const {id} = req.params
     const {name} = req.body
     const updateNew = await ClientWorkSchema.findByIdAndUpdate(id , {
-        name
+        ...req.body
     } , {new:true})
     res.status(200).json({mesg:"currency updated " , updateNew});
 }
