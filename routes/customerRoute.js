@@ -17,6 +17,7 @@ const CustomerSales  = require("../controller/customers/CustomerSales")
 const GetCustomerLeads = require("../controller/customers/GetCustomerLeads")
 const protect = require("../middleware/authenticationMW")
 const ConvertLead =  require("../controller/customers/ConvertLead")
+const {advancedSearch} = require("../controller/customers/CustomerRecomandion")
 const UserNextcustomernotvcation = require("../controller/customers/UserNextcustomernotvcation")
 const {
   insert,
@@ -37,6 +38,7 @@ router
     authorizationMW("canAddClients"),
     addCustomer
   )
+  router.get("/recomandion" , advancedSearch)
   router.get("/nextreminder" ,protect , UserNextcustomernotvcation)
   router.put("/lead-convert/:id" , protect , ConvertLead)
   router.route("/leads").post(CustomerSales).get(protect ,GetCustomerLeads )

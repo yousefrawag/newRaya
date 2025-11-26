@@ -7,7 +7,7 @@ const updateCustomer = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {notes} = req.body
-    console.log(req.body.SectionFollow);
+    console.log(req.body);
 
     const updateData = { ...req.body };
     
