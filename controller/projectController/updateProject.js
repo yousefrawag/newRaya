@@ -8,7 +8,7 @@ const updateProject = async (req, res, next) => {
     const { id } = req.params;
     // const {DeletImages , DeleteVideos} = req.body
     const updateData = { ...req.body };
-console.log("id" , id)
+console.log("updateData" , updateData)
     
     let project = await projectSchema.findById(id);
     if (!project) {
