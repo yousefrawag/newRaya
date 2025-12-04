@@ -5,7 +5,7 @@ module.exports.advancedSearch = async (req, res) => {
     const searchData = req.query;
 
     console.log("======= SEARCH DEBUG START =======");
-    console.log("RAW REQUEST QUERY:", req.query);
+    console.log("RAW REQUEST QUERY:", searchData);
 
     let filter = {};
     let appliedFilters = [];
@@ -124,26 +124,49 @@ module.exports.advancedSearch = async (req, res) => {
 
         appliedFilters.push(`firstPayment Range`);
       }
+if (searchData.followFrom || searchData.followTo) {
 
-      if (searchData.followFrom || searchData.followTo) {
-        filter.follow = {};
-        if (searchData.followFrom)
-          filter.follow.$gte = parseInt(searchData.followFrom);
-        if (searchData.followTo)
-          filter.follow.$lte = parseInt(searchData.followTo);
+  const from = parseInt(searchData.followFrom) || 0;
+  const to = parseInt(searchData.followTo) || 999999;
 
-        appliedFilters.push(`follow Range`);
-      }
+  filter.$expr = {
+    $and: [
+      { $gte: [ { $size: { $ifNull: ["$SectionFollow", []] } }, from ] },
+      { $lte: [ { $size: { $ifNull: ["$SectionFollow", []] } }, to ] }
+    ]
+  };
+}
 
-      if (searchData.ordersFrom || searchData.ordersTo) {
-        filter.orders = {};
-        if (searchData.ordersFrom)
-          filter.orders.$gte = parseInt(searchData.ordersFrom);
-        if (searchData.ordersTo)
-          filter.orders.$lte = parseInt(searchData.ordersTo);
 
-        appliedFilters.push(`orders Range`);
-      }
+if (searchData.ordersFrom || searchData.ordersTo) {
+
+  const from = parseInt(searchData.ordersFrom) || 0;
+  const to = parseInt(searchData.ordersTo) || 999999;
+
+  if (!filter.$and) filter.$and = [];
+
+  filter.$and.push({
+    $expr: {
+      $and: [
+        { 
+          $gte: [
+            { $size: { $ifNull: ["$clientRequirements", []] } }, 
+            from 
+          ] 
+        },
+        { 
+          $lte: [
+            { $size: { $ifNull: ["$clientRequirements", []] } }, 
+            to 
+          ] 
+        }
+      ]
+    }
+  });
+
+  appliedFilters.push(`clientRequirements Count Range`);
+}
+
 
       // فلتر clientRequirements من الـ INFO
       if (searchData.rquireLocation || searchData.requireRegion || searchData.require || searchData.requireType) {
@@ -190,7 +213,7 @@ module.exports.advancedSearch = async (req, res) => {
     res.status(500).json({
       status: "error",
       message: error.message,
-      appliedFilters
+ 
     });
   }
 };

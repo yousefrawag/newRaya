@@ -78,6 +78,12 @@ status: {
     },
     materPriec:{
       type:String
+    } ,
+    relatedtype:{
+  type:String
+    } ,
+    availableFloors:{
+      type:String
     }
   },
 
