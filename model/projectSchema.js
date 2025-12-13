@@ -82,10 +82,12 @@ status: {
     relatedtype:{
   type:String
     } ,
-    availableFloors:{
-      type:String
-    }
+    availableFloors:[] ,
+     Barkaaraemater :{
+   type:String
+ }
   },
+
 
   {
     timestamps: true,

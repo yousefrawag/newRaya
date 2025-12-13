@@ -74,6 +74,8 @@ server.use("/api/client-work", require("./routes/RouteClientwork"));
 server.use("/api/track", require("./routes/Track"));
 server.use("/api/compain", require("./routes/compainRoute"));
 server.use("/api/arae", require("./routes/AreaRoute"));
+server.use("/api/firstpayment", require("./routes/FirstPaymentRoute"));
+server.use("/api/monthPayment", require("./routes/MonthPaymentRoute"));
 
 
 // Not Found MiddleWare
