@@ -85,6 +85,12 @@ status: {
     availableFloors:[] ,
      Barkaaraemater :{
    type:String
+ } ,
+ countOfperiod:{
+  type:Number
+ } ,
+ installmentPeriod:{
+  type:String
  }
   },
 

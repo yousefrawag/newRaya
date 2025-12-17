@@ -10,7 +10,7 @@ exports.addNew = async (req , res , next ) => {
 }
 exports.getAll = async (req , res , next) => {
     try {
-            const allareas = await arematerSchema.find({})
+            const allareas = await arematerSchema.find({}).sort({ createdAt: -1 })
             res.status(200).json({data:allareas})
     } catch (error) {
         next(error)

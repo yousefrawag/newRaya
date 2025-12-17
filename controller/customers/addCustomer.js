@@ -34,7 +34,10 @@ const addCustomer = async (req, res, next) => {
          const delayData = {
               ReportType:"إضافة عميل",
               Customers:[customer?._id],
-              addedBy:req.token.id
+              addedBy:req.token.id ,
+              endcontact:   customer.SectionFollow.length > 0
+    ? customer.SectionFollow[customer.SectionFollow.length - 1].details
+    : "غير متوفر"
             }
                const newadd  =  await dealyReport.create(delayData)
      res.status(200).json({

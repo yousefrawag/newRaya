@@ -10,7 +10,7 @@ exports.addNew = async (req , res , next ) => {
 }
 exports.getAll = async (req , res , next) => {
     try {
-            const allPayments = await FirstPaymentSchema.find({})
+            const allPayments = await FirstPaymentSchema.find({}).sort({ createdAt: -1 })
             res.status(200).json({data:allPayments})
     } catch (error) {
         next(error)
