@@ -70,9 +70,9 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
     });
 
     // Notify admins
-   const admins = await userSchema.find({
-  $or: [{ type: "admin" }, { role: 9 }]
-});
+//    const admins = await userSchema.find({
+//   $or: [{ type: "admin" }, { role: 9 }]
+// });
 
     const notifications = admins.map(admin => ({
       user: admin._id,

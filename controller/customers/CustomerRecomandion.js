@@ -77,18 +77,29 @@ module.exports.advancedSearch = async (req, res) => {
     if (searchData.CurrenTap === "info") {
       console.log("📌 Applying INFO filters");
 
-      const fieldsToCheck = [
-        'addBy', 'userfollow', 'region', 'governote', 'cashOption',
-        'InstallmentType', 'clientendRequr'
-      ];
+     const fieldsToCheck = [
+  'addBy',
+  'userfollow',
+  'region',
+  'governote',
+  'cashOption',
+  'InstallmentType',
+  'clientendRequr'
+];
 
-      fieldsToCheck.forEach(field => {
-        if (searchData[field] && searchData[field].toString().trim() !== '') {
-          const value = searchData[field].toString().trim();
-          filter[field] = value;
-          appliedFilters.push(`${field}: "${value}"`);
-        }
-      });
+fieldsToCheck.forEach(field => {
+  if (searchData[field] && searchData[field].toString().trim() !== '') {
+    const value = searchData[field].toString().trim();
+
+    filter[field] = {
+      $regex: value,
+      $options: 'i'
+    };
+
+    appliedFilters.push(`${field}: contains "${value}"`);
+  }
+});
+
 
       const multiValueFields = [
         'clientwork',

@@ -8,8 +8,10 @@ const updateProject = async (req, res, next) => {
     const { id } = req.params;
     // const {DeletImages , DeleteVideos} = req.body
     const updateData = { ...req.body };
-console.log("updateData" , updateData)
-    
+
+    const availableFloors = JSON.parse(req.body.availableFloors) 
+    console.log("updateData" , availableFloors)
+    updateData.availableFloors = availableFloors
     let project = await projectSchema.findById(id);
     if (!project) {
       return res.status(404).json({ message: "This project desn't exist" });
