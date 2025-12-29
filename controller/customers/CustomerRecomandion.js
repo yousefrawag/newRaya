@@ -81,7 +81,6 @@ module.exports.advancedSearch = async (req, res) => {
   'addBy',
   'userfollow',
   'region',
-  'governote',
   'cashOption',
   'InstallmentType',
   'clientendRequr'
@@ -105,6 +104,7 @@ fieldsToCheck.forEach(field => {
         'clientwork',
         'source',
         'clientStatus',
+        "governote" ,
         'project',
         'isViwed'
       ];
