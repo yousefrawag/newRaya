@@ -24,6 +24,7 @@ const updateCustomer = async (req, res, next) => {
         details: req.body.SectionFollow.details,
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
+        CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep ,
         CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
 nextReminderDate: req.body.SectionFollow?.nextReminderDate
   ? new Date(req.body.SectionFollow.nextReminderDate)

@@ -147,6 +147,9 @@ const customerSchema = mongoose.Schema(
       CustomerDealsatuts:{
         type:String
       },
+      CustomerDealsatutsDescrep:{
+            type:String
+      },
       nextReminderDate:{
 type:Date
       } ,
