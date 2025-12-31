@@ -14,7 +14,7 @@ const notifications = await notificationSchema
   .populate("employee") // Populating employee details
   .populate("allowed")
   .sort({ createdAt: -1 }) // آخر إشعارات الأول
-  .limit(20)
+  .limit(60)
 
 
 
