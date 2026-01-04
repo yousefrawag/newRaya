@@ -9,9 +9,7 @@ const updateProject = async (req, res, next) => {
     // const {DeletImages , DeleteVideos} = req.body
     const updateData = { ...req.body };
 
-    const availableFloors = JSON.parse(req.body.availableFloors) 
-    console.log("updateData" , availableFloors)
-    updateData.availableFloors = availableFloors
+   
     let project = await projectSchema.findById(id);
     if (!project) {
       return res.status(404).json({ message: "This project desn't exist" });
@@ -63,6 +61,9 @@ const updateProject = async (req, res, next) => {
       const newimagelink = {fileID: new Date() , fileURL : updateData.videoLink}
       updateData.videosURLs.push(newimagelink)
     }
+     const availableFloors =req.body.availableFloors? JSON.parse(req.body.availableFloors)  : project?.availableFloors
+    console.log("data" , req.body)
+    updateData.availableFloors = availableFloors
     const updatedproject = await projectSchema.findByIdAndUpdate(
       id,
       updateData,
