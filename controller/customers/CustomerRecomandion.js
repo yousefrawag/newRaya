@@ -25,7 +25,8 @@ module.exports.advancedSearch = async (req, res) => {
       "notes",
       "clientendRequr",
       "followBy",
-      "addBy"
+      "addBy",
+      "relatedStauts"
     ];
 
     // --------------------------------------------------------
@@ -106,7 +107,8 @@ fieldsToCheck.forEach(field => {
         'clientStatus',
         "governote" ,
         'project',
-        'isViwed'
+        'isViwed',
+        "relatedStauts"
       ];
 
       multiValueFields.forEach(field => {
