@@ -30,7 +30,7 @@ router
     
     getProjects)
   .post(
-    authorizationMW("canAddProjects"),
+   
     multerUpload.array("files"),
     addProject
   );

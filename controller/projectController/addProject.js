@@ -4,7 +4,14 @@ const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
 const addProject = async (req, res, next) => {
   console.log(req.body)
-  
+  const allowedTypes = [
+  "application/pdf",
+  "application/zip",
+  "application/x-rar-compressed" ,
+   "application/msword",
+   "application/octet-stream",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
   try {
     let project = new projectSchema(req.body);
     
@@ -34,10 +41,12 @@ const addProject = async (req, res, next) => {
               "projectFiles/videos"
             );
           videosURLs.push({ fileURL, fileID });
-        } else if (req.files[index].mimetype === "application/pdf") {
+        } else if (allowedTypes.includes(req.files[index].mimetype)) {
 
           const { imageURL: fileURL, imageID: fileID } =
-            await cloudinary.upload(req.files[index].path, "projectFiles/docs");
+            await cloudinary.upload(req.files[index].path, "projectFiles/docs" , {
+               resource_type: "raw",
+            });
           docsURLs.push({ fileURL, fileID });
         }
       }
@@ -76,7 +85,10 @@ const addProject = async (req, res, next) => {
     // ✅ Save notifications
     await notificationSchema.insertMany(notifications);
   } catch (error) {
-    next(error);
+   res.status(500).json({
+    message: "Add project failed",
+    error: error.message || error,
+  });
   }
 };
 module.exports = addProject;
