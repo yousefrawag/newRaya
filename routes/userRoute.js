@@ -23,6 +23,7 @@ router
   .get(
     authorizationMW("canViewEmployees"),
    userController.getUsers)
+   router.get("/archiev", userController.getArchivedUsers)
   .post(
     authorizationMW("canAddEmployees"),
     multerUpload.single("image"),

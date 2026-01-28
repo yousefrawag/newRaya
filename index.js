@@ -27,9 +27,9 @@ server.use((req, res, next) => {
 });
 const corsOptions = {
   origin: ["https://rayapal-crm.netlify.app" ,  "http://localhost:3002" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
-  methods: 'GET,POST,PUT,DELETE , PATCH ', // specify the methods you want to allow
-  allowedHeaders: 'Content-Type,Authorization', // specify the headers you want to allow
-  credentials: true // Allow credentials to be included in the request
+  methods: 'GET,POST,PUT,DELETE , PATCH ', 
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true 
 
 };
 

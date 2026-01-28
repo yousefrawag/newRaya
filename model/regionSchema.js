@@ -9,7 +9,11 @@ const regoineSchema = mongoose.Schema(
   },
   relatedRegions: [
   String
-]
+] ,
+           ArchievStatuts :{
+      type:Boolean ,
+      default:false
+    } 
       
     },
     {

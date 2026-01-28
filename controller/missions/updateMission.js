@@ -17,6 +17,7 @@ const updateMission = async (req, res, next) => {
     missionType,
     description,
     Privetproject,
+    ArchievStatuts
    
   } = req.body;
 
@@ -36,6 +37,7 @@ const updateMission = async (req, res, next) => {
         missionType,
         description,
         Privetproject,
+        ArchievStatuts
        
       },
       { new: true }

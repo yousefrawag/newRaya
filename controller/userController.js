@@ -8,13 +8,11 @@ const logo = path.join(__dirname, "../images/logo2.jpg");
 const DeailyReportsmodule = require("../model/DeailyReports");
 
 exports.getUsers = (req, res, next) => {
-  const {field , searTerm} = req.query
-  let fillter = {}
-  if(["fullName" , "email" , "job"].includes(field) && searTerm) {
-    fillter[field] = { $regex: new RegExp(searTerm, 'i') }
-  }
+  // const {field , searTerm} = req.query
+  // let fillter = {ArchievStatuts: { $in: [false, null] }}
+
   userSchema
-    .find(fillter)
+    .find({ArchievStatuts: { $in: [false, null] }})
     .populate("role")
     .sort({ createdAt: -1 })
     .select("-password")
@@ -111,6 +109,8 @@ exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
+    console.log("update" , updateData);
+    
     let user = await userSchema.findById(id);
     if (!user) {
       return res.status(404).json({ message: "This user desn't exist" });
@@ -132,7 +132,16 @@ exports.updateUser = async (req, res, next) => {
     next(error);
   }
 };
-
+exports.getArchivedUsers = async (req, res , next) => {
+  try {
+    const data  = await userSchema.find({ArchievStatuts:true}).populate("role")
+    .sort({ createdAt: -1 })
+    .select("-password")
+    res.status(200).json({message:"Archived users"  , data})
+  } catch (error) {
+    next(error)
+  }
+}
 exports.updateUserOwnInfo = async (req, res, next) => {
   console.log(req.file);
   console.log(req.body);

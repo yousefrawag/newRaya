@@ -50,6 +50,10 @@ const missionSchema = mongoose.Schema(
       type: Number,
       ref: "chats",
     },
+       ArchievStatuts :{
+      type:Boolean ,
+      default:false
+    } 
   },
   {
     timestamps: true,

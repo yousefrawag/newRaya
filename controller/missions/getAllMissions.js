@@ -8,7 +8,7 @@ const getAllMission = async (req, res, next) => {
 
 
     const data = await missionSchema
-      .find({})
+      .find({ArchievStatuts: { $in: [false, null] }})
       .populate("assignedTo")
       .populate(
  "project"

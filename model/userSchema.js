@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
       enum: ["admin", "employee"],
       default: "employee",
     },
+           ArchievStatuts :{
+      type:Boolean ,
+      default:false
+    } 
   },
   {
     timestamps: true,

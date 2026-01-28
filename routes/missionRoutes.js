@@ -15,13 +15,13 @@ const {
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 const missionsAddedToday = require("../controller/missions/missionsAddedToday");
 const protect = require("../middleware/authenticationMW")
-
+const MissionArchevStauts = require("../controller/missions/MissionArchevStauts")
 const authorizationMW = require("../middleware/authorizationMW");
-
+const GetArchevedMission  = require("../controller/missions/GetArchevedMission")
 router.use(protect)
 router.route("/users/:id").get(userMissions);
 router.route("/missionsToday").get(missionsAddedToday);
-
+router.get("/archiev",GetArchevedMission )
 router
   .route("/")
   .get(
@@ -34,7 +34,7 @@ router
     addMission
   )
   router.get("/usersProjects" ,getProjectandusersmission)
-
+router.put("/archevstauts/:id" , authorizationMW("canEditMissions"), MissionArchevStauts )
 router
   .route("/:id")
   .get(
