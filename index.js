@@ -77,6 +77,7 @@ server.use("/api/arae", require("./routes/AreaRoute"));
 server.use("/api/firstpayment", require("./routes/FirstPaymentRoute"));
 server.use("/api/monthPayment", require("./routes/MonthPaymentRoute"));
 server.use("/api/FloorNumber", require("./routes/FloorRoute"));
+server.use("/api/ReportType", require("./routes/ReportTypeRoute"));
 
 
 // Not Found MiddleWare

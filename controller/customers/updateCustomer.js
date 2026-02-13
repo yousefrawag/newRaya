@@ -24,6 +24,7 @@ const updateCustomer = async (req, res, next) => {
         details: req.body.SectionFollow.details,
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
+         contactNotes:req.body.SectionFollow.contactNotes ,
         CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep ,
         CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
 nextReminderDate: req.body.SectionFollow?.nextReminderDate
@@ -41,7 +42,8 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
         ReportType:req.body.SectionFollow.ReportType,
         Customers:[id],
         addedBy:req.token.id ,
-        endcontact:req.body.SectionFollow.details
+        endcontact:req.body.SectionFollow.details,
+            notes:req.body.SectionFollow.contactNotes ,
       }
          const newadd  =  await dealyReport.create(delayData)
          console.log(newSectionFollow);
@@ -71,20 +73,20 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
     });
 
     // Notify admins
-   const admins = await userSchema.find({
-  $or: [{ type: "admin" }, { role: 9 }]
-});
+//    const admins = await userSchema.find({
+//   $or: [{ type: "admin" }, { role: 9 }]
+// });
 
-    const notifications = admins.map(admin => ({
-      user: admin._id,
-      employee: req.token?.id,
-      levels: "clients",
-      type: "update",
-      allowed: updatedCustomer?._id,
-      message: "تم تعديل بيانات العميل",
-    }));
+//     const notifications = admins.map(admin => ({
+//       user: admin._id,
+//       employee: req.token?.id,
+//       levels: "clients",
+//       type: "update",
+//       allowed: updatedCustomer?._id,
+//       message: "تم تعديل بيانات العميل",
+//     }));
 
-    await notificationSchema.insertMany(notifications);
+//     await notificationSchema.insertMany(notifications);
 
   } catch (error) {
     next(error);

@@ -35,9 +35,16 @@ const addCustomer = async (req, res, next) => {
               ReportType:"إضافة عميل",
               Customers:[customer?._id],
               addedBy:req.token.id ,
+              notes:customer.SectionFollow.contactNotes ,
               endcontact:   customer.SectionFollow.length > 0
     ? customer.SectionFollow[customer.SectionFollow.length - 1].details
-    : "غير متوفر"
+    : "غير متوفر",
+            CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep ,
+        CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
+nextReminderDate: req.body.SectionFollow?.nextReminderDate
+  ? new Date(req.body.SectionFollow.nextReminderDate)
+  : null,
+        createdAt: new Date(),
             }
                const newadd  =  await dealyReport.create(delayData)
      res.status(200).json({

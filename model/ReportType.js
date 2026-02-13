@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const projectlocation = mongoose.Schema(
+const reportType = mongoose.Schema(
     {
         name:{
             type:String,
@@ -19,4 +19,4 @@ const projectlocation = mongoose.Schema(
         timestamps: true,
     }
 )
-module.exports = mongoose.model("projectlocation" , projectlocation)
+module.exports = mongoose.model("reportType" , reportType)

@@ -147,6 +147,9 @@ const customerSchema = mongoose.Schema(
       CustomerDealsatuts:{
         type:String
       },
+      contactNotes:{
+         type:String
+      },
       CustomerDealsatutsDescrep:{
             type:String
       },
