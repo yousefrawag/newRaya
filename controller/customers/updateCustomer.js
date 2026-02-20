@@ -24,6 +24,8 @@ const updateCustomer = async (req, res, next) => {
         details: req.body.SectionFollow.details,
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
+        ReportType:req.body.SectionFollow.ReportType ,
+        ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
          contactNotes:req.body.SectionFollow.contactNotes ,
         CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep ,
         CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
@@ -40,6 +42,7 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
 
           const delayData = {
         ReportType:req.body.SectionFollow.ReportType,
+         ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
         Customers:[id],
         addedBy:req.token.id ,
         endcontact:req.body.SectionFollow.details,

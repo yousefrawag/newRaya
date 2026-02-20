@@ -159,6 +159,12 @@ type:Date
       createdAt: {
         type: Date,
         default: Date.now // Automatically sets the creation date
+      } ,
+      ReportType:{
+         type:String 
+      } ,
+      ReportTypeDescriep:{
+         type:String 
       }
     }] ,
     

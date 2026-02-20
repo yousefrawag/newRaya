@@ -33,6 +33,7 @@ const addCustomer = async (req, res, next) => {
       await customer.save();
          const delayData = {
               ReportType:"إضافة عميل",
+                ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
               Customers:[customer?._id],
               addedBy:req.token.id ,
               notes:customer.SectionFollow.contactNotes ,

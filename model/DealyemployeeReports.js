@@ -13,6 +13,9 @@ const DeailyemployeeReportsmodule = mongoose.Schema(
       type: String,
     
     },
+    ReportTypeDescriep:{
+ type: String,
+    } ,
    Customers:[
         {
       type: mongoose.Schema.Types.ObjectId,

@@ -2,7 +2,7 @@ const ReportType =  require("../model/ReportType")
 exports.addNew = async (req , res , next ) => {
         const {name} = req.body
         if(name){
-            const addnew = await ReportType.create({name})
+            const addnew = await ReportType.create({...req.body})
            return res.status(200).json({mesg:"area add sucuufuly" , arae:addnew});
         } else {
             res.status(400).json({mesg:"name is required"})
@@ -20,7 +20,7 @@ exports.Updateone = async (req , res , next) => {
         const {id} = req.params
         const {name} = req.body
         const updateNew = await ReportType.findByIdAndUpdate(id , {
-            name
+          ...req.body
         } , {new:true})
         res.status(200).json({mesg:"currency updated " , updateNew});
 }
