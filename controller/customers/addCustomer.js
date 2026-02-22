@@ -33,17 +33,17 @@ const addCustomer = async (req, res, next) => {
       await customer.save();
          const delayData = {
               ReportType:"إضافة عميل",
-                ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
+                ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep || "" ,
               Customers:[customer?._id],
               addedBy:req.token.id ,
               notes:customer.SectionFollow.contactNotes ,
               endcontact:   customer.SectionFollow.length > 0
     ? customer.SectionFollow[customer.SectionFollow.length - 1].details
     : "غير متوفر",
-            CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep ,
-        CustomerDealsatuts: req.body.SectionFollow.CustomerDealsatuts,
-nextReminderDate: req.body.SectionFollow?.nextReminderDate
-  ? new Date(req.body.SectionFollow.nextReminderDate)
+            CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep || "" ,
+        CustomerDealsatuts: req.body.SectionFollow?.CustomerDealsatuts || "",
+nextReminderDate: req.body.SectionFollow?.nextReminderDate || ""
+  ? new Date(req.body.SectionFollow.nextReminderDate || "")
   : null,
         createdAt: new Date(),
             }
