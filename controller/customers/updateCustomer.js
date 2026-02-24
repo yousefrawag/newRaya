@@ -76,20 +76,20 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
     });
 
     // Notify admins
-//    const admins = await userSchema.find({
-//   $or: [{ type: "admin" }, { role: 9 }]
-// });
+   const admins = await userSchema.find({
+  $or: [{ type: "admin" }, { role: 9 }]
+});
 
-//     const notifications = admins.map(admin => ({
-//       user: admin._id,
-//       employee: req.token?.id,
-//       levels: "clients",
-//       type: "update",
-//       allowed: updatedCustomer?._id,
-//       message: "تم تعديل بيانات العميل",
-//     }));
+    const notifications = admins.map(admin => ({
+      user: admin._id,
+      employee: req.token?.id,
+      levels: "clients",
+      type: "update",
+      allowed: updatedCustomer?._id,
+      message: "تم تعديل بيانات العميل",
+    }));
 
-//     await notificationSchema.insertMany(notifications);
+    await notificationSchema.insertMany(notifications);
 
   } catch (error) {
     next(error);

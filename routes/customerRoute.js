@@ -20,6 +20,7 @@ const ConvertLead =  require("../controller/customers/ConvertLead")
 const {advancedSearch} = require("../controller/customers/CustomerRecomandion")
 const UserNextcustomernotvcation = require("../controller/customers/UserNextcustomernotvcation")
 const CustomerSectionFlowTiemLine = require("../controller/customers/CustomerSectionFlowTiemLine")
+const customerEmployeePreformance = require("../controller/customers/customerEmployeePreformance")
 const {
   insert,
   update,
@@ -30,6 +31,8 @@ const authorizationMW = require("../middleware/authorizationMW");
 // router.use(protect)
 router.get("/journey-analytics" ,     protect ,
     authorizationMW("canViewClients"), CustomerSectionFlowTiemLine)
+    router.get("/employee-customers-preforance" ,     protect ,
+    authorizationMW("canViewClients"), customerEmployeePreformance)
 router
   .route("/")
   .get( 
