@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
     imageID: String,
     type: {
       type: String,
-      enum: ["admin", "employee"],
+      enum: ["admin", "employee" , "brokker"],
       default: "employee",
     },
            ArchievStatuts :{

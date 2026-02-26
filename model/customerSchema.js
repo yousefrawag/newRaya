@@ -181,7 +181,7 @@ type:Date
     clientRequireLocation:String ,
   moduleType:{
     type:String ,
-    enum:["lead" , "customer"]
+    enum:["lead" , "customer" , "underReview"]
   },
   clientworkDesc:{
     type:String

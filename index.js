@@ -26,7 +26,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://rayapal-crm.netlify.app" ,  "http://localhost:3002" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
+  origin: ["https://rayapal-crm.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3002" ,"http://localhost:3003" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', 
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true 
@@ -78,6 +78,7 @@ server.use("/api/firstpayment", require("./routes/FirstPaymentRoute"));
 server.use("/api/monthPayment", require("./routes/MonthPaymentRoute"));
 server.use("/api/FloorNumber", require("./routes/FloorRoute"));
 server.use("/api/ReportType", require("./routes/ReportTypeRoute"));
+server.use("/api/broker-deaily", require("./routes/brokerDeailyRoute"));
 
 
 // Not Found MiddleWare

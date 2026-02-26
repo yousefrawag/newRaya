@@ -12,6 +12,8 @@ const addCustomer = async (req, res, next) => {
 
     try {
       // Save the single customer data from req.body
+         const id = req.token.id
+          const user = await userSchema.findById(id)
       const {phoneNumber} = req.body
      const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
@@ -28,26 +30,33 @@ const addCustomer = async (req, res, next) => {
       if(req.body.SectionFollow){
         customer.SectionFollow[0].user = req.token.id
       }
-       customer.moduleType ="customer"
+
+      if(user?.type === "brokker") {
+        //underReview
+        customer.moduleType ="underReview"
+      }else {
+  customer.moduleType ="customer"
+      }
+     
         // customer.addBy = req.token.id
       await customer.save();
-         const delayData = {
-              ReportType:"إضافة عميل",
-                ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep || "" ,
-              Customers:[customer?._id],
-              addedBy:req.token.id ,
-              notes:customer.SectionFollow.contactNotes ,
-              endcontact:   customer.SectionFollow.length > 0
-    ? customer.SectionFollow[customer.SectionFollow.length - 1].details
-    : "غير متوفر",
-            CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep || "" ,
-        CustomerDealsatuts: req.body.SectionFollow?.CustomerDealsatuts || "",
-nextReminderDate: req.body.SectionFollow?.nextReminderDate || ""
-  ? new Date(req.body.SectionFollow.nextReminderDate || "")
-  : null,
-        createdAt: new Date(),
-            }
-               const newadd  =  await dealyReport.create(delayData)
+//          const delayData = {
+//               ReportType:"إضافة عميل",
+//                 ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep || "" ,
+//               Customers:[customer?._id],
+//               addedBy:req.token.id ,
+//               notes:customer.SectionFollow.contactNotes ,
+//               endcontact:   customer.SectionFollow.length > 0
+//     ? customer.SectionFollow[customer.SectionFollow.length - 1].details
+//     : "غير متوفر",
+//             CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep || "" ,
+//         CustomerDealsatuts: req.body.SectionFollow?.CustomerDealsatuts || "",
+// nextReminderDate: req.body.SectionFollow?.nextReminderDate || ""
+//   ? new Date(req.body.SectionFollow.nextReminderDate || "")
+//   : null,
+//         createdAt: new Date(),
+//             }
+//                const newadd  =  await dealyReport.create(delayData)
      res.status(200).json({
         message: `${customer.clientStatus} created successfully`,
         customer,
@@ -58,21 +67,21 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate || ""
 
       console.log(customer);
       // ✅ Create notifications properly
-      const notifications = admins.map((admin) => {
-        const notification = {
-          user: admin._id,  // Ensure this is a number if required
-          employee: req.token?.id,
-          levels: "clients",
-          type: "add",
-          allowed: customer._id, // Use customer._id
-          message: "تم إضافة عميل جديد",
-        };
-        console.log("Notification being created:", notification); // Log the notification
-        return notification;
-      });
+      // const notifications = admins.map((admin) => {
+      //   const notification = {
+      //     user: admin._id,  // Ensure this is a number if required
+      //     employee: req.token?.id,
+      //     levels: "clients",
+      //     type: "add",
+      //     allowed: customer._id, // Use customer._id
+      //     message: "تم إضافة عميل جديد",
+      //   };
+      //   console.log("Notification being created:", notification); // Log the notification
+      //   return notification;
+      // });
       
-      // ✅ Save notifications
-      await notificationSchema.insertMany(notifications);
+      // // ✅ Save notifications
+      // await notificationSchema.insertMany(notifications);
      
     } catch (error) {
       throw new Error(error)
