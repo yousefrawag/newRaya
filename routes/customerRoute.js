@@ -22,6 +22,7 @@ const UserNextcustomernotvcation = require("../controller/customers/UserNextcust
 const CustomerSectionFlowTiemLine = require("../controller/customers/CustomerSectionFlowTiemLine")
 const customerEmployeePreformance = require("../controller/customers/customerEmployeePreformance")
 const brokersCustomers = require("../controller/customers/brokersCustomers")
+const addCsutomerBroker = require("../controller/customers/addCsutomerBroker")
 const {
   insert,
   update,
@@ -47,6 +48,7 @@ router
     authorizationMW("canAddClients"),
     addCustomer
   )
+  router.post("/broker-add" , protect ,  authorizationMW("canAddClients"), addCsutomerBroker)
   router.get("/recomandion" , advancedSearch)
   router.get("/nextreminder" ,protect , UserNextcustomernotvcation)
   router.put("/lead-convert/:id" , protect , ConvertLead)

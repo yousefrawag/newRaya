@@ -160,6 +160,9 @@ type:Date
         type: Date,
         default: Date.now // Automatically sets the creation date
       } ,
+      meeting:{
+         type: Date,
+      },
       ReportType:{
          type:String 
       } ,

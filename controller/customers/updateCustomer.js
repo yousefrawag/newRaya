@@ -2,6 +2,7 @@ const customerSchema = require("../../model/customerSchema");
 const userSchema = require("../../model/userSchema");
 const notificationSchema = require("../../model/notificationSchema");
 const dealyReport = require("../../model/DealyemployeeReports")
+const dealyReportBroker = require("../../model/brokerDeailyReports")
 
 const updateCustomer = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ const updateCustomer = async (req, res, next) => {
     console.log(req.body);
 
     const updateData = { ...req.body };
-    
+    const CurrentUser = await userSchema.findById(req.token.id)
     // Remove SectionFollow from updateData to prevent overwrite
     delete updateData.SectionFollow;
 
@@ -24,6 +25,7 @@ const updateCustomer = async (req, res, next) => {
         details: req.body.SectionFollow.details,
         detailsDate: req.body.SectionFollow.detailsDate,
         user: req.token.id,
+        meeting:updateData?.customerDate ,
         ReportType:req.body.SectionFollow.ReportType ,
         ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
          contactNotes:req.body.SectionFollow.contactNotes ,
@@ -39,8 +41,19 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
     
       try {
 
-
-          const delayData = {
+if(CurrentUser?.type === "brokker") {
+    const delayDataBroker = {
+        ReportType:req.body.SectionFollow.ReportType,
+         ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
+           Customer: id,
+        addedBy:req.token.id ,
+        endcontact:req.body.SectionFollow.details,
+            notes:req.body.SectionFollow.contactNotes ,
+      }
+         const newadd  =  await dealyReportBroker.create(delayDataBroker)
+         console.log(newSectionFollow);
+} else {
+    const delayData = {
         ReportType:req.body.SectionFollow.ReportType,
          ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
         Customers:[id],
@@ -49,7 +62,9 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
             notes:req.body.SectionFollow.contactNotes ,
       }
          const newadd  =  await dealyReport.create(delayData)
-         console.log(newSectionFollow);
+         
+}
+      
          
 
       } catch (error) {
@@ -80,16 +95,16 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
   $or: [{ type: "admin" }, { role: 9 }]
 });
 
-    // const notifications = admins.map(admin => ({
-    //   user: admin._id,
-    //   employee: req.token?.id,
-    //   levels: "clients",
-    //   type: "update",
-    //   allowed: updatedCustomer?._id,
-    //   message: "تم تعديل بيانات العميل",
-    // }));
+    const notifications = admins.map(admin => ({
+      user: admin._id,
+      employee: req.token?.id,
+      levels: "clients",
+      type: "update",
+      allowed: updatedCustomer?._id,
+      message: "تم تعديل بيانات العميل",
+    }));
 
-    // await notificationSchema.insertMany(notifications);
+    await notificationSchema.insertMany(notifications);
 
   } catch (error) {
     next(error);
