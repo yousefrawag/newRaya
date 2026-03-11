@@ -45,8 +45,8 @@ const addCustomer = async (req, res, next) => {
                 ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep || "" ,
               Customers:[customer?._id],
               addedBy:req.token.id ,
-              notes:customer.SectionFollow.contactNotes ,
-              endcontact:   customer.SectionFollow.length > 0
+              notes:customer?.SectionFollow?.contactNotes || "" ,
+              endcontact:   customer?.SectionFollow.length > 0
     ? customer.SectionFollow[customer.SectionFollow.length - 1].details
     : "غير متوفر",
             CustomerDealsatutsDescrep:req.body.SectionFollow?.CustomerDealsatutsDescrep || "" ,

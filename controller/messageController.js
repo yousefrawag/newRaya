@@ -181,7 +181,7 @@ const sendEmailNotifications = async (participants, chat, sender, content) => {
 exports.getChatMessages = async (req, res, next) => {
   try {
     const { chatID } = req.params;
-    const messages = await messageSchema.find({ chatID }).sort({ createdAt: 1 }).populate("senderID");
+    const messages = await messageSchema.find({ chatID }).populate("senderID").sort({ createdAt: -1 });
     return res.status(200).json({ messages });
   } catch (error) {
     next(error);
