@@ -43,25 +43,26 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate
 
 if(CurrentUser?.type === "brokker") {
     const delayDataBroker = {
-        ReportType:req.body.SectionFollow.ReportType,
-         ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
+        ReportType:req.body.SectionFollow?.ReportType,
+         ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep ,
            Customer: id,
         addedBy:req.token.id ,
-        endcontact:req.body.SectionFollow.details,
-            notes:req.body.SectionFollow.contactNotes ,
+        endcontact:req.body.SectionFollow?.details,
+            notes:req.body.SectionFollow?.contactNotes ,
       }
          const newadd  =  await dealyReportBroker.create(delayDataBroker)
-         console.log(newSectionFollow);
+         console.log("newadd from brokker" , newadd);
 } else {
     const delayData = {
         ReportType:req.body.SectionFollow.ReportType,
-         ReportTypeDescriep:req.body.SectionFollow.ReportTypeDescriep ,
+         ReportTypeDescriep:req.body.SectionFollow?.ReportTypeDescriep ,
         Customers:[id],
         addedBy:req.token.id ,
-        endcontact:req.body.SectionFollow.details,
-            notes:req.body.SectionFollow.contactNotes ,
+        endcontact:req.body.SectionFollow?.details,
+            notes:req.body.SectionFollow?.contactNotes ,
       }
          const newadd  =  await dealyReport.create(delayData)
+           console.log("newadd from emplyoee" , newadd);
          
 }
       
