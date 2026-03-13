@@ -181,7 +181,17 @@ const sendEmailNotifications = async (participants, chat, sender, content) => {
 exports.getChatMessages = async (req, res, next) => {
   try {
     const { chatID } = req.params;
-    const messages = await messageSchema.find({ chatID }).populate("senderID").sort({ createdAt: -1 });
+    const currentUser = await userSchema.findById(req.token.id)
+    let filters = {
+      chatID
+    }
+    if(currentUser.type === "admin" || currentUser.role ===9){
+      filters ={...filters}
+    }else {
+        filters ={...filters , senderID:req.token.id}
+    }
+
+    const messages = await messageSchema.find(filters).populate("senderID").sort({ createdAt: -1 });
     return res.status(200).json({ messages });
   } catch (error) {
     next(error);
