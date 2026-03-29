@@ -24,7 +24,7 @@ exports.login = async (req, res, next) => {
       {
         id: user._id,
       },
-      process.env.SECRET_KEY,
+     "HJHDywgfknDHJBHCVDUFeHDFYEFGEYUFV",
       { expiresIn: "10h" }
     );
 
