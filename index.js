@@ -9,7 +9,7 @@ const {createDefaultPolicy} = require("./model/PrivcySecurty")
 const server = express();
 const port = process.env.Port || process.env.LOCALPORT;
 mongoose
-  .connect(process.env.MONGOOOSE_URL)
+  .connect("mongodb+srv://raya:OOMDbAcRAahSdpc6@crm-db.g9kqn.mongodb.net/")
   .then( async() => {
     await createDefaultPolicy()
     
