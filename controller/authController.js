@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const addNewdeaily = require("../controller/DeailyReport/AddNewdeaily")
 exports.login = async (req, res, next) => {
-  const SECRET_KEY ="HJHDywgfknDHJBHCVDUFeHDFYEFGEYUFV"
+  
   try {
     // Find user by email
     console.log("password" , req.body.password);
@@ -25,7 +25,7 @@ exports.login = async (req, res, next) => {
       {
         id: user._id,
       },
-      SECRET_KEY,
+      process.env.SECRET_KEY,
       { expiresIn: "10h" }
     );
 
