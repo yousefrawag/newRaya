@@ -52,13 +52,16 @@ exports.addUser = async (req, res, next) => {
     await user.save();
 
     // Create the transporter
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_EMAIL,
-        pass: process.env.GMAIL_PASS,
-      },
-    });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_EMAIL,
+    pass: process.env.GMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 
 

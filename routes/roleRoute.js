@@ -14,7 +14,7 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW");
 
 const router = express.Router();
-router.use(protect)
+// router.use(protect)
 router.route("/getRolesWithUserCounts").get(    getRolesWithUserCounts);
 router.route("/getUsersWithCertainRole/:id").get(  getUsersWithCertainRole);
 router
@@ -22,7 +22,7 @@ router
   .get(
     getAllRoles)
   .post(
-    authorizationMW("canAddAdministration"),
+    // authorizationMW("canAddAdministration"),
     // insert,
     // validationResult,
     addRole

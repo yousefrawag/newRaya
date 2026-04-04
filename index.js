@@ -84,7 +84,7 @@ server.use("/api/broker-deaily", require("./routes/brokerDeailyRoute"));
 // Not Found MiddleWare
 
 server.use((req, res, next) => {
-  res.status(404).json({ data: "Not Found" });
+  res.status(404).json({ data: "Not Found"  });
 });
 
 //Error Middleware
