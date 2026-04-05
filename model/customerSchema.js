@@ -144,11 +144,22 @@ const customerSchema = mongoose.Schema(
         type: Number,
         ref: "users",
       },
+      userFullName:{
+        type:String
+      },
       CustomerDealsatuts:{
         type:String
       },
       contactNotes:{
          type:String
+      },
+      lengthofFollow:{
+        type:Number,
+        default:0
+      },
+        lengthofRequest:{
+        type:Number,
+        default:0
       },
       CustomerDealsatutsDescrep:{
             type:String

@@ -26,7 +26,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://rayapal-crm.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3002" ,"http://localhost:3003" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
+  origin: ["https://rayapal-crm.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3004" ,"http://localhost:3003" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', 
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true 
@@ -37,8 +37,11 @@ const corsOptions = {
 require("./controller/reminderJob")
 //endpoint middelware
 server.use(cors(corsOptions));
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
+// تحديد حد أقصى للبيانات القادمة بصيغة JSON
+server.use(express.json({ limit: '50mb' }));
+
+// تحديد حد أقصى للبيانات القادمة بصيغة URL-encoded
+server.use(express.urlencoded({ limit: '50mb', extended: true }));
 server.use(cookieParser());
 server.use("/api", require("./routes/authRoute"));
 

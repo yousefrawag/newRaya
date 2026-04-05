@@ -53,7 +53,7 @@ router
   router.get("/nextreminder" ,protect , UserNextcustomernotvcation)
   router.put("/lead-convert/:id" , protect , ConvertLead)
   router.route("/leads").post(CustomerSales).get(protect ,GetCustomerLeads )
-  router.post("/many" , protect , authorizationMW("canAddClients"), insertMany);
+  router.post("/drop-file" , protect , authorizationMW("canAddClients"), insertMany);
   // where any can select customers
 router.get("/selectCustomer" ,protect , SelectCustomer )
 router.get("/uinqData"  ,protect , uinqCoustomerData)
