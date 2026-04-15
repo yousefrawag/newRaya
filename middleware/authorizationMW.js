@@ -1,9 +1,11 @@
 const userSchema = require("../model/userSchema");
 module.exports = (permission) => {
   return async (req, res, next) => {
+    console.log("token.id", req.token?.id);
+    
     try {
       const user = await userSchema
-        .findOne({ _id: req.token.id })
+        .findOne({ _id: req.token?.id })
         .populate("role");
 
       if (!user) {

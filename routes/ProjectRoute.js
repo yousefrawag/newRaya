@@ -18,11 +18,12 @@ const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
 const projectArchev = require("../controller/projectController/GetarvievData")
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
-
+const insertMany  = require("../controller/projectController/DropProjects")
 const router = express.Router();
 router.use(protected)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
+router.route("/drop").post(insertMany);
 router
   .route("/")
   .get(

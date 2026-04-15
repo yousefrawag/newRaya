@@ -31,13 +31,13 @@ router
 router
   .route("/:id")
   .put(
-    authorizationMW("canEditAdministration"),
+    // authorizationMW("canEditAdministration"),
     // update,
     // validationResult,
     updateRole
   )
   .get(
-    authorizationMW("canViewAdministration"),
+    // authorizationMW("canViewAdministration"),
    getRoleById)
   .delete(
     authorizationMW("canDeleteAdministration"),

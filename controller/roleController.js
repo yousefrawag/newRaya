@@ -22,6 +22,7 @@ exports.addRole = (req, res, next) => {
 
 exports.getRoleById = (req, res, next) => {
   const id = req.params.id;
+console.log("role-id" , id);
 
   roleSchema
     .findById(id)
@@ -36,6 +37,7 @@ exports.getRoleById = (req, res, next) => {
 exports.updateRole = (req, res, next) => {
   const { id } = req.params;
   const updateData = req.body;
+console.log("role" , updateData);
 
   roleSchema
     .findByIdAndUpdate(id, updateData, { new: true })
