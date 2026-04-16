@@ -8,6 +8,7 @@ const ApplicantSchema = new mongoose.Schema({
     birthDate: { type: Date, required: true },
     email: { type: String, required: true, lowercase: true },
     address: { type: String, required: true },
+    country:{ type: String, required: true }, 
     maritalStatus: { 
       type: String, 
       enum: ['أعزب / عزباء', 'متزوج / متزوجة', 'مطلق / مطلقة', 'أرمل / أرملة'],
