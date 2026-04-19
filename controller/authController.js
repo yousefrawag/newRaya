@@ -7,7 +7,7 @@ exports.login = async (req, res, next) => {
   
   try {
     // Find user by email
-    console.log("password" , req.body.password);
+    console.log("password-email" , req.body.password ,  req.body.email);
     
     const user = await userSchema.findOne({ email: req.body.email }).populate("role");
     if (!user) {
