@@ -84,6 +84,7 @@ server.use("/api/ReportType", require("./routes/ReportTypeRoute"));
 server.use("/api/broker-deaily", require("./routes/brokerDeailyRoute"));
 server.use("/api/jop", require("./routes/AplicationsRoute"));
 server.use("/api/survey", require("./routes/SurveyRouteAplication"));
+server.use("/api/improve", require("./routes/improvementaplicationRoute"));
 
 
 // Not Found MiddleWare
