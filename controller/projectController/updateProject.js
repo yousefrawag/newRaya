@@ -61,9 +61,11 @@ const updateProject = async (req, res, next) => {
       const newimagelink = {fileID: new Date() , fileURL : updateData.videoLink}
       updateData.videosURLs.push(newimagelink)
     }
-     const availableFloors =req.body.availableFloors? JSON.parse(req.body.availableFloors)  : project?.availableFloors
+    const properties =  req.body.properties? JSON.parse(req.body.properties)  : project?.properties
+     const availableFloors = req.body.availableFloors? JSON.parse(req.body.availableFloors)  : project?.availableFloors
     console.log("data" , req.body)
     updateData.availableFloors = availableFloors
+     updateData.properties = properties
     const updatedproject = await projectSchema.findByIdAndUpdate(
       id,
       updateData,

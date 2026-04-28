@@ -13,8 +13,9 @@ const addProject = async (req, res, next) => {
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
   try {
+        const properties =  req.body.properties? JSON.parse(req.body.properties)  : project?.properties
     let project = new projectSchema(req.body);
-    
+    project.properties = properties
     project.addedBy = req.token.id;
     const imagesURLs = [];
     const videosURLs = [];

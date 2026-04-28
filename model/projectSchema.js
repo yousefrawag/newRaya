@@ -42,6 +42,17 @@ const projectSchema = mongoose.Schema(
       RoofMater:{type:String},
     ProjectDelivery:{type:String},
     projectNotes:{type:String},
+    properties:[{
+    unitName:String,
+    floor: Number,
+    rooms: Number,
+    bathrooms: Number,
+    area: Number,
+    price: Number,
+    downPayment: Number,
+    monthlyInstallment: Number,
+    propertyNote:String
+    }],
     operationType: { type: String },
     installments: { type: String },
     installmentsPerYear: { type: String },

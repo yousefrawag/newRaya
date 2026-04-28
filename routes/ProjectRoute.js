@@ -19,11 +19,13 @@ const projectsAddedToday = require("../controller/projectController/projectsAdde
 const projectArchev = require("../controller/projectController/GetarvievData")
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 const insertMany  = require("../controller/projectController/DropProjects")
+const DeleateProperty = require("../controller/projectController/DeleateProperty")
 const router = express.Router();
 router.use(protected)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router.route("/drop").post(insertMany);
+router.delete("/:id/:proertyId" , DeleateProperty)
 router
   .route("/")
   .get(
