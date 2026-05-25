@@ -64,6 +64,7 @@ const customerSchema = mongoose.Schema(
       trim:true,
   
     },
+      property:{type:String},
     project: {
       type:String,
       trim:true

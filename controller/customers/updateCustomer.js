@@ -59,7 +59,7 @@ if(CurrentUser?.type === "brokker") {
         Customers:[id],
         addedBy:req.token.id ,
         endcontact:req.body.SectionFollow?.details,
-            notes:req.body.SectionFollow?.contactNotes ,
+          notes:req.body.SectionFollow?.contactNotes ,
       }
          const newadd  =  await dealyReport.create(delayData)
            console.log("newadd from emplyoee" , newadd);
@@ -74,13 +74,14 @@ if(CurrentUser?.type === "brokker") {
       console.log("sectionflow avalibale");
       
     }
-
+console.log("property =>", req.body.property);
     // Perform atomic update
     const updatedCustomer = await customerSchema.findByIdAndUpdate(
       id,
       updateOperation,
       { new: true }
     );
+    console.log(updatedCustomer.property);
 
     if (!updatedCustomer) {
       return res.status(404).json({ message: "This customer doesn't exist" });

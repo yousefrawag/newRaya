@@ -42,8 +42,15 @@ const projectSchema = mongoose.Schema(
       RoofMater:{type:String},
     ProjectDelivery:{type:String},
     projectNotes:{type:String},
+  
     properties:[{
     unitName:String,
+    floorType:String,
+    floorTypeFlow:String,
+    floorNumber:Number,
+    areaOutside:Number,
+    areaTarth:Number,
+    areaBark:Number,
     floor: Number,
     rooms: Number,
     bathrooms: Number,
@@ -51,7 +58,11 @@ const projectSchema = mongoose.Schema(
     price: Number,
     downPayment: Number,
     monthlyInstallment: Number,
-    propertyNote:String
+    propertyNote:String ,
+    FloorDetails:String,
+    imagesURLs: [file],
+    videosURLs: [file],
+    docsURLs: [file],
     }],
     operationType: { type: String },
     installments: { type: String },

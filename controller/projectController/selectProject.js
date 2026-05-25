@@ -12,7 +12,7 @@ const selectProject = async (req, res, next) => {
  
   
   } catch (error) {
- throw new Error(error)
+
     next(error);
   }
 };

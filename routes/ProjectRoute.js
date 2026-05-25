@@ -34,7 +34,7 @@ router
     getProjects)
   .post(
    
-    multerUpload.array("files"),
+    multerUpload.any(),
     addProject
   );
   router.get("/archiev" ,projectArchev )
@@ -44,7 +44,7 @@ router
   .route("/:id")
   .put(
     authorizationMW("canEditProjects"),
-    multerUpload.array("files"),
+  multerUpload.any(),
     updateProject
   )
   .get(
