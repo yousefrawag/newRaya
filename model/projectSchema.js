@@ -8,6 +8,36 @@ const file = mongoose.Schema(
   },
   { _id: false }
 );
+const propertySchema = new mongoose.Schema({
+  floorType: String,
+  floorTypeFlow: String,
+  floorNumber: String,
+  areaOutside: String,
+  areaTarth: String,
+  areaBark: String,
+  floor: String,
+  rooms: String,
+  bathrooms: String,
+  area: String,
+  price: Number,
+  downPayment: Number,
+  monthlyInstallment: Number,
+  propertyNote: String,
+  customers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "clients",
+  }],
+  propertyStatus: {
+    type: String,
+    default: "متاحة"
+  },
+  FloorDetails: String,
+  imagesURLs: [file],
+  videosURLs: [file],
+  docsURLs: [file],
+}, {
+  timestamps: true // timestamps هنا
+});
 const projectSchema = mongoose.Schema(
   {
     projectOwner:String,
@@ -43,27 +73,8 @@ const projectSchema = mongoose.Schema(
     ProjectDelivery:{type:String},
     projectNotes:{type:String},
   
-    properties:[{
-    unitName:String,
-    floorType:String,
-    floorTypeFlow:String,
-    floorNumber:Number,
-    areaOutside:Number,
-    areaTarth:Number,
-    areaBark:Number,
-    floor: Number,
-    rooms: Number,
-    bathrooms: Number,
-    area: Number,
-    price: Number,
-    downPayment: Number,
-    monthlyInstallment: Number,
-    propertyNote:String ,
-    FloorDetails:String,
-    imagesURLs: [file],
-    videosURLs: [file],
-    docsURLs: [file],
-    }],
+    properties:
+    [propertySchema],
     operationType: { type: String },
     installments: { type: String },
     installmentsPerYear: { type: String },

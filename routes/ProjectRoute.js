@@ -17,6 +17,10 @@ const protected = require("../middleware/authenticationMW")
 const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
 const projectArchev = require("../controller/projectController/GetarvievData")
+const GetProperties = require("../controller/projectController/GetProperties")
+const addPropertyToProject = require("../controller/projectController/addPropertyToProject ")
+const GetPropertyInfo  = require("../controller/projectController/GetPropertyInfo")
+const EditProperty = require("../controller/projectController/EditProperty")
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 const insertMany  = require("../controller/projectController/DropProjects")
 const DeleateProperty = require("../controller/projectController/DeleateProperty")
@@ -26,6 +30,10 @@ router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router.route("/drop").post(insertMany);
 router.delete("/:id/:proertyId" , DeleateProperty)
+router.get("/properties" , GetProperties)
+router.post("/properties/create" ,  multerUpload.any(), addPropertyToProject)
+router.get("/property/:id/:propertyId" , GetPropertyInfo)
+router.put("/property/:id/:propertyId" , multerUpload.any() ,EditProperty)
 router
   .route("/")
   .get(
