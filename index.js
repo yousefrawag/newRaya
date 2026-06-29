@@ -5,6 +5,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authMW = require("./middleware/authenticationMW");
 const {createDefaultPolicy} = require("./model/PrivcySecurty")
+const { initCronJobs } = require("./controller/reminderJob");
+
 // setting up server
 const server = express();
 const port = process.env.Port || process.env.LOCALPORT;
@@ -34,7 +36,7 @@ const corsOptions = {
 };
 
 // cron-jop whtassap notvcations
-// require("./controller/reminderJob")
+initCronJobs()
 //endpoint middelware
 server.use(cors(corsOptions));
 // تحديد حد أقصى للبيانات القادمة بصيغة JSON
@@ -86,6 +88,7 @@ server.use("/api/jop", require("./routes/AplicationsRoute"));
 server.use("/api/survey", require("./routes/SurveyRouteAplication"));
 server.use("/api/improve", require("./routes/improvementaplicationRoute"));
 server.use("/api/propertySatuts", require("./routes/PropertyStautsRoute"));
+server.use("/api/reportsMatch", require("./routes/ReportMacthRoute"));
 
 
 // Not Found MiddleWare
