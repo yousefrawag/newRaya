@@ -5,7 +5,7 @@ const Client = require("../model/customerSchema");
 const { SendWatssaoNotvcation } = require("../controller/compaign/CreateCompain");
 const { generateReport } = require("../controller/ReportMatch/generateReport");
 
-// ⏰ تذكير يومي (يعمل عند تحميل الملف)
+// ⏰ تذكير يومي (معلق حالياً)
 // cron.schedule("15 2 * * *", async () => {
 //   console.log("🚀 Running daily reminder job...");
 //   // ... باقي الكود (تذكير العملاء) ...
@@ -16,9 +16,9 @@ const initCronJobs = () => {
   console.log(`🕒 الوقت الحالي: ${new Date().toLocaleString('ar-EG', { timeZone: 'Asia/Riyadh' })}`);
 
   // ------------------------------------------
-  // 1. التقرير الأسبوعي - كل يوم أحد الساعة 8:20 صباحاً
+  // 1. التقرير الأسبوعي - كل يوم جمعة الساعة 8:00 صباحاً
   // ------------------------------------------
-  cron.schedule("20 8 * * 0", async () => {
+  cron.schedule("0 8 * * 5", async () => {
     console.log("📅 [التقرير الأسبوعي] بدء التنفيذ...");
     try {
       const now = new Date();
@@ -32,9 +32,9 @@ const initCronJobs = () => {
   });
 
   // ------------------------------------------
-  // 2. التقرير الشهري - أول يوم في الشهر الساعة 8:20 صباحاً
+  // 2. التقرير الشهري - أول يوم في الشهر الساعة 8:00 صباحاً (تم توحيد التوقيت)
   // ------------------------------------------
-  cron.schedule("20 8 1 * *", async () => {
+  cron.schedule("0 8 1 * *", async () => {
     console.log("📅 [التقرير الشهري] بدء التنفيذ...");
     try {
       const now = new Date();
