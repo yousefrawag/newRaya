@@ -18,18 +18,21 @@ const initCronJobs = () => {
   // ------------------------------------------
   // 1. التقرير الأسبوعي - كل يوم جمعة الساعة 8:00 صباحاً
   // ------------------------------------------
-  cron.schedule("0 8 * * 5", async () => {
-    console.log("📅 [التقرير الأسبوعي] بدء التنفيذ...");
-    try {
-      const now = new Date();
-      const startDate = new Date(now);
-      startDate.setDate(now.getDate() - 7);
-      await generateReport("weekly", startDate, now);
-      console.log("✅ [التقرير الأسبوعي] تم الإنشاء بنجاح");
-    } catch (error) {
-      console.error("❌ [التقرير الأسبوعي] فشل:", error.message);
-    }
-  });
+// ------------------------------------------
+// التقرير الأسبوعي - كل يوم جمعة الساعة 8:00 صباحاً
+// ------------------------------------------
+cron.schedule("0 8 * * 5", async () => {
+  console.log("📅 [التقرير الأسبوعي] بدء التنفيذ...");
+  try {
+    const now = new Date();
+    const startDate = new Date(now);
+    startDate.setDate(now.getDate() - 7);
+    await generateReport("weekly", startDate, now);
+    console.log("✅ [التقرير الأسبوعي] تم الإنشاء بنجاح");
+  } catch (error) {
+    console.error("❌ [التقرير الأسبوعي] فشل:", error.message);
+  }
+});
 
   // ------------------------------------------
   // 2. التقرير الشهري - أول يوم في الشهر الساعة 8:00 صباحاً (تم توحيد التوقيت)

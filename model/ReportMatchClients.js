@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 
-// Schema للعميل (مشترك بين المطابقين وغير المطابقين)
+// Schema للعميل الأساسي (مشترك)
 const reportCustomerSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: "clients" },
   customerName: String,
-  score: Number, // 0 إذا كان غير مناسب
+  score: Number,
   
-  // للعملاء المطابقين فقط
   matchedProperty: {
     projectId: mongoose.Schema.Types.ObjectId,
     projectName: String,
@@ -29,17 +28,14 @@ const reportCustomerSchema = new mongoose.Schema({
     },
   ],
   
-  // حالة العميل
   status: {
     type: String,
     enum: ["matched", "unmatched"],
     default: "unmatched",
   },
   
-  // أسباب عدم التطابق (موجزة)
   unmatchedReasons: [String],
   
-  // ✅ حقول جديدة للعملاء غير المطابقين في الـ shortlist
   customerRequirements: [
     {
       rquireLocation: String,
@@ -48,6 +44,7 @@ const reportCustomerSchema = new mongoose.Schema({
       requireType: String,
     },
   ],
+  
   closestMatch: {
     score: Number,
     property: {
@@ -74,18 +71,92 @@ const reportCustomerSchema = new mongoose.Schema({
   },
 });
 
-// Schema الرئيسي للتقرير
+// ✅ Schema للعميل في التحليلات (مع بيانات الدفعة والقسط)
+const analyticsCustomerSchema = new mongoose.Schema({
+  customerId: { type: mongoose.Schema.Types.ObjectId, ref: "clients" },
+  customerName: String,
+  firstPayment: Number, // ✅ الدفعة الأولى للعميل
+  monthlyInstallment: Number, // ✅ القسط الشهري للعميل
+});
+
+// ✅ Schema للتحليلات المعدل
+const analyticsSchema = new mongoose.Schema({
+  byPropertyType: [
+    {
+      name: String,
+      count: Number,
+      customers: [analyticsCustomerSchema],
+      subTypes: [
+        {
+          name: String,
+          count: Number,
+          customers: [analyticsCustomerSchema],
+        },
+      ],
+    },
+  ],
+  
+  byLocation: [
+    {
+      name: String,
+      count: Number,
+      customers: [analyticsCustomerSchema],
+      regions: [
+        {
+          name: String,
+          count: Number,
+          customers: [analyticsCustomerSchema],
+        },
+      ],
+    },
+  ],
+  
+  byFinancialAbility: [
+    {
+      range: String,
+      min: Number,
+      max: Number,
+      count: Number,
+      customers: [analyticsCustomerSchema],
+    },
+  ],
+  
+  byStatus: {
+    matched: {
+      count: Number,
+      customers: [analyticsCustomerSchema],
+    },
+    unmatched: {
+      count: Number,
+      customers: [analyticsCustomerSchema],
+    },
+  },
+  
+  byRequireType: [
+    {
+      name: String,
+      count: Number,
+      customers: [analyticsCustomerSchema],
+    },
+  ],
+
+  crossTabulation: [
+    {
+      require: String,
+      requireType: String,
+      location: String,
+      region: String,
+      paymentRange: String,
+      count: Number,
+      customers: [analyticsCustomerSchema],
+    },
+  ],
+});
+
 const reportSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      enum: ["weekly", "monthly"],
-      required: true,
-    },
+    name: { type: String, required: true },
+    type: { type: String, enum: ["weekly", "monthly"], required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     generatedAt: { type: Date, default: Date.now },
@@ -95,14 +166,9 @@ const reportSchema = new mongoose.Schema(
       unmatchedCount: Number,
       avgScore: Number,
     },
-    // العملاء المطابقين (جميعهم)
     matchedCustomers: [reportCustomerSchema],
-    
-    // ✅ العملاء غير المطابقين (القائمة المختصرة - قصيرة)
-    shortlistUnmatched: [reportCustomerSchema], // تحتوي على أهم 20-50 عميل غير مطابق
-    
-    // (اختياري) إذا أردت الاحتفاظ بكل غير المطابقين للتحليل الداخلي، لكن لا تعرضهم في الـ Frontend
-    // allUnmatched: [reportCustomerSchema], // نعلقها لتوفير المساحة
+    shortlistUnmatched: [reportCustomerSchema],
+    analytics: analyticsSchema,
   },
   { timestamps: true }
 );
