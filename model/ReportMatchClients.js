@@ -6,6 +6,7 @@ const reportCustomerSchema = new mongoose.Schema({
   customerName: String,
   score: Number,
   
+  
   matchedProperty: {
     projectId: mongoose.Schema.Types.ObjectId,
     projectName: String,
@@ -77,6 +78,9 @@ const analyticsCustomerSchema = new mongoose.Schema({
   customerName: String,
   firstPayment: Number, // ✅ الدفعة الأولى للعميل
   monthlyInstallment: Number, // ✅ القسط الشهري للعميل
+  clientRequirements:[] ,
+  phoneNumber:String
+
 });
 
 // ✅ Schema للتحليلات المعدل

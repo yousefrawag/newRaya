@@ -15,6 +15,8 @@ const buildAnalyticsCustomer = (customer) => ({
   customerName: customer.fullName,
   firstPayment: Number(customer.firstPayment) || 0,
   monthlyInstallment: Number(customer.Paymentpermonth) || 0,
+  phoneNumber:customer?.phoneNumber,
+  clientRequirements:customer?.clientRequirements
 });
 
 /**
