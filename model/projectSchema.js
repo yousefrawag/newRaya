@@ -55,6 +55,9 @@ const projectSchema = mongoose.Schema(
       type:String,
 
     },
+     contrbuetType:{ type: String },
+  InstitutionsCompany:{     type: mongoose.Schema.Types.ObjectId,
+             ref: "InstitutionsCompany" },
     pymentType: { type: String },
     estatePrice: { type: String },
      RoofPrice: { type: String },

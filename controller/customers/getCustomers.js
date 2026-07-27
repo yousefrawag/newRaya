@@ -7,16 +7,48 @@ const GetallCustomer = async (req, res, next) => {
     const id = req.token.id
     const user = await userSchema.findById(id)
     const CurrentPermission = user?.role === 9
-    let filters 
-    if(user.type === "admin" || CurrentPermission) {
-       filters = {ArchievStatuts: { $in: [false, null] } , moduleType:{$in: ["customer", null]}};
-    }else{
-      filters = {
-        ...filters ,
-        addBy: {
-          $regex: new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
-        }
-      };     
+   let filters = {
+      ArchievStatuts: { $in: [false, null] },
+    
+    };
+
+    // بناء Regex لمطابقة اسم المستخدم الحالي في حقل addBy
+    const nameRegex = new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i');
+
+    if (user.role === 9 || user.type === "admin") {
+      // الأدمن: لا نضيف أي فلتر إضافي (يرى الكل)
+      filters = {...filters ,   moduleType: { $in: ["customer", null] }}
+    } 
+    else if (user.type === "InstitutionsUser") {
+      // 1. جلب أسماء المشاريع المسموح بها (لأن project مخزنة كنص)
+      const allowedProjectIds = user.allowedProjects || [];
+      let projectNames = [];
+      if (allowedProjectIds.length > 0) {
+        const projects = await projectschema.find(
+          { _id: { $in: allowedProjectIds } },
+          { projectName: 1 }
+        );
+        projectNames = projects.map(p => p.projectName);
+      }
+
+      // الشرط الأول: العملاء المشترك فيهم (addBy يحتوي على اسمه)
+      const myCustomers = { addBy: { $regex: nameRegex } };
+
+      // الشرط الثاني: العملاء التابعين لمشاريع مسموح بها (project يساوي اسم المشروع)
+      const projectCustomers = projectNames.length > 0
+        ? { project: { $in: projectNames } }
+        : null;
+
+      // دمج الشرطين بـ $or
+      if (projectCustomers) {
+        filters = { ...filters, $or: [myCustomers, projectCustomers] };
+      } else {
+        filters = { ...filters, ...myCustomers };
+      }
+    } 
+    else {
+      // الموظفون (employee) والمسوقون (brokker): فقط العملاء المشترك فيهم
+      filters = { ...filters, addBy: { $regex: nameRegex } };
     }
 
    

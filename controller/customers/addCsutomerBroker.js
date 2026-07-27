@@ -34,7 +34,12 @@ const addCsutomerBroker = async (req, res, next) => {
       if(user?.type === "brokker") {
         //underReview
         customer.moduleType ="underReview"
-      }else {
+        customer.sourceType = "central"
+      } else if (user?.type === "InstitutionsUser") {
+ customer.moduleType ="underReview"
+  customer.sourceType = "Institutions"
+  customer.accses = "full"
+      } else {
   customer.moduleType ="customer"
       }
      
@@ -78,7 +83,7 @@ nextReminderDate: req.body.SectionFollow?.nextReminderDate || ""
           levels: "clients",
           type: "add",
           allowed: customer._id, // Use customer._id
-          message: "تم إضافة عميل من مسوق تحت التدريب",
+          message: user?.type === "brokker" ? "تم إضافة عميل من مسوق تحت التدريب" :`تم اضافه عميل من قبل مؤسسه`,
         };
         console.log("Notification being created:", notification); // Log the notification
         return notification;

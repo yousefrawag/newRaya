@@ -28,7 +28,7 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://rayapal-crm.netlify.app", "https://dashboard-rayapal.vercel.app" ,"https://raya-ideaspark.netlify.app" ,"https://raya-jops.netlify.app", "https://rayapale-talent-match.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3004" ,"http://localhost:3006" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
+  origin: ["https://rayapal-crm.netlify.app", "https://raya-brokers-dashboard.vercel.app" ,"https://dashboard-rayapal.vercel.app" ,"https://raya-ideaspark.netlify.app" ,"https://raya-jops.netlify.app", "https://rayapale-talent-match.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3004" ,"http://localhost:3006" , "https://raya-leads-form.netlify.app" , "http://localhost:8080"], // specify the origin that you want to allow
   methods: 'GET,POST,PUT,DELETE , PATCH ', 
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true 
@@ -89,6 +89,9 @@ server.use("/api/survey", require("./routes/SurveyRouteAplication"));
 server.use("/api/improve", require("./routes/improvementaplicationRoute"));
 server.use("/api/propertySatuts", require("./routes/PropertyStautsRoute"));
 server.use("/api/reportsMatch", require("./routes/ReportMacthRoute"));
+server.use("/api/link", require("./routes/LinksRoutes"));
+server.use("/api/contrbuteTypes", require("./routes/ContrbutesRoute"));
+server.use("/api/InstitutionsCompany", require("./routes/InstitutionsCompanyRoute"));
 
 
 // Not Found MiddleWare

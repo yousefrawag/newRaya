@@ -31,6 +31,9 @@ const customerSchema = mongoose.Schema(
 
    
     },
+    source:{
+type:String ,
+    },
     region: {
       type: String,
       trim:true
@@ -51,8 +54,15 @@ const customerSchema = mongoose.Schema(
       type: String,
    
     },
-    source:{
-      type:String
+    sourceType:{
+      type:String ,
+       enum:["central" , "Institutions"] ,
+       default:"central"
+    } ,
+        accses:{
+      type:String ,
+       enum:["full" , "limted"] ,
+       default:"limted"
     } ,
     firstPayment: {
       type: String,

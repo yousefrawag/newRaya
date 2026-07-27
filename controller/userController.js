@@ -38,8 +38,9 @@ exports.Selectusers = async (req , res , next) => {
 exports.addUser = async (req, res, next) => {
   console.log(req.body)
   try {
+    const allowedProjects = JSON.parse(req.body.allowedProjects)
     let user = new userSchema(req.body);
-
+user.allowedProjects = allowedProjects
     if (req.file) {
       const { imageURL, imageID } = await cloudinary.upload(
         req.file.path,

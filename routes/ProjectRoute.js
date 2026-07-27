@@ -8,6 +8,7 @@ const userProjects = require("../controller/projectController/userProjects");
 const UinqDataProject = require("../controller/projectController/UinqDataProject")
 const selectProject = require("../controller/projectController/selectProject")
 const validationResult = require("../middleware/validations/validatorResult");
+const InstiutionProject = require("../controller/projectController/InstiutionProject")
 const {
   insert,
   update,
@@ -26,6 +27,7 @@ const insertMany  = require("../controller/projectController/DropProjects")
 const DeleateProperty = require("../controller/projectController/DeleateProperty")
 const router = express.Router();
 router.use(protected)
+router.route("/InstiutionProject/:id").get(InstiutionProject)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router.route("/drop").post(insertMany);
