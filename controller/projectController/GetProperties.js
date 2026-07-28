@@ -6,13 +6,14 @@ const GetProperties = async (req, res, next) => {
       const id = req.token.id
         const user = await userSchema.findById(id)
     let filters ;
-    if(user.role === 9 || user.type === "admin") {
-       filters = {};
-    } else if ( user?.allowedProjects && user.allowedProjects.length > 0) {
+    if(
+user?.type === "InstitutionsUser"
+    ){
+ if ( user?.allowedProjects && user.allowedProjects.length > 0) {
        filters = { _id: { $in: user.allowedProjects } };
-    } else {
-       filters = { addedBy: id };
     }
+    }
+
     const projects = await projectSchema
       .find(filters)
       .populate({

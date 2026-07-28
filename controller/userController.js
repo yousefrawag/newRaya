@@ -14,6 +14,7 @@ exports.getUsers = (req, res, next) => {
   userSchema
     .find({ArchievStatuts: { $in: [false, null] }})
     .populate("role")
+    .populate("institution")
     .sort({ createdAt: -1 })
     .select("-password")
     .then((data) => {
