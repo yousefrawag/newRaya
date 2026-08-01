@@ -21,12 +21,12 @@ const initCronJobs = () => {
 // ------------------------------------------
 // التقرير الأسبوعي - كل يوم جمعة الساعة 8:00 صباحاً
 // ------------------------------------------
-cron.schedule("15 8 * * 4", async () => {
+cron.schedule("51 15 * * 5", async () => {
   console.log("📅 [التقرير الأسبوعي] بدء التنفيذ...");
   try {
     const now = new Date();
     const startDate = new Date(now);
-    startDate.setDate(now.getDate() - 7); // آخر 7 أيام
+    startDate.setDate(now.getDate() - 7);
 
     await generateReport("weekly", startDate, now);
 

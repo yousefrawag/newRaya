@@ -114,7 +114,8 @@ exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
-    console.log("update" , updateData);
+     const allowedProjects = JSON.parse(req.body.allowedProjects)
+  updateData.allowedProjects = allowedProjects
     
     let user = await userSchema.findById(id);
     if (!user) {

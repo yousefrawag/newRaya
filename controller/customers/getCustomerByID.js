@@ -8,10 +8,13 @@ const determineDataLevel = (customer, currentUser) => {
 
   if (role === 9 || type === "admin" || type === "employee" ||  type === "brokker" ) return "full";
 
-  const nameRegex = new RegExp(`(^|\\s|\\/)+${fullName}($|\\s|\\/)`, "i");
-  if (addBy && nameRegex.test(addBy)) return "full";
+  // const nameRegex = new RegExp(`(^|\\s|\\/)+${fullName}($|\\s|\\/)`, "i");
+  // if (addBy && nameRegex.test(addBy)) return "full";
 
-  if (type === "InstitutionsUser" && sourceType === "Institutions") return "full";
+  if (type === "InstitutionsUser" && sourceType === "Institutions") {
+      const access = accses || "limited";
+    return access === "full" ? "full" : "limited";
+  };
 
   const rawSourceType = sourceType;
   if (!rawSourceType || rawSourceType === "central") {
