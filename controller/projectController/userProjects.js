@@ -1,46 +1,44 @@
 const projectSchema = require("../../model/projectSchema");
+const userSchema = require("../../model/userSchema");
 
-const userProjects = async (req, res) => {
-  const { id } = req.params;
-  const {field , searTerm , startDate , endDate } = req.query
+const userProjects = async (req, res, next) => {
+  const  id  = req.token.id;
+
   try {
-    let filterion = { addedBy: id};
-    if (["projectName" , "estateType" , 
-      "detailedAddress" , "governoate" , 
-      "operationType" , "clientType" , 
-      "areaMatter" , "spaceOuteside" ,
-      "typeOfSpaceoutside","pymentType",
-      "estatePrice", "materPriec",
-      "projectSatatus" , "installments" ,
-      "installmentsFirstPyment" , "InstallmentPeriod",
-      "installmentsFirstPermonth",
-      "projectNotes" , "projectads" , "projectDetails"
-
-
-    ].includes(field) && searTerm) {
-      console.log(field);
-      
-      filterion[field] = {$regex: new RegExp(searTerm, 'i') }
+    const user = await userSchema.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "المستخدم غير موجود" });
     }
-  
- 
-    if (field === "addedBy" && searTerm) {
-     const founduser = await userSchema.find({fullName:{ $regex: new RegExp(searTerm, 'i') }})
-     if(founduser.length){
-      filterion[field]  = {id:founduser[0]?._id}
-     }
+
+    let filterion = {};
+
+    // 1. بروكر: يشوف كل المشاريع
+    if (user.type === "brokker") {
+      filterion = {};
+    } 
+    // 2. مستخدم مؤسسة: يشوف المسموح له بها + التي أضافها
+    else if (user.type === "InstitutionsUser") {
+      const orConditions = [{ addedBy: id }];
+      if (user.allowedProjects && user.allowedProjects.length > 0) {
+        orConditions.push({ _id: { $in: user.allowedProjects } });
+      }
+      filterion = { $or: orConditions };
+    } 
+    // 3. أي مستخدم آخر (موظف، أدمن، إلخ): يشوف كل المشاريع أيضاً
+    else {
+      filterion = {};
     }
- if(field === "createdAt" && endDate){
-  filterion[field] = {
-   
-    $gte: new Date(startDate),  // greater than or equal to fromDate
-    $lte: new Date(endDate) 
-  }
- }
-    const userProjects = await projectSchema.find(filterion).populate("addedBy").populate("locations").sort({ createdAt: -1 });
-    res.status(200).json({ userProjects });
+
+    const userProjects = await projectSchema
+      .find(filterion)
+      .populate("addedBy")
+      .populate("InstitutionsCompany")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({data: userProjects });
   } catch (error) {
     next(error);
   }
 };
+
 module.exports = userProjects;

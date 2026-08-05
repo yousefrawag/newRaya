@@ -28,11 +28,11 @@ const DeleateProperty = require("../controller/projectController/DeleateProperty
 const router = express.Router();
 router.use(protected)
 router.route("/InstiutionProject/:id").get(InstiutionProject)
-router.route("/users/:id").get(userProjects);
+router.route("/users").get( authorizationMW("canViewProjects") , userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router.route("/drop").post(insertMany);
 router.delete("/:id/:proertyId" , DeleateProperty)
-router.get("/properties" , GetProperties)
+router.get("/properties" , authorizationMW("canViewProjects") , GetProperties)
 router.post("/properties/create" ,  multerUpload.any(), addPropertyToProject)
 router.get("/property/:id/:propertyId" , GetPropertyInfo)
 router.put("/property/:id/:propertyId" , multerUpload.any() ,EditProperty)

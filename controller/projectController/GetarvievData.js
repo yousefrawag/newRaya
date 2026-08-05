@@ -1,36 +1,23 @@
 const projectSchema = require("../../model/projectSchema");
 
-const GetarvievData = async (req, res, next) => {
-
-  
+const GetArchievData = async (req, res, next) => {
   try {
+    // ✅ جلب المشاريع التي حالتها "archiev" أو "underReview"
+    const data = await projectSchema
+      .find({
+        $or: [
+          { status: "archiev" },
+          { projectReviewStatus: "underReview" }
+        ]
+      })
+      .populate("addedBy")
+      .sort({ createdAt: -1 });
 
-
-
-
-
-    const data = await projectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
-    const filtered = data.filter(item => item.status?.trim() === 'archiev');
-    const projectStatusCount = data.reduce((acc, item) => {
-      const status = item.projectStatus; // Extract project status
-    
-      if (!acc[status]) {
-        acc[status] = { status: status, count: 0 }; // Initialize if not exists
-      }
-    
-      acc[status].count += 1; // Increment count
-    
-      return acc;
-    }, {});
-
-    console.log(projectStatusCount);
-    
-      res.status(200).json({ data:filtered });
- 
-  
+    // لا حاجة للـ filter لأن الاستعلام بالفعل يقوم بالتصفية
+    res.status(200).json({ data });
   } catch (error) {
-    
     next(error);
   }
 };
-module.exports = GetarvievData;
+
+module.exports = GetArchievData;

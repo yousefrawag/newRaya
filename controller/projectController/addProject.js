@@ -243,6 +243,12 @@ const addProject = async (req, res, next) => {
     // =========================
     // LINKS
     // =========================
+       const user = await userSchema.findById(req.token.id)
+       if(user?.type === "InstitutionsUser"){
+       project.projectReviewStatus = "underReview"
+       project.InstitutionsCompany = user?.institution
+       project.sourceType = "Institutions"
+       }
     if (project.imageLink) {
 
       project.imagesURLs.push({
@@ -273,28 +279,28 @@ const addProject = async (req, res, next) => {
     // =========================
     // NOTIFICATIONS
     // =========================
-    const admins = await userSchema.find({
-      $or: [
-        { type: "admin" },
-        { role: 9 },
-      ],
-    });
+    // const admins = await userSchema.find({
+    //   $or: [
+    //     { type: "admin" },
+    //     { role: 9 },
+    //   ],
+    // });
 
-    const notifications = admins.map(
-      (admin) => ({
-        user: admin._id,
-        employee: req.token?.id,
-        levels: "projects",
-        type: "add",
-        allowed: project?._id,
-        message:
-          "تم إضافة مشروع جديد",
-      })
-    );
+    // const notifications = admins.map(
+    //   (admin) => ({
+    //     user: admin._id,
+    //     employee: req.token?.id,
+    //     levels: "projects",
+    //     type: "add",
+    //     allowed: project?._id,
+    //     message:
+    //       "تم إضافة مشروع جديد",
+    //   })
+    // );
 
-    await notificationSchema.insertMany(
-      notifications
-    );
+    // await notificationSchema.insertMany(
+    //   notifications
+    // );
 
   } catch (error) {
 

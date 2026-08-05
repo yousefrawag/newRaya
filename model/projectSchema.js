@@ -47,10 +47,16 @@ const projectSchema = mongoose.Schema(
     governorate: { type: String },
     detailedAddress: { type: String },
     clientType: { type: String },
-    // locations:{
-    //   type:Number,
-    //   ref:"country"
-    // },
+       sourceType:{
+      type:String ,
+       enum:["central" , "Institutions"] ,
+       default:"central"
+    } ,
+    projectReviewStatus: {
+      type: String,
+      enum: ["underReview", "reviewed"],
+      default: "reviewed"
+    },
     governoate:{
       type:String,
 

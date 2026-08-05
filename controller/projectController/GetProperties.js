@@ -5,17 +5,46 @@ const GetProperties = async (req, res, next) => {
   try {
       const id = req.token.id
         const user = await userSchema.findById(id)
-    let filters ;
-    if(
-user?.type === "InstitutionsUser"
-    ){
- if ( user?.allowedProjects && user.allowedProjects.length > 0) {
-       filters = { _id: { $in: user.allowedProjects } };
-    }
+        const userId = req.token.id;
+let filter ;
+   const isAdmin = user.role === 9 || user.type === "admin";
+    const isEmployee = user.type === "employee";
+    const isInstitutionsUser = user.type === "InstitutionsUser";
+
+    if (isAdmin || isEmployee) {
+      // ✅ الأدمن والموظف يشاهدون كل المشاريع
+      filter = {};
+    } 
+    else if (isInstitutionsUser) {
+      // ✅ مستخدم مؤسسة: يشاهد فقط المشاريع المسموح بها + التي أضافها
+      const allowedProjectIds = user.allowedProjects || [];
+      const myProjects = { addedBy: userId };
+
+      // بناء شرط $or: إما في allowedProjects أو من إضافته
+      const orConditions = [];
+
+      if (allowedProjectIds.length > 0) {
+        orConditions.push({ _id: { $in: allowedProjectIds } });
+      }
+
+      // إضافة شرط المشاريع التي أضافها (دائماً، حتى لو كانت فارغة)
+      orConditions.push(myProjects);
+
+      // إذا كان لديه على الأقل شرط واحد صالح، نضيفه للفلتر
+      if (orConditions.length > 0) {
+        filter = { $or: orConditions };
+      } else {
+        // لا توجد شروط → لا يرى أي مشروع
+        filter = { _id: { $in: [] } }; // شرط مستحيل التحقق
+      }
+    } 
+    else {
+      // أي نوع مستخدم آخر → لا يرى شيئاً
+      filter = { _id: { $in: [] } };
     }
 
     const projects = await projectSchema
-      .find(filters)
+      .find(filter)
       .populate({
         path: 'properties.customers',
         select: 'fullName _id'
