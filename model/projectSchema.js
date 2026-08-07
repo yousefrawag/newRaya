@@ -57,6 +57,9 @@ const projectSchema = mongoose.Schema(
       enum: ["underReview", "reviewed"],
       default: "reviewed"
     },
+    CurrentStatus:{
+       type:String,
+    },
     governoate:{
       type:String,
 
