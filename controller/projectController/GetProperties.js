@@ -10,12 +10,14 @@ let filter ;
    const isAdmin = user.role === 9 || user.type === "admin";
     const isEmployee = user.type === "employee";
     const isInstitutionsUser = user.type === "InstitutionsUser";
+    const isBroker = user?.type === "brokker"
+
 
     if (isAdmin || isEmployee) {
       // ✅ الأدمن والموظف يشاهدون كل المشاريع
       filter = {};
     } 
-    else if (isInstitutionsUser) {
+    else if (isInstitutionsUser || isBroker) {
       // ✅ مستخدم مؤسسة: يشاهد فقط المشاريع المسموح بها + التي أضافها
       const allowedProjectIds = user.allowedProjects || [];
       const myProjects = { addedBy: userId };

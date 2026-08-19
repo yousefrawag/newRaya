@@ -11,6 +11,7 @@ let filter ;
    const isAdmin = user.role === 9 || user.type === "admin";
     const isEmployee = user.type === "employee";
     const isInstitutionsUser = user.type === "InstitutionsUser";
+    const isBroker = user?.type === "brokker"
     const reviewCondition = {
       $or: [
         { projectReviewStatus: "reviewed" },
@@ -22,7 +23,7 @@ let filter ;
       // ✅ الأدمن والموظف يشاهدون كل المشاريع
       filter = reviewCondition;
     } 
-    else if (isInstitutionsUser) {
+    else if (isInstitutionsUser || isBroker) {
       // ✅ مستخدم مؤسسة: يشاهد فقط المشاريع المسموح بها + التي أضافها
       const allowedProjectIds = user.allowedProjects || [];
       const myProjects = { addedBy: userId };
@@ -39,17 +40,17 @@ let filter ;
 
       // إذا كان لديه على الأقل شرط واحد صالح، نضيفه للفلتر
       if (orConditions.length > 0) {
-filter = {
-  $and: [
-    { $or: orConditions },
-    reviewCondition
-  ]
-};
+      filter = {
+        $and: [
+          { $or: orConditions },
+          reviewCondition
+        ]
+      };
       } else {
         // لا توجد شروط → لا يرى أي مشروع
         filter = { _id: { $in: [] } }; // شرط مستحيل التحقق
       }
-    } 
+    }  
     else {
       // أي نوع مستخدم آخر → لا يرى شيئاً
       filter = { _id: { $in: [] } };

@@ -13,11 +13,9 @@ const userProjects = async (req, res, next) => {
     let filterion = {};
 
     // 1. بروكر: يشوف كل المشاريع
-    if (user.type === "brokker") {
-      filterion = {};
-    } 
+  
     // 2. مستخدم مؤسسة: يشوف المسموح له بها + التي أضافها
-    else if (user.type === "InstitutionsUser") {
+    if (user.type === "InstitutionsUser" || user.type === "brokker") {
       const orConditions = [{ addedBy: id }];
       if (user.allowedProjects && user.allowedProjects.length > 0) {
         orConditions.push({ _id: { $in: user.allowedProjects } });
