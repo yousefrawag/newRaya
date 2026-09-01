@@ -7,14 +7,14 @@ const authorizationMW = require("../middleware/authorizationMW");
 const LocationArchievd = require("../controller/projectlocation/LocationArchievd")
 const protect = require("../middleware/authenticationMW")
 const router = express.Router();
-router.use(protect)
-router.get("/archiev" , LocationArchievd)
+
+router.get("/archiev" , protect,  LocationArchievd)
 router
   .route("/")
-  .post(authorizationMW("canAddlocation"), Addlocation)
+  .post(protect , authorizationMW("canAddlocation"), Addlocation)
   .get( Getprojectlocation);
 router
   .route("/:id")
-  .put(authorizationMW("canEditlocation"), updateLocation)
-  .delete(authorizationMW("canDeletelocation"), Deletelocation);
+  .put(protect , authorizationMW("canEditlocation"), updateLocation)
+  .delete(protect , authorizationMW("canDeletelocation"), Deletelocation);
 module.exports = router;

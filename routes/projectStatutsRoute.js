@@ -7,13 +7,13 @@ const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 
 const router = express.Router();
-router.use(protect)
+
 router
   .route("/")
-  .post(authorizationMW("canAddprojectstuts"), AddprojectStatuts)
+  .post(protect , authorizationMW("canAddprojectstuts"), AddprojectStatuts)
   .get( GetallStauts);
 router
   .route("/:id")
-  .put(authorizationMW("canEditprojectstuts"), updateStatuts)
-  .delete(authorizationMW("canDeleteprojectstuts"), DeleteStatuts);
+  .put( protect , authorizationMW("canEditprojectstuts"), updateStatuts)
+  .delete( protect , authorizationMW("canDeleteprojectstuts"), DeleteStatuts);
 module.exports = router;

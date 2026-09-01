@@ -7,14 +7,14 @@ const GetallRegionArchiev = require("../controller/regionController/GetallRegion
 const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
 const router = express.Router();
-router.use(protect)
+
 router
   .route("/")
-  .post(authorizationMW("canAddprojectstypes"), AddRegion)
+  .post( protect , authorizationMW("canAddprojectstypes"), AddRegion)
   .get( GetAllRegions);
   router.get("/archiev" , GetallRegionArchiev)
 router
   .route("/:id")
-  .put(authorizationMW("canEditprojectstypes"), updateRegion)
-  .delete(authorizationMW("canDeleteprojectstypes"), DeleteRegion);
+  .put(protect , authorizationMW("canEditprojectstypes"), updateRegion)
+  .delete(protect , authorizationMW("canDeleteprojectstypes"), DeleteRegion);
 module.exports = router;
