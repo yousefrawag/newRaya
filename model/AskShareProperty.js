@@ -11,7 +11,7 @@ const propertySharedSchema = new mongoose.Schema(
   {
     client: {
       fullName: { type: String, required: true },
-      email: { type: String, required: true },
+      email: { type: String },
       phone: { type: String, required: true },
       company: { type: String, default: '' }
     },
@@ -25,10 +25,10 @@ const propertySharedSchema = new mongoose.Schema(
       city: { type: String, required: true },
       projectSatatus: { type: String, required: true },
       operationType: { type: String, required: true },
-      areaMatter: { type: Number, required: true },
-      internalArea: { type: Number, required: true },
-      spaceOuteside: { type: Number, required: true },
-      typeOfSpaceoutside: { type: String, required: true },
+      areaMatter: { type: String },
+      internalArea: { type: String},
+      spaceOuteside: { type: String },
+      typeOfSpaceoutside: { type: String },
       installments: { type: String, enum: ['نعم', 'لا'], required: true },
       estatePrice: { type: Number, default: null },
       materPriec: { type: Number, default: null },
