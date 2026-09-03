@@ -28,17 +28,41 @@ server.use((req, res, next) => {
   next();
 });
 const corsOptions = {
-  origin: ["https://rayapal-crm.netlify.app",  "https://www.rayapal.com" , "https://rayapal.com"  , "https://raya-brokers-dashboard.vercel.app" ,"https://dashboard-rayapal.vercel.app" ,"https://raya-ideaspark.netlify.app" ,"https://raya-jops.netlify.app", "https://rayapale-talent-match.netlify.app" ,"https://rayapal-brokers.netlify.app",  "http://localhost:3004" ,"http://localhost:3006" , "https://raya-leads-form.netlify.app" , "http://localhost:3000"], // specify the origin that you want to allow
-  methods: 'GET,POST,PUT,DELETE , PATCH ', 
-  allowedHeaders: 'Content-Type,Authorization',
-  credentials: true 
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://rayapal-crm.netlify.app",
+      "https://www.rayapal.com",
+      "https://rayapal.com",
+      "https://raya-brokers-dashboard.vercel.app",
+      "https://dashboard-rayapal.vercel.app",
+      "https://raya-ideaspark.netlify.app",
+      "https://raya-jops.netlify.app",
+      "https://rayapale-talent-match.netlify.app",
+      "https://rayapal-brokers.netlify.app",
+      "http://localhost:3004",
+      "http://localhost:3006",
+      "https://raya-leads-form.netlify.app",
+      "http://localhost:3000"
+    ];
 
+    if (allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+
+  methods: "GET,POST,PUT,DELETE,PATCH",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true
 };
+
+server.use(cors(corsOptions));
 
 // cron-jop whtassap notvcations
 initCronJobs()
 //endpoint middelware
-server.use(cors(corsOptions));
+
 // تحديد حد أقصى للبيانات القادمة بصيغة JSON
 server.use(express.json({ limit: '50mb' }));
 
