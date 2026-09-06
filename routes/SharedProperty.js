@@ -5,6 +5,6 @@ const multerUpload = require("../middleware/multer");
 const router = express.Router();
 
 router.route("/").post(multerUpload.array('files'), createProperty).get(getAllProperties);
-router.route("/:id").get(getProperty).put(updateProperty).delete(deleteProperty);
+router.route("/:id").get(getProperty).put(multerUpload.array('files')  , updateProperty).delete(deleteProperty);
 
 module.exports = router;
