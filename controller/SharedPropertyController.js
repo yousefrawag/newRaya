@@ -1,7 +1,7 @@
 // controllers/propertyController.js
 const Property = require('../model/AskShareProperty');
 const cloudinary = require("../middleware/cloudinary");
-
+const project = require("../model/projectSchema")
 // إضافة عقار جديد
 exports.createProperty = async (req, res) => {
   try {
@@ -161,3 +161,23 @@ exports.getAllProperties = async (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 };
+exports.sendSharedPropertyAsProject = async (req , res , next) => {
+  try {
+    const {id} = req.params
+    const CurrentSharedPorperty = await Property.findById(id)
+  const projectData = CurrentSharedPorperty.project.toObject(); // تحويل إلى كائن عادي
+    const { _id, __v, ...cleanProjectData } = projectData;
+    const newProject = {
+      ...cleanProjectData,
+projectName:"'طلب مشروع",
+projectOwnerPhone:CurrentSharedPorperty?.client?.phone,
+projectOwner:CurrentSharedPorperty?.client?.fullName,
+addedBy:req.token?.id
+    }
+    const Createproject = await  new project(newProject)
+    Createproject.save()
+    res.status(200).json({mesg:"AskProperty Converted To real Project" , Project:Createproject})
+  } catch (error) {
+    next(error)
+  }
+}
