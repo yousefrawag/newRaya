@@ -60,7 +60,17 @@ exports.createProperty = async (req, res) => {
 exports.updateProperty = async (req, res) => {
   try {
     const { id } = req.params;
-    
+        if (req.body.status) {
+      const propertystauts = await Property.findByIdAndUpdate(
+        id,
+        { status: req.body.status },
+        {
+          new: true,
+          runValidators: true,
+        }
+      ) 
+          return res.status(200).json({ success: true, mesg: "stauts Updated" });
+    }
     // 1. تحليل البيانات النصية
     if (!req.body.data) {
       return res.status(400).json({ success: false, error: 'Missing data field' });
@@ -176,6 +186,15 @@ addedBy:req.token?.id
     }
     const Createproject = await  new project(newProject)
     Createproject.save()
+    CurrentSharedPorperty.status = "تم تحويله إلى مشروع"
+      await Property.findByIdAndUpdate(
+        id,
+        CurrentSharedPorperty,
+        {
+          new: true,
+          runValidators: true,
+        }
+      ) 
     res.status(200).json({mesg:"AskProperty Converted To real Project" , Project:Createproject})
   } catch (error) {
     next(error)

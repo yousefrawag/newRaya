@@ -30,6 +30,7 @@ const propertySharedSchema = new mongoose.Schema(
       spaceOuteside: { type: String },
       typeOfSpaceoutside: { type: String },
       installments: { type: String, enum: ['نعم', 'لا'], required: true },
+      pymentType:{ type: String},
       estatePrice: { type: Number, default: null },
       materPriec: { type: Number, default: null },
       installmentsFirstPyment: {
