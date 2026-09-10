@@ -117,6 +117,7 @@ server.use("/api/link", require("./routes/LinksRoutes"));
 server.use("/api/contrbuteTypes", require("./routes/ContrbutesRoute"));
 server.use("/api/InstitutionsCompany", require("./routes/InstitutionsCompanyRoute"));
 server.use("/api/sharedProperty", require("./routes/SharedProperty"));
+server.use("/api/importRequest", require("./routes/ImportRoutes"));
 
 
 // Not Found MiddleWare
