@@ -7,7 +7,7 @@ const notificationSchema = mongoose.Schema(
     employee:{ type: Number, ref: "users" },
     levels: {
       type: String,
-      enum: ["projects", "users", "clients" , "missions" , "expensess"],
+      enum: ["projects", "users", "clients" , "missions" , "expensess" , "importclients"],
       required: true,
     },
     type:{
