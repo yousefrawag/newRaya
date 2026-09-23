@@ -53,7 +53,7 @@ const ImportRequestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'processing', 'completed', 'canceled'],
+      enum: ['pending', 'processing', 'completed', 'canceled' , "contacting"],
       default: 'pending',
     },
   },
