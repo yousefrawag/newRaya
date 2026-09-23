@@ -5,6 +5,7 @@ const ImportexportOraeders = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
         ref: "importclients",
     },
+ addedBy: { type: Number, ref: "users" },
   opeartionType: {
     type: String,
     
