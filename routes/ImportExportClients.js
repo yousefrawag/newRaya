@@ -3,8 +3,8 @@ const router = express.Router();
 const addCustomer = require("../controller/importexportCpntroller/AddImportClient");
 const getCustomers = require("../controller/importexportCpntroller/GetImportClients");
 const getCustomerByID = require("../controller/importexportCpntroller/CustomerOverview");
-// const updateCustomer = require("../controller/customers/updateCustomer");
-// const deleteCustomer = require("../controller/customers/deleteCustomer");
+const updateCustomer = require("../controller/importexportCpntroller/UpdateCustomer");
+const DelateClient = require("../controller/importexportCpntroller/DelateClient");
 const protect = require("../middleware/authenticationMW")
 
 
@@ -39,19 +39,19 @@ router
 // router.get("/customer-archived" ,protect , GetCustomerArchived)
 router
   .route("/:id")
-//   .put(
-//     protect ,
-//     authorizationMW("canEditClients"),
+  .put(
+    protect ,
+    authorizationMW("canEditClients"),
  
-//     updateCustomer
-//   )
+    updateCustomer
+  )
   .get(
     protect, 
     authorizationMW("canViewClients"), 
   getCustomerByID)
-//   .delete(
-//     protect ,
-//     authorizationMW("canDeleteClients"), 
-//     deleteCustomer);
+  .delete(
+    protect ,
+    authorizationMW("canDeleteClients"), 
+    DelateClient);
 
 module.exports = router;

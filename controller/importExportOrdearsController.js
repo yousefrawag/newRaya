@@ -45,3 +45,12 @@ exports.Getone = async (req , res , next) => {
             res.status(404).json({mesg:"not found"})
         }
 }
+exports.getClientOrdears = async (req , res , next) => {
+    const {id} = req.params
+    try {
+            const allOrdears = await ImportexportOrdersSchema.find({clientId:id}).populate("clientId").populate("addedBy").sort({ createdAt: -1 })
+            res.status(200).json({data:allOrdears})
+    } catch (error) {
+        next(error)
+    }
+}

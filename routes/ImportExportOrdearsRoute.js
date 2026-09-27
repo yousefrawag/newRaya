@@ -1,5 +1,5 @@
 const express = require("express");
-const {addNew , getAll , Updateone , Deleateone  , Getone} = require("../controller/importExportOrdearsController");
+const {addNew , getAll , Updateone , Deleateone  , Getone , getClientOrdears} = require("../controller/importExportOrdearsController");
 
 const authorizationMW = require("../middleware/authorizationMW");
 const protect = require("../middleware/authenticationMW")
@@ -9,6 +9,7 @@ router
   .route("/")
   .post(authorizationMW("canAddlocation"), addNew)
   .get( getAll);
+router.get('/client-ordears/:id', getClientOrdears);
 router
   .route("/:id")
   .put(authorizationMW("canEditlocation"), Updateone)
