@@ -21,7 +21,22 @@ const clientRequirementSchema = new mongoose.Schema({
  
     trim: true,
   },
-}, { _id: false });
+    currency: {
+       type: String,
+    },
+  cashOption: {
+     type: String,
+  },
+  firstPayment: {
+     type: Number,
+  },
+  Paymentpermonth: {
+      type: Number,
+  },
+  requireDetails: {
+     type: String,
+  },
+}, { _id: false , timestamps: true});
 const customerSchema = mongoose.Schema(
   {
 
