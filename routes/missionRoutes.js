@@ -44,7 +44,7 @@ router
     authorizationMW("canDeleteMissions"), 
   deleteMission)
   .put(
-    authorizationMW("canEditMissions"),
+    // authorizationMW("canEditMissions"),
     // update,
     // validationResult,
     updateMission
