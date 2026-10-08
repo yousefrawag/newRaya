@@ -120,6 +120,7 @@ server.use("/api/sharedProperty", require("./routes/SharedProperty"));
 server.use("/api/importRequest", require("./routes/ImportRoutes"));
 server.use("/api/importClients", require("./routes/ImportExportClients"));
 server.use("/api/ordears", require("./routes/ImportExportOrdearsRoute"));
+server.use("/api/supliers", require("./routes/SupliersRoute"));
 
 
 // Not Found MiddleWare

@@ -5,6 +5,13 @@ const ImportexportOraeders = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
         ref: "importclients",
     },
+       suplier:{
+    type: mongoose.Schema.Types.ObjectId,
+        ref: "Supplier",
+    },
+    supplierCountry:{
+ type: String,
+    } ,
  addedBy: { type: Number, ref: "users" },
   opeartionType: {
     type: String,
