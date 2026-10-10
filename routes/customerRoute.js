@@ -23,6 +23,7 @@ const CustomerSectionFlowTiemLine = require("../controller/customers/CustomerSec
 const customerEmployeePreformance = require("../controller/customers/customerEmployeePreformance")
 const brokersCustomers = require("../controller/customers/brokersCustomers")
 const addCsutomerBroker = require("../controller/customers/addCsutomerBroker")
+const CustomerRealStaeRequiremnts = require("../controller/customers/CustomerRealStaeRequiremnts")
 const GetmatchCustomersToProperties = require("../controller/customers/GetmatchCustomersToProperties")
 const {
   insert,
@@ -32,6 +33,8 @@ const multerUpload = require("../middleware/multer");
 
 const authorizationMW = require("../middleware/authorizationMW");
 router.use(protect)
+router.get("/requiremnts" ,     protect ,
+    authorizationMW("canViewClients"), CustomerRealStaeRequiremnts)
 router.get("/journey-analytics" ,     protect ,
     authorizationMW("canViewClients"), CustomerSectionFlowTiemLine)
    router.get("/borkers-customers" ,     protect ,
